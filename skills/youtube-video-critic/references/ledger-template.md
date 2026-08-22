@@ -13,7 +13,7 @@ This file is git-ignored, so it won't be committed to the plugin's source repo b
 
 ## Case B — Claude Desktop/Projects, claude.ai chat, or anywhere a filesystem write can't be confirmed as visible to the human
 
-**Do not write to a container path and assume it reaches Project Knowledge.** A file write can succeed in the agent's own execution environment while staying completely invisible to the human — this exact failure happened in real use: the agent reported the ledger as updated, and the user never saw the change, because the write landed in a container, not in Project Knowledge. File-write tools appearing to be present is not evidence the write is visible; don't infer visibility from tool availability.
+**Do not write to a container path and assume it reaches Project Knowledge.** A file write can succeed in the agent's own execution environment while staying invisible to the human — file-write tools appearing to be present is not evidence the write is visible, so don't infer visibility from tool availability alone.
 
 Project Knowledge stays the canonical, durable ledger. Everything the agent produces here is a *working copy* for the current conversation, not a replacement for it — the agent can read/search Project Knowledge even though it can't write to it.
 

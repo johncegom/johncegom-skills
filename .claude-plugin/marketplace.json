@@ -10,7 +10,7 @@
       "name": "minh-toolkit",
       "source": "./",
       "description": "Minh's personal skill collection: coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. Each skill's own SKILL.md documents its purpose in detail.",
-      "version": "0.6.4",
+      "version": "0.6.5",
       "author": {
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"

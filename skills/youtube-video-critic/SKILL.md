@@ -32,13 +32,26 @@ This persona means:
 
 ## Step 0: Check prerequisites
 
-This skill requires youtube-mcp tools (`get_metadata` / `get_video_metadata`, `get_transcript`, optionally `get_transcript_timestamps`).
+This skill requires youtube-mcp tools (`get_metadata` / `get_video_metadata`, `get_transcript`, optionally `get_transcript_timestamps`). Two further tools, `get_transcript_range` and `search_transcript` (alias `search_in_transcript`), are also optional — some installs predate them; treat their absence as a normal degrade case, not a failure.
 
 1. Call `tool_search` with a query like "youtube transcript metadata" to check if these tools load.
 2. If no youtube-related tools are found, **stop and tell the user directly**: this skill needs the youtube-mcp-cli connector (https://github.com/johncegom/go-youtube-mcp-cli) and it does not appear to be available. Do not fall back to guessing about the video from the title alone — an evaluation without a transcript is not a real evaluation, it is a guess. The connector's `.mcp.json` entry resolves the binary via `${YOUTUBE_MCP_BIN:-youtube-mcp}` — if it's missing, the fix is either putting the Go bin dir (`go env GOPATH`\bin, e.g. via `go install`) on `PATH`, or setting `YOUTUBE_MCP_BIN` to the binary's full path, then fully quitting and reopening Claude Desktop (closing the window alone isn't enough).
-3. If the tools load, proceed.
+3. The same `tool_search` call also shows whether `get_transcript_range` and `search_transcript` loaded. Don't block or warn on their absence — just remember whether they're available, since Step 1's branching below depends on it.
+4. If the required tools load, proceed.
 
 ## Step 1: Gather the raw material
+
+First, decide which of these shapes the request actually is — they use different tools and different amounts of transcript:
+
+- **Full evaluation (the default).** No scoping in the request, or a plain "is this worth watching." Use the numbered list below unchanged — full transcript, no substitutions. This is the only path that reaches Steps 2-5 in full; none of the six Step 2 angles can be soundly judged from a partial transcript.
+- **Already-scoped request.** The user says they've already watched or want to skip part of the video and asks about the rest, or names a specific range up front ("is the last 20 minutes worth it"). If `get_transcript_range` is available, fetch only that window and apply the same six angles to it, scoped to what's actually being asked. If it isn't available, fall back to the full transcript and reason about the range manually, same as before this tool existed.
+- **Claim check or in-conversation follow-up**, not a full evaluation — e.g. "did they really say X," or a question about a video already evaluated earlier in this conversation. Skip Steps 2-5 entirely and use the claim-verification approach below instead. This doesn't apply when the user asks for a fresh full evaluation of a video already in the ledger — that still runs Steps 2-5 in full.
+
+**Claim verification.** When the full transcript isn't already sitting in context from earlier in the conversation: use `search_transcript` first if available, but don't over-trust it — it can miss a phrase split across two caption segments and returns no surrounding context around a hit, so a "no matches" result isn't proof the claim wasn't made, and a single matched line shouldn't be read as the full meaning. Follow a promising hit with `get_transcript_range` around that timestamp (roughly 30-60 seconds either side) to read actual context before answering. Fall back to the full transcript if neither tool is available, or the search comes back empty and the claim still needs checking. If the full transcript is already in context, just search it directly rather than re-fetching anything.
+
+Chapters, playlist-wide search, and context-aware search don't exist in this connector yet — don't design around them. Download tools (`download_video`, `download_transcript`, etc.) are also out of scope here: this skill evaluates videos, it doesn't archive them, and saving full transcripts to disk conflicts with the Copyright constraint below.
+
+For the full-evaluation path:
 
 1. Get metadata: title, channel, publish date, view count, duration.
 2. Get the full transcript. Use the timed version if you will need to point to specific timestamps later.
@@ -101,7 +114,7 @@ After the verdict, always add two more sections — this is what turns an evalua
    - **State the mechanism, not just the conclusion.** If the video explains *why* or *how* the claim holds (a cause, a comparison, underlying data), fold that reasoning into the same item — don't just repeat the bottom-line takeaway. If the video asserts the claim without explaining why, say so plainly ("the video doesn't explain the mechanism") rather than inventing a plausible-sounding one — fabricating a reason the video never gave violates the persona's "verify checkable claims, don't just repeat them" principle. If every item in the list ends up with no stated mechanism, that's a sign the video itself is low-substance — let that show up in the Step 2/3 verdict rather than treating it as a Step 4 problem to fix.
 2. **Personal application.** For each takeaway where you have genuine context about the user's own projects, tools, or work (from this conversation or from memory), state concretely how it applies — a specific action, question to ask themselves, or thing to change in what they're already building. Do not force this for every takeaway; if a point has no real connection to the user's context, leave it out of this section rather than padding it with a generic connection. If *no* takeaway has genuine context to apply — no personal-relevance information at all — omit this section's heading entirely rather than printing it empty; an empty heading with no content under it reads as broken output.
 
-Always include these two sections as part of a full evaluation output, not just on request. Skip them only when the user's request is a narrower follow-up question about something already discussed, not a full evaluation of a video.
+Always include these two sections as part of a full evaluation output, not just on request. Skip them only for the claim-check/follow-up shape from Step 1, not for a full evaluation or an already-scoped one.
 
 **Before moving on to Step 5, confirm the response actually contains, in order: TL;DR, the table, the title-gap line, the verdict + value score, then Core takeaways and (if applicable) Personal application.** These sections are not optional filler and don't become optional just because a later step (the ledger) also needs attention.
 
@@ -113,7 +126,7 @@ Where the ledger actually lives depends on the environment — see [references/l
 
 **When to touch the ledger at all (opt-in, checked once per conversation):**
 
-1. On the first evaluation in a conversation, do not create or ask about a ledger unprompted. Only act on it if either an existing ledger is found (per the template's Case A/B check), or the user has explicitly asked, at some point, to track, list, or rank videos across sessions.
+1. On the first evaluation in a conversation, do not create or ask about a ledger unprompted. Only act on it if an existing ledger is found (per the template's Case A/B check), the user has explicitly asked, at some point, to track, list, or rank videos across sessions, or Step 1 identified this as a follow-up on a previously-evaluated video and a ledger already exists.
 2. If neither is true, skip this step entirely and don't mention it.
 3. Once a ledger exists (just created, tracked in memory per Case C, or found), maintain it automatically on every subsequent evaluation in this and future sessions, without asking again — except the one-time Case B statement about saving the working copy back to Project Knowledge, which happens once on first touch, not per evaluation.
 

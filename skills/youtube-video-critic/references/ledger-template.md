@@ -33,8 +33,8 @@ Keep the same rows in conversation memory instead, using this structure as the r
 ```markdown
 # YouTube Video Critic — Ledger
 
-| Date | Title | Link | Channel | Length | Verdict | Score | Reason |
-|---|---|---|---|---|---|---|---|
+| Date | Title | Link | Channel | Length | Verdict | Score | Status | Reason |
+|---|---|---|---|---|---|---|---|---|
 ```
 
 ## Row format notes
@@ -46,3 +46,10 @@ Keep the same rows in conversation memory instead, using this structure as the r
 - Format `Length` as `mm:ss` for videos under one hour, or zero-padded `h:mm:ss` at or above one hour (e.g. `47:12` vs `1:02:03`) — stay consistent within the file.
 - Format `Verdict` as the exact verdict name from SKILL.md Step 3 (`Worth watching in full`, `Skim it`, or `Skip it, the summary is enough`) — not an abbreviation or paraphrase.
 - Format `Score` as `X/10`, matching the value score from SKILL.md Step 3 exactly (e.g. `8/10`, not `8` or `8.5/10` unless the evaluation itself used a half-point).
+- `Status` tracks what the user actually did with the video after evaluation, not the skill's judgment of it — leave it **blank** when creating or appending a row during a normal evaluation; it is never filled in as part of Step 5's per-evaluation ledger maintenance. Allowed values, exactly these three, no others:
+  - Blank — the default, treated as "Not watched." Don't write the literal string `Not watched` into a cell; just leave it empty.
+  - `Watched`
+  - `Applied (not watched)`
+  - If a video is both watched and an insight from it is applied, write `Watched (applied)` — a suffix on `Watched`, not a fourth value.
+  - `Status` is updated later, in place on an existing row, only when the user explicitly reports watching or applying a specific video — see SKILL.md Step 5 for the two triggers. Never backfill existing rows with a value retroactively; blank stays valid indefinitely.
+  - A video can appear as more than one row (a later full re-evaluation of an already-ledgered video appends a new row rather than replacing the old one). When a link or title matches multiple rows, update `Status` on only the most recent (latest-dated) row by default — never on every matching row.

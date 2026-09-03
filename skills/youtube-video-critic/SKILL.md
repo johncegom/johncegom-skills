@@ -130,6 +130,19 @@ Where the ledger actually lives depends on the environment — see [references/l
 2. If neither is true, skip this step entirely and don't mention it.
 3. Once a ledger exists (just created, tracked in memory per Case C, or found), maintain it automatically on every subsequent evaluation in this and future sessions, without asking again — except the one-time Case B statement about saving the working copy back to Project Knowledge, which happens once on first touch, not per evaluation.
 
+**Updating Status on an existing row (separate trigger, not part of evaluation):**
+
+The ledger has a `Status` column (between `Score` and `Reason`) tracking what the user actually did with a video after it was evaluated — see `references/ledger-template.md` row-format notes for the exact three allowed values (`Watched`, `Applied (not watched)`, or blank for "Not watched"). This is independent of the opt-in ledger-maintenance flow above and is **never** touched automatically as part of running an evaluation — a new or freshly-appended row always leaves `Status` blank.
+
+Only update the `Status` cell of an existing row when the user explicitly volunteers one of these, unprompted:
+
+1. They say they watched a specific video already in the ledger (e.g. they picked one from the queue to watch) → find that row (match by link or title) and set `Status` to `Watched`.
+2. They say they applied an insight from a specific video into SiteGuard or minh-toolkit without having watched it → find that row and set `Status` to `Applied (not watched)`.
+3. If a row's `Status` already reflects one of these and the user then reports the other action for the same video, combine into `Watched (applied)` rather than inventing a new value.
+4. A video can legitimately have more than one row (Step 1 allows a fresh full re-evaluation of a video already in the ledger, which appends a new row rather than replacing the old one). If the link or title matches more than one row, update only the most recent (latest-dated) row by default — never all matching rows, and never guess which one the user means when it's genuinely ambiguous.
+
+Never proactively ask "did you watch this?" or similar after an evaluation — this stays purely reactive to what the user reports on their own.
+
 ## Language and tone
 
 - Respond in the same language the user used to ask (if they wrote in Vietnamese, answer in Vietnamese) — this includes the structural labels in Step 3/4 (table headers, row labels, the three verdict names, "Value score", "Core takeaways", "Personal application"), not just the surrounding prose. This file's instructions are written in English for consistency across skills in this plugin, but that's a source-language choice, not a runtime constraint — nothing here stays fixed in English when the user is asking in another language.

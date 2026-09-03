@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (interaction between session-split note and the closing hype-language audit)
 category: fuzz
 status: pass
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -28,3 +28,7 @@ block (it only exists conditional on the "Worth watching in full" verdict), so t
 hype-audit language ("the verdict paragraph") already scopes over it without needing an explicit
 cross-reference. Flagged as a minor ambiguity worth a follow-up doc tweak if it's ever
 misinterpreted in practice, but not a functional bug today.
+
+## Regression check (2026-09-03)
+Split-note still sits between the verdict bullets and the value-score paragraph, still inside the
+scope of the hype-language audit's "the verdict paragraph." No regression.

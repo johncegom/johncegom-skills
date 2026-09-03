@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4 <-> Step 5 execution order (ledger updates crowding out Core takeaways)
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -67,3 +67,10 @@ Residual risk noted, not a bug: all of this is prompt-level reinforcement, not m
 enforced — it raises Step 4's compliance probability rather than guaranteeing it, and none of it
 has been checked against a live run, only static tracing (same method as cases 005/007/008/014).
 Worth a real-world check-in if the original symptom recurs.
+
+## Regression check (2026-09-03)
+Step 4's default-include/exception split, its pre-Step-5 checklist ("Before moving on to Step 5,
+confirm..."), and Step 5's independence statement ("Run it regardless of how Step 4 went... if
+something has to give under time or token pressure, drop this step, never Steps 1-4") are all
+still present unchanged in current SKILL.md. The new Status-update subsection added since (case
+021) sits inside Step 5 and doesn't touch this ordering. No regression.

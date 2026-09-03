@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Case B first-touch reminder vs. Step 4's closing checklist (collision check)
 category: stress
 status: pass
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -28,3 +28,8 @@ internal self-check with no visible text of its own (it just confirms sections a
 the Case B reminder is a distinct, separately-triggered visible sentence tied to Step 5's own
 mechanics. They act at different points in the pipeline (mid-output confirmation vs. end-of-output
 addition), so there's no structural reason one would crowd out the other. No fix needed.
+
+## Regression check (2026-09-03)
+Same structural separation still holds: Step 4's checklist is still an internal self-check with no
+visible text, and ledger-template.md Case B step 4's one-time reminder is still a distinct,
+separately-triggered sentence. No regression.

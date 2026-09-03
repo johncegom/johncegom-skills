@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4.1 item count floor
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -25,3 +25,6 @@ contradicted "skip filler entirely" whenever a video had fewer than 3 real point
 SKILL.md Step 4.1: changed to "up to 6 items... aim for 3-6, but go lower when the video
 genuinely doesn't have that many substantive points — never pad the list... a 1-item list is a
 legitimate signal about the video, not a formatting failure."
+
+## Regression check (2026-09-03)
+Fix wording still present verbatim in current SKILL.md Step 4.1. No regression.

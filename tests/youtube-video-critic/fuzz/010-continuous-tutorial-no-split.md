@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (proposed session-split note for "Worth watching in full")
 category: fuzz
 status: pass
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -24,3 +24,7 @@ context) is the tradeoff.
 ## Result
 Pass. The rule's second branch ("cumulative argument where each part depends on following the
 previous one ... say so explicitly instead of inventing a split point") covers this case directly.
+
+## Regression check (2026-09-03)
+Continuous/dependency-chained branch still present unchanged in current SKILL.md Step 3. No
+regression.

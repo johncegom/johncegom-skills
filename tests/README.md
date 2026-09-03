@@ -29,7 +29,7 @@ id: 001
 skill: youtube-video-critic
 target: <the section/rule of SKILL.md being stressed>
 category: fuzz
-status: pass | bug-found-fixed | reverted
+status: pass | bug-found-fixed | bug-found-open | reverted
 last_verified: YYYY-MM-DD
 ---
 
@@ -51,9 +51,39 @@ What actually happened when checked, and the outcome (bug found + how it was fix
 - `bug-found-fixed` — checked, found a real defect, SKILL.md was edited to fix it. The case
   stays in the suite as a regression guard — if a future edit reintroduces the same failure,
   this is the case that should catch it.
+- `bug-found-open` — checked, found a real gap, but the fix wasn't applied (usually because it
+  changes user-facing behavior and needs confirmation first, or per "When to add a new case"
+  below, the finding turned out to be a theoretical misreading rather than a real contradiction).
+  The case stays open rather than being deleted or silently fixed, so the gap and its suggested
+  fix stay visible for the next person instead of getting re-discovered from scratch.
 - `reverted` — the case exposed that a proposed change conflicted with the skill's existing
   design; the change was reverted rather than reconciled. Kept as a record of a rejected
   direction, so it doesn't get proposed again without re-litigating why.
+
+## When to add a new case
+
+Not every gap a careful reader can imagine is worth a case file. Static-tracing (reading SKILL.md
+top to bottom looking for ambiguity) is good at catching one specific thing — a real
+contradiction, where two stated rules can't both be followed at once (e.g. a hard item-count floor
+next to a "skip filler entirely" rule). It has no natural stopping point for the other thing it
+finds — a maximally literal reader *could* misparse this — because there's always another
+hypothetical misreading to go looking for, and each one turns into a permanent new clause in an
+already-long file.
+
+Before writing a new case file, sort what you found:
+
+- **Real contradiction.** Two rules that actually conflict. Write the case, fix SKILL.md, done —
+  this is what most of the current suite's `bug-found-fixed` entries are.
+- **Reported friction.** Something a real conversation actually tripped over, or a regression
+  check on an actual SKILL.md edit. Also worth a case.
+- **Theoretical misreading, no contradiction, never observed.** Worth a one-line note if you're
+  already in the file, but don't promote it to a full case with a proposed SKILL.md fix unless it
+  actually happens. If unsure whether a model would really misfire, the cheap way to find out is
+  running it (see below), not patching the prose on the strength of "a reader could get this
+  wrong."
+
+Before adding a new clause to fix anything, check whether an existing clause already covers it —
+the file should grow when there's a real gap, not by default every time someone reads it closely.
 
 ## How these are checked today
 

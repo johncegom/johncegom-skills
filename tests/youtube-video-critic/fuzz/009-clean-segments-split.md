@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (proposed session-split note for "Worth watching in full")
 category: fuzz
 status: pass
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -26,3 +26,6 @@ sittings" with no location.
 Pass. The rule as worded ties the suggestion to actual timed-transcript breakpoints, so applying
 it to this input produces "0:00–15:00 covers X, 15:00–30:00 covers Y, 30:00–45:00 covers Z — natural
 pauses at 15:00 and 30:00," matching expected behavior.
+
+## Regression check (2026-09-03)
+Breakpoint-suggestion rule still present unchanged in current SKILL.md Step 3. No regression.

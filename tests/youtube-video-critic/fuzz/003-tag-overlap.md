@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4.1 type tag precedence
 category: fuzz
 status: pass
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -26,3 +26,6 @@ tag it `[Contested claim]` regardless of what else it also looks like, since tru
 the property the reader most needs flagged." Known accepted trade-off (documented, not a bug):
 this loses the explicit "still actionable" signal — flagged during the session as worth
 reconsidering if it becomes a recurring complaint, but not changed.
+
+## Regression check (2026-09-03)
+Precedence rule still present, same wording, in current SKILL.md. No regression.

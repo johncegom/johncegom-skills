@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (proposed session-split note for "Worth watching in full")
 category: fuzz
 status: pass
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -22,3 +22,6 @@ rule exists for.
 ## Result
 Pass. The rule is scoped to "roughly 30+ minutes," so a 22-minute video falls outside it and no
 note is added.
+
+## Regression check (2026-09-03)
+"Roughly 30+ minutes" threshold still present unchanged. No regression.

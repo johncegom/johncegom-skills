@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 5 (SKILL.md, not just ledger-template.md) residual vivid-narrative language
 category: stress
 status: bug-found-fixed
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -33,3 +33,8 @@ Fixed in SKILL.md Step 5: trimmed to the operative rule only — "Critically: ne
 write is visible to the human just because a file-write tool is present; follow the template's
 case for the current environment exactly rather than defaulting to 'write a file.'" — dropping the
 narrated incident, matching the same trim already applied to ledger-template.md.
+
+## Regression check (2026-09-03)
+Re-checked both files: SKILL.md Step 5 still carries only the trimmed operative-rule sentence, and
+ledger-template.md Case B step 1 has no narrated incident either. No residual narrative reappeared.
+No regression.

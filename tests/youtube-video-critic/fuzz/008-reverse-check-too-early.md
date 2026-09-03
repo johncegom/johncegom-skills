@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 self-check placement (reverse-attitude check vs. duration/relevance adjustments)
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -26,3 +26,8 @@ Fixed in SKILL.md Step 3: moved both self-checks (reverse-attitude check and hyp
 to a single "closing checks" block placed after the duration-weighting and personal-relevance
 paragraphs, so the reverse-attitude check gates the actually-final verdict, and the hype-language
 audit still runs last, scoped to wording only. This is the current, verified-consistent state.
+
+## Regression check (2026-09-03)
+Confirmed: SKILL.md Step 3 still runs "With the verdict now fully formed — substance/filler,
+duration weighting, and personal relevance all folded in — run two closing checks" only after
+those paragraphs. No regression.

@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 self-check placement (reverse-attitude check vs. hype-language audit)
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -30,3 +30,8 @@ Bug found and fixed in two passes:
 2. Follow-up bug (case 008) found that pass 1 moved the reverse-attitude check *too* early — it
    landed before the duration-weighting and personal-relevance paragraphs that also feed the
    verdict, so it was checking a draft verdict instead of the final one.
+
+## Regression check (2026-09-03)
+Current SKILL.md Step 3 still has the reverse-attitude check and hype-language audit as two
+separately-scoped closing checks (verdict re-examination vs. wording-only), per the 008 fix. No
+regression.

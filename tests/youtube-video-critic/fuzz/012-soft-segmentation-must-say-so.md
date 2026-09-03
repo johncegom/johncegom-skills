@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (proposed session-split note for "Worth watching in full")
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -29,3 +29,7 @@ explicit statement in this case ("say so explicitly ... tell the viewer the vide
 down cleanly"), so the rule now has exactly two outcomes for a full-watch verdict: a concrete,
 timestamp-grounded split, or an explicit "this doesn't split cleanly, expect one sitting" — never
 silence, never a fabricated timestamp.
+
+## Regression check (2026-09-03)
+The two-outcomes wording ("a concrete, timestamp-grounded split, or an explicit... never
+silence") still present unchanged. No regression.

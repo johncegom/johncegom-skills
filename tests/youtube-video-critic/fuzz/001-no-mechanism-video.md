@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4.1 mechanism requirement
 category: fuzz
 status: pass
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -21,6 +21,12 @@ of them, no demonstrations.
 Every takeaway item ends up tagged with "the video doesn't explain the mechanism" rather than a
 fabricated reason. Repetition across items is expected and correct here — it should read as a
 signal about the video (low substance), not as a Step 4 formatting bug.
+
+## Regression check (2026-09-03)
+Re-verified against current SKILL.md: the same line ("If every item in the list ends up with no
+stated mechanism, that's a sign the video itself is low-substance — let that show up in the Step
+2/3 verdict rather than treating it as a Step 4 problem to fix") is still present, unchanged by
+the recent ledger Status-column work. No regression.
 
 ## Result
 Behaves as intended: the guardrail against inventing a mechanism holds, and SKILL.md line 98

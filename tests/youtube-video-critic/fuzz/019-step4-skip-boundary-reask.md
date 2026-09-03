@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4 skip-condition boundary ("narrower follow-up" vs a full re-request)
 category: stress
 status: bug-found-open
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -34,3 +34,18 @@ to key off request shape, e.g. "Skip them only for a narrow, scoped question abo
 already discussed (e.g. 'did it mention X') — a request to redo, shorten, or re-deliver the full
 evaluation still counts as a full evaluation and keeps both sections." Left open pending
 confirmation since this changes user-facing behavior, not just internal ordering.
+
+## Regression check (2026-09-03)
+Partially narrowed since last check, but the core gap remains. Step 4's skip clause now reads
+"Skip them only for the claim-check/follow-up shape from Step 1" (tying it to Step 1's definition
+instead of standing alone), and Step 1 itself gained an exception: "This doesn't apply when the
+user asks for a fresh full evaluation of a video already in the ledger — that still runs Steps
+2-5 in full." That covers the ledger case correctly.
+
+However, Step 1's claim-check bucket is still partly topic-keyed ("a question about a video
+already evaluated earlier in this conversation"), and the new exception is scoped only to "a
+video already in the ledger" — it doesn't cover a "redo that one, shorter" request for a video
+evaluated earlier in the *same conversation* but never added to a ledger (the common case, since
+ledger use is opt-in per Step 5). That request could still be misread as topic-based
+claim-check/follow-up and incorrectly skip Step 4. Still open; suggested fix above (key off
+request shape, not topic, with no ledger dependency) would close the remaining gap.

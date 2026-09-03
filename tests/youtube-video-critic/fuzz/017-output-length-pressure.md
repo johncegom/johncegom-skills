@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4 vs Step 5 priority under genuine output-length/token pressure
 category: stress
 status: pass
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -27,3 +27,7 @@ restated because it applies directly here): this is a soft instruction with no t
 the model has to recognize it is "under pressure" and recall the rule itself; there's no mechanical
 enforcement forcing Step 5 to actually get cut first. Consistent with the residual-risk note in
 case 015: raises the odds of correct behavior, doesn't guarantee it.
+
+## Regression check (2026-09-03)
+"If something has to give under time or token pressure, drop this step, never Steps 1-4" still
+present unchanged at the end of Step 5's opening paragraph. No regression.

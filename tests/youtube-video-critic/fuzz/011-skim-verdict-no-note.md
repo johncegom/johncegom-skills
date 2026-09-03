@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 (proposed session-split note for "Worth watching in full")
 category: fuzz
 status: pass
-last_verified: 2026-08-17
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -23,3 +23,7 @@ verdict.
 ## Result
 Pass. The rule states explicitly it "only applies to the full-watch verdict," so it does not fire
 for this case.
+
+## Regression check (2026-09-03)
+Scope-limiting sentence ("This note only applies to the full-watch verdict") still present
+unchanged. No regression.

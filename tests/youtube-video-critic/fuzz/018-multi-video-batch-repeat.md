@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Whether Steps 2-5 explicitly repeat per video in a multi-link request
 category: stress
 status: bug-found-open
-last_verified: 2026-08-23
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -34,3 +34,9 @@ Suggested fix (not applied — flagging for confirmation before editing): add on
 1.3, e.g. "— everything from here through Step 5 (analysis, verdict, takeaways, ledger row) repeats
 per video too; there is no combined step." Left open since this is a new scope question, not a
 re-check of the ledger/takeaways salience fix this session was focused on.
+
+## Regression check (2026-09-03)
+Still open, unchanged. Current SKILL.md Step 1.3 still reads only "If the user gives more than one
+link, repeat this for each video — do not average them together into one vague verdict," with no
+cross-reference from Steps 2-5. The suggested fix above was never applied. Not a new regression
+(nothing made this worse), but still a live doc gap.

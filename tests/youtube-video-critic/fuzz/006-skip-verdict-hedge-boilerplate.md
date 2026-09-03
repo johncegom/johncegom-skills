@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 3 "Skip it" verdict caveat
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -27,3 +27,7 @@ undermining its own signal value. Fixed in SKILL.md Step 3 (the "Skip it" bullet
 trigger to actual signs of unreliability — "garbled passages, frequent `[inaudible]`/gaps, or the
 video's core content is visual/demonstrated in a way the transcript only gestures at" — with an
 explicit note that "ordinary clean auto-captions on a talking-head video need no caveat at all."
+
+## Regression check (2026-09-03)
+Narrowed trigger and explicit no-caveat note still present unchanged in current SKILL.md Step 3.
+No regression.

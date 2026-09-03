@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 4.1 item length ceiling
 category: fuzz
 status: bug-found-fixed
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -26,3 +26,6 @@ Bug found: the original fixed "roughly 1-2 sentences" ceiling directly conflicte
 added mechanism requirement for genuinely complex claims. Fixed in SKILL.md Step 4.1: "keep it to
 roughly 1-2 sentences — extend only when the mechanism itself is genuinely multi-step and
 compressing it further would make it inaccurate rather than concise."
+
+## Regression check (2026-09-03)
+Fix wording still present verbatim in current SKILL.md Step 4.1. No regression.

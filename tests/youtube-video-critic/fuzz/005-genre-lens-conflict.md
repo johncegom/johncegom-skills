@@ -4,7 +4,7 @@ skill: youtube-video-critic
 target: Step 2 angle 1 (proposed genre-aware substance/filler lens)
 category: fuzz
 status: reverted
-last_verified: 2026-08-14
+last_verified: 2026-09-03
 ---
 
 ## Scenario
@@ -30,3 +30,8 @@ for), the change was reverted in full. Step 2 angle 1 is back to its original in
 wording. Recorded here as a rejected direction: if "score entertainment videos on their own
 terms" is proposed again, it needs to also touch the persona line and the Value score definition
 in the same edit, not just Step 2.
+
+## Regression check (2026-09-03)
+Persona line ("not to review videos for entertainment value") and Value score line ("not
+production quality, not entertainment") both still present unchanged; Step 2 angle 1 remains
+informational-only. Reverted state holds, no regression.

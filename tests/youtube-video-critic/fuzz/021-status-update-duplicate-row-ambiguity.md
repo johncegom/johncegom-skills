@@ -52,3 +52,8 @@ Fixed in both files:
    and never a guessed pick when genuinely ambiguous.
 2. `references/ledger-template.md`'s `Status` bullet list gained the matching tiebreak note, so the
    rule lives alongside the rest of the column's semantics rather than only in SKILL.md.
+
+## Regression check (2026-09-03)
+Confirmed both fixes are present in the current files (this is the same session's fix, verified
+immediately): SKILL.md Step 5 point 4 and ledger-template.md's `Status` bullet list both state the
+most-recent-row tiebreak. No regression.

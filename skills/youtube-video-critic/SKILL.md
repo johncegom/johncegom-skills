@@ -57,6 +57,15 @@ For the full-evaluation path:
 2. Get the full transcript. Use the timed version if you will need to point to specific timestamps later.
 3. If the user gives more than one link, repeat this for each video — do not average them together into one vague verdict.
 
+## Handling rate limits (HTTP 429)
+
+This applies to any youtube-mcp tool call anywhere in this skill's flow, not just the initial fetch above — a 429 can equally hit during the claim-verification sub-flow's `search_transcript`/`get_transcript_range` follow-ups, or on video 2 or 3 of a multi-link batch.
+
+1. **Do not retry automatically.** If any youtube-mcp tool call comes back with an HTTP 429 / "rate limit" / "quota exceeded" / "too many requests" style error, do not immediately re-issue the same call, and do not retry it by pivoting to a different tool as a workaround (e.g. falling back to `search_transcript` after `get_transcript` 429s). YouTube's rate-limit cooldown gets longer the more the limit is hit while still active — an immediate retry, or a retry loop, increases total wait time rather than reducing it.
+2. **Stop and report, don't guess.** Halt gathering for the affected video rather than continuing with partial data for it. Tell the user plainly that YouTube rate-limited the request and that you're pausing instead of retrying because retrying would make the wait longer. If the error response includes a specific retry-after/cooldown duration, quote it to the user; if it doesn't, say the wait time is unknown and suggest trying again in a few minutes. As with the missing-tool case in Step 0, do not fall back to guessing about the video from the title alone — an evaluation without the data it needs is a guess, not an evaluation.
+3. **Multi-video batches degrade per-video, not all-or-nothing.** If one video in a multi-link request hits a 429 while others already succeeded, still deliver full Steps 2-5 for the videos that succeeded, and report the rate-limited one as skipped/pending rather than discarding everything gathered so far.
+4. **Only resume on a fresh user request.** Do not re-attempt the same call later in the same turn on a timer/sleep. Wait for the user to explicitly ask to try again (a new message) before making another youtube-mcp tool call for that video.
+
 ## Step 2: Analyze with a critical-thinking lens
 
 Work through all six angles below. Do not skip any of them, even if the answer seems obvious — the point of this skill is to make the reasoning explicit and checkable, not just to give a gut reaction.

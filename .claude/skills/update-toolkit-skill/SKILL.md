@@ -2,7 +2,7 @@
 name: update-toolkit-skill
 description: >
   Walks through the correct end-to-end workflow for editing, adding, or
-  removing a skill inside this minh-toolkit plugin repo (johncegom/skills) and
+  removing a skill inside this minh-toolkit plugin repo (johncegom/johncegom-skills) and
   landing that change safely — branch, local validation, PR, CI, review/merge,
   and how downstream users pick up the update. Use when the user asks to
   "update a skill", "add a new skill to the toolkit/plugin", "bump the
@@ -87,6 +87,8 @@ Anyone with the `minh-skills` marketplace added:
 ```
 git fetch origin
 git diff origin/main HEAD --stat   # confirm nothing local diverges unexpectedly
-claude plugin marketplace add https://github.com/johncegom/skills   # re-add cleanly; should succeed
+claude plugin marketplace add https://github.com/johncegom/johncegom-skills   # re-add cleanly; should succeed
 ```
 If `add marketplace` fails after a merge, the most likely causes, in order: (1) `claude plugin validate` would also fail — run it against `origin/main` locally to confirm before debugging further; (2) a stacked-PR merge landed on the wrong branch and never reached `main` (see step 7); (3) `marketplace.json`'s `source` path doesn't match the actual directory layout on `main`.
+
+**Claude Desktop "Failed to add marketplace" while the CLI add succeeds:** Desktop stores marketplaces on the claude.ai account, not in `~/.claude/plugins`, and keys them by the GitHub *repo slug*, not by `marketplace.json`'s `name`. The real error is only in `%LOCALAPPDATA%\Claude\Logs\claude.ai-web.log` (`MARKETPLACE_ERROR:REMOTE_NAME_TAKEN`). This bit us when the repo was still called `skills` and collided with `mattpocock/skills` already added on the same account — the reason the repo is now `johncegom-skills`. Don't rename it back to something generic.

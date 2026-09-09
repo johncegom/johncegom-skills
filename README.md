@@ -2,14 +2,14 @@
 
 Skills I built because I needed them, kept because they still earn their place.
 
-![version](https://img.shields.io/badge/version-0.7.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![version](https://img.shields.io/badge/version-0.7.2-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 I build and maintain this collection solo, on my own time, and I use every skill in it myself. That shapes the philosophy: most of these coach instead of doing the work for you — the agent reviews, it doesn't author — and where a skill judges something (a video, a piece of writing, a plan), it's built to call it as it is, not to flatter. No vanity metrics, no grade inflation. Each skill's own `SKILL.md` documents its purpose in full detail.
 
 ## Install
 
 ```
-claude plugin marketplace add https://github.com/johncegom/skills
+claude plugin marketplace add https://github.com/johncegom/johncegom-skills
 claude plugin install minh-toolkit@minh-skills
 ```
 

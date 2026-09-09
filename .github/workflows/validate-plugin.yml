@@ -20,8 +20,14 @@ jobs:
       - name: Validate marketplace manifest
         run: claude plugin validate .
 
-      - name: Validate minh-toolkit plugin
-        run: claude plugin validate .claude-plugin/plugin.json
+      - name: Validate every plugin
+        run: |
+          fail=0
+          for manifest in plugins/*/.claude-plugin/plugin.json; do
+            echo "Validating $manifest"
+            claude plugin validate "$manifest" || fail=1
+          done
+          exit $fail
 
       - name: Check description length limits (max 500 chars)
         run: |
@@ -35,11 +41,14 @@ jobs:
             fi
           }
 
-          check_len "plugin.json" "$(jq -r '.description' .claude-plugin/plugin.json)"
           check_len "marketplace.json" "$(jq -r '.description' .claude-plugin/marketplace.json)"
 
           while IFS=$'\t' read -r name desc; do
             check_len "marketplace.json plugin '$name'" "$desc"
           done < <(jq -r '.plugins[] | [.name, .description] | @tsv' .claude-plugin/marketplace.json)
+
+          for manifest in plugins/*/.claude-plugin/plugin.json; do
+            check_len "$manifest" "$(jq -r '.description' "$manifest")"
+          done
 
           exit $fail

@@ -28,9 +28,12 @@ git checkout -b <type>/<short-description>
 Use conventional-commit-style branch/commit prefixes already used in this repo's history: `feat/`, `fix/`, `chore/`, `ci/`.
 
 ### 2. Make the change
-- Editing an existing skill: edit `skills/<name>/SKILL.md` or its `references/*.md`.
-- Adding a new skill: create `skills/<new-name>/SKILL.md` with YAML frontmatter (`name`, `description`) followed by the skill body. No entry needs adding anywhere else — `plugin.json` in this repo does not list skills explicitly, they're auto-discovered from the `skills/` directory.
-- Removing a skill: delete its `skills/<name>/` directory.
+This repo is a marketplace of multiple plugins under `plugins/<plugin-name>/`, each with its own `.claude-plugin/plugin.json` and `skills/` directory. The `minh-toolkit` plugin (the real, actively used skill collection) lives at `plugins/minh-toolkit/`; `plugins/template-plugin/` is a copy-this-folder starting point for a new plugin, not a real toolkit.
+
+- Editing an existing skill: edit `plugins/minh-toolkit/skills/<name>/SKILL.md` or its `references/*.md`.
+- Adding a new skill to `minh-toolkit`: create `plugins/minh-toolkit/skills/<new-name>/SKILL.md` with YAML frontmatter (`name`, `description`) followed by the skill body, then add `"./skills/<new-name>"` to the `skills` array in `plugins/minh-toolkit/.claude-plugin/plugin.json` — unlike some plugin setups, this repo's `plugin.json` lists skills explicitly rather than auto-discovering them.
+- Removing a skill: delete its `plugins/minh-toolkit/skills/<name>/` directory and remove its entry from `plugin.json`'s `skills` array.
+- Adding a whole new plugin: copy `plugins/template-plugin/` to `plugins/<new-plugin-name>/`, fill in its `plugin.json` and skills, then add a matching entry (with `"source": "./plugins/<new-plugin-name>"`) to the root `.claude-plugin/marketplace.json`'s `plugins` array.
 
 **Frontmatter gotcha (bit us once, see PR #8):** the `description` field is YAML. A plain unquoted scalar breaks if it contains `: ` (colon-space) anywhere mid-sentence — YAML reads it as a new mapping key and the parse fails, silently dropping all frontmatter at runtime. Either avoid colons in the description, or write it as a folded block scalar:
 ```yaml
@@ -41,22 +44,22 @@ description: >
 Every skill in this repo already uses this style — match it.
 
 ### 3. Bump the version once, on the first meaningful change in this PR
-If this is the first commit in the PR that changes anything beyond a typo, bump `.claude-plugin/plugin.json`'s `"version"` (semver) and keep `.claude-plugin/marketplace.json`'s matching `plugins[].version` field **and `README.md`'s version badge** in sync with it — all three carry the same number. The badge is a plain shields.io URL (`.../version-X.Y.Z-blue`), not JSON, so it's easy to forget when scripting the other two; grep for it explicitly:
+If this is the first commit in the PR that changes anything beyond a typo, bump the changed plugin's own `plugins/<plugin-name>/.claude-plugin/plugin.json`'s `"version"` (semver) and keep the root `.claude-plugin/marketplace.json`'s matching `plugins[].version` entry for that same plugin **and that plugin's own `README.md` version badge** in sync with it — all three carry the same number. The badge is a plain shields.io URL (`.../version-X.Y.Z-blue`), not JSON, so it's easy to forget when scripting the other two; grep for it explicitly:
 ```
-grep -n "img.shields.io/badge/version" README.md
+grep -n "img.shields.io/badge/version" plugins/<plugin-name>/README.md
 ```
-This is what lets `Sync automatically` in Desktop and `claude plugin update` detect there's something new, and keeps the README from silently drifting behind the shipped version (it drifted once, fixed alongside this instruction).
+This is what lets `Sync automatically` in Desktop and `claude plugin update <plugin-name>` detect there's something new, and keeps the README from silently drifting behind the shipped version (it drifted once, fixed alongside this instruction). A change to only one plugin does not require bumping any other plugin's version or the marketplace's own top-level fields.
 
 **If you're adding a further commit to a PR that already bumped the version this session (still open, not yet merged): do NOT bump again.** Keep the same version number across every iteration within that one open PR — update the PR description/commit message to explain what changed in this round, not the version field. A version number identifies one shipped state; bumping it again before the previous bump has even merged just churns the number without a matching release ever existing at the intermediate value. (This is exactly what went wrong in PR #17: the version got bumped, reverted to match `main`, then re-bumped, purely from iterating inside one still-open PR — the fix was landing on one bump per PR, decided at the first meaningful change and held steady after that.)
 
 ### 4. Validate locally before pushing
 ```
-claude plugin validate .claude-plugin/plugin.json   # plugin manifest + every SKILL.md frontmatter
-claude plugin validate .                             # marketplace manifest
+claude plugin validate plugins/<plugin-name>/.claude-plugin/plugin.json   # that plugin's manifest + every SKILL.md frontmatter
+claude plugin validate .                                                    # marketplace manifest (validates every plugin listed in it)
 ```
-Both must print `✔ Validation passed`. This is the exact check CI runs — catching a failure here saves a round trip.
+Both must print `✔ Validation passed`. This is the exact check CI runs (looping `claude plugin validate` over every `plugins/*/.claude-plugin/plugin.json`) — catching a failure here saves a round trip.
 
-Optional, for a closer end-to-end check: build a local `.zip`/`.plugin` package and load it directly to confirm skills actually resolve:
+Optional, for a closer end-to-end check: build a local `.zip`/`.plugin` package (`cd tools/package-plugin && go run . plugins/<plugin-name>`) and load it directly to confirm skills actually resolve:
 ```
 claude --plugin-dir path/to/packaged.plugin -p "list the skill names available to you, one per line"
 ```

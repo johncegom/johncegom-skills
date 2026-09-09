@@ -1,6 +1,6 @@
 # Skill tests
 
-This directory holds test cases for the skills in `skills/*/SKILL.md`. A "skill" here is a
+This directory holds test cases for the skills in `plugins/*/skills/*/SKILL.md`. A "skill" here is a
 natural-language instruction file, not code — so these aren't unit tests in the usual sense.
 They're recorded scenarios: a synthetic input, what part of the skill it stresses, and what
 correct behavior looks like. The goal is to make skill edits reviewable and, eventually,
@@ -15,7 +15,7 @@ tests/
       NNN-short-slug.md   — one adversarial/edge-case scenario per file
 ```
 
-Each skill gets its own directory, named to match its folder under `skills/`. Only
+Each skill gets its own directory, named to match its folder under `plugins/<plugin-name>/skills/`. Only
 `youtube-video-critic` has cases today; add a sibling directory (`tests/<skill-name>/`) the
 first time another skill gets this kind of scrutiny — don't pre-create empty ones.
 

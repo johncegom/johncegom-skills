@@ -8,9 +8,19 @@
   "plugins": [
     {
       "name": "minh-toolkit",
-      "source": "./",
+      "source": "./plugins/minh-toolkit",
       "description": "Minh's personal skill collection: coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. Each skill's own SKILL.md documents its purpose in detail.",
       "version": "0.7.2",
+      "author": {
+        "name": "Minh Duong",
+        "email": "johncegom203@gmail.com"
+      }
+    },
+    {
+      "name": "template-plugin",
+      "source": "./plugins/template-plugin",
+      "description": "Not a real toolkit — a minimal, working example plugin kept in this marketplace to show the folder shape a new plugin needs (its own plugin.json plus a skills/ directory). Copy plugins/template-plugin/ as the starting point for a new plugin.",
+      "version": "0.1.0",
       "author": {
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"

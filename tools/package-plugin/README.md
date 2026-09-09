@@ -1,18 +1,26 @@
 # package-plugin
 
-Zips this repo's git-tracked plugin files into a distributable
-`<name>-<version>.plugin` archive, named from `.claude-plugin/plugin.json`.
-Excludes repo-maintenance-only paths (`.github/`, `.claude/`, `tools/`) and
-the marketplace-only `.claude-plugin/marketplace.json`.
+Zips one plugin directory's git-tracked files into a distributable
+`<name>-<version>.plugin` archive, named from that plugin's
+`.claude-plugin/plugin.json`. Only files under the given plugin directory
+are included (repo-maintenance paths like `.github/`, `.claude/`, `tools/`,
+other plugins, and the marketplace-only root `.claude-plugin/marketplace.json`
+are naturally excluded since they live outside it).
 
 ## Usage
 
 ```
 cd tools/package-plugin
-go run . [output-dir]
+go run . [plugin-dir] [output-dir]
 ```
 
+`plugin-dir` is repo-relative and defaults to `plugins/minh-toolkit`.
 `output-dir` defaults to `<repo-root>/dist` (git-ignored).
+
+Example, packaging a different plugin:
+```
+go run . plugins/template-plugin
+```
 
 ## Known caveat: `claude --plugin-dir <file>.plugin`
 

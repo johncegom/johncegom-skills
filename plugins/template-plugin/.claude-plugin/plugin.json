@@ -1,0 +1,11 @@
+{
+  "name": "template-plugin",
+  "version": "0.1.0",
+  "description": "A minimal working example plugin. Copy this directory to start a new plugin in this marketplace.",
+  "author": {
+    "name": "Minh"
+  },
+  "skills": [
+    "./skills/example-skill"
+  ]
+}

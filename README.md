@@ -1,10 +1,8 @@
-# minh-toolkit
+# johncegom-skills
 
-Skills I built because I needed them, kept because they still earn their place.
-
-![version](https://img.shields.io/badge/version-0.7.2-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
-
-I build and maintain this collection solo, on my own time, and I use every skill in it myself. That shapes the philosophy: most of these coach instead of doing the work for you — the agent reviews, it doesn't author — and where a skill judges something (a video, a piece of writing, a plan), it's built to call it as it is, not to flatter. No vanity metrics, no grade inflation. Each skill's own `SKILL.md` documents its purpose in full detail.
+A personal Claude Code **marketplace**: one repo, multiple installable
+**plugins**, each with its own skills. Add the marketplace once, then
+install whichever plugins you want.
 
 ## Install
 
@@ -13,26 +11,49 @@ claude plugin marketplace add https://github.com/johncegom/johncegom-skills
 claude plugin install minh-toolkit@minh-skills
 ```
 
-To stay current: enable "Sync automatically" on the `minh-skills` marketplace in Claude Desktop, or run `claude plugin update minh-toolkit` manually.
+To stay current: enable "Sync automatically" on the `minh-skills`
+marketplace in Claude Desktop, or run `claude plugin update <plugin-name>`
+manually.
 
-## Skills
+## Plugins in this marketplace
 
-| Skill | Purpose |
+| Plugin | What it is |
 |---|---|
-| `goal-to-code-unblock` | Coaches a learner to write code from a vague goal themselves — the agent reviews, never authors. |
-| `learn-technology-by-building` | Multi-session mentor for learning a new technology through one cumulative project, with diagram practice. |
-| `low-power-learning` | Short, near-passive learning session for a tired or burned-out brain, to keep a learning habit alive. |
-| `personal-planner-engine` | Turns a goal or domain plan into a realistic, execution-ready schedule — capacity-fit, contingency, committed/stretch/deferred scope, bad-day fallback. Hardens another skill's plan without overriding its domain logic, or builds one standalone. |
-| `real-personal-branding` | Personal branding help (positioning, content, channels) focused on real-world outcomes, not vanity metrics. |
-| `smart-quiz-maker` | Builds and runs a quiz for almost any subject from a short request, calibrated to test real understanding rather than memory or guessing. |
-| `socratic-brainstorm` | Opt-in: probes a design or strategy idea with follow-up questions before giving direct feedback, instead of answering right away. Only triggers when explicitly invoked by name. |
-| `sound-human` | Makes prose read like a real person wrote it. Its main job is a default self-check the agent runs on its *own* generated prose (emails, posts, reports) before delivering it, not just an on-request edit of a pasted draft. |
-| `writing-practice` | Coaches deliberate writing practice — the agent never writes the user's actual piece for them. |
-| `youtube-video-critic` | Critically evaluates whether a YouTube video is worth watching, using transcript analysis via the youtube-mcp-cli connector. Requires [go-youtube-mcp-cli](https://github.com/johncegom/go-youtube-mcp-cli) installed and its binary on `PATH`, or `YOUTUBE_MCP_BIN` set to its full path — see `.mcp.json`. |
+| [`minh-toolkit`](plugins/minh-toolkit/) | Minh's real, actively used skill collection — coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. |
+| [`template-plugin`](plugins/template-plugin/) | Not a real toolkit — a minimal working example showing the folder shape (`plugin.json` + `skills/`) a new plugin needs. Copy it to start a new plugin. |
+
+Each plugin has its own `README.md` and its own `.claude-plugin/plugin.json`
+under `plugins/<name>/`. The root `.claude-plugin/marketplace.json` lists
+every plugin and where to find it.
+
+## Repo layout
+
+```
+.claude-plugin/
+  marketplace.json        # lists every plugin + its source path
+plugins/
+  minh-toolkit/
+    .claude-plugin/plugin.json
+    skills/<skill-name>/SKILL.md
+    README.md
+  template-plugin/
+    .claude-plugin/plugin.json
+    skills/example-skill/SKILL.md
+    README.md
+```
+
+## Adding a new plugin
+
+See [`plugins/template-plugin/README.md`](plugins/template-plugin/README.md)
+for the copy-this-folder starting point, and
+[`.claude/skills/update-toolkit-skill/SKILL.md`](.claude/skills/update-toolkit-skill/SKILL.md)
+for this repo's branch → validate → PR → merge workflow (branch protection,
+CI, versioning conventions).
 
 ## Support
 
-If one of these saved you an afternoon of prompt-wrangling, consider buying me a coffee - it keeps this toolkit growing.
+If one of these saved you an afternoon of prompt-wrangling, consider buying
+me a coffee - it keeps this toolkit growing.
 
 <p align="center">
   <a href='https://ko-fi.com/U8D024998A' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

@@ -1,12 +1,13 @@
-// Command package-plugin zips this repo's git-tracked plugin files into a
-// distributable <name>-<version>.plugin archive, named from
+// Command package-plugin zips one plugin directory's git-tracked files into
+// a distributable <name>-<version>.plugin archive, named from that plugin's
 // .claude-plugin/plugin.json. Use it to install a local build in Claude
 // Desktop when adding the repo directly as a marketplace doesn't work there.
 //
 // Usage (run from anywhere inside the repo; this is its own Go module):
 //
-//	cd tools/package-plugin && go run . [output-dir]
+//	cd tools/package-plugin && go run . [plugin-dir] [output-dir]
 //
+// plugin-dir is repo-relative and defaults to "plugins/minh-toolkit".
 // output-dir defaults to <repo-root>/dist (git-ignored).
 package main
 
@@ -27,15 +28,9 @@ type pluginManifest struct {
 	Version string `json:"version"`
 }
 
-// excludePrefixes are repo-relative path prefixes that exist for
-// maintaining this repo but aren't part of the distributable plugin.
-var excludePrefixes = []string{".github/", ".claude/", "tools/"}
-
-// excludeExact are individual repo-relative paths to leave out of the
-// package: marketplace.json lists the plugin, it isn't the plugin.
-var excludeExact = map[string]bool{
-	".claude-plugin/marketplace.json": true,
-}
+// defaultPluginDir is used when no plugin directory is given on the
+// command line.
+const defaultPluginDir = "plugins/minh-toolkit"
 
 func main() {
 	if err := run(); err != nil {
@@ -50,7 +45,13 @@ func run() error {
 		return err
 	}
 
-	manifest, err := readManifest(filepath.Join(repoRoot, ".claude-plugin", "plugin.json"))
+	pluginDir := defaultPluginDir
+	if len(os.Args) > 1 {
+		pluginDir = os.Args[1]
+	}
+	pluginDirSlash := strings.Trim(filepath.ToSlash(pluginDir), "/") + "/"
+
+	manifest, err := readManifest(filepath.Join(repoRoot, pluginDir, ".claude-plugin", "plugin.json"))
 	if err != nil {
 		return err
 	}
@@ -59,21 +60,21 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	files = filterPluginFiles(files)
+	files = filterPluginFiles(files, pluginDirSlash)
 	if len(files) == 0 {
-		return fmt.Errorf("no plugin files found to package")
+		return fmt.Errorf("no plugin files found under %s", pluginDir)
 	}
 
 	outDir := filepath.Join(repoRoot, "dist")
-	if len(os.Args) > 1 {
-		outDir = os.Args[1]
+	if len(os.Args) > 2 {
+		outDir = os.Args[2]
 	}
 	if err := os.MkdirAll(outDir, 0o755); err != nil {
 		return fmt.Errorf("create output dir: %w", err)
 	}
 
 	outPath := filepath.Join(outDir, fmt.Sprintf("%s-%s.plugin", manifest.Name, manifest.Version))
-	if err := writeZip(repoRoot, files, outPath); err != nil {
+	if err := writeZip(repoRoot, files, pluginDirSlash, outPath); err != nil {
 		return err
 	}
 
@@ -120,27 +121,20 @@ func trackedFiles(repoRoot string) ([]string, error) {
 	return files, nil
 }
 
-func filterPluginFiles(files []string) []string {
+// filterPluginFiles keeps only git-tracked files that live under
+// pluginDirSlash (a repo-relative prefix ending in "/"), i.e. files that
+// are actually part of the given plugin's distributable contents.
+func filterPluginFiles(files []string, pluginDirSlash string) []string {
 	var kept []string
 	for _, f := range files {
-		if excludeExact[f] {
-			continue
-		}
-		excluded := false
-		for _, p := range excludePrefixes {
-			if strings.HasPrefix(f, p) {
-				excluded = true
-				break
-			}
-		}
-		if !excluded {
+		if strings.HasPrefix(filepath.ToSlash(f), pluginDirSlash) {
 			kept = append(kept, f)
 		}
 	}
 	return kept
 }
 
-func writeZip(repoRoot string, files []string, outPath string) error {
+func writeZip(repoRoot string, files []string, pluginDirSlash string, outPath string) error {
 	out, err := os.Create(outPath)
 	if err != nil {
 		return fmt.Errorf("create output file: %w", err)
@@ -155,10 +149,11 @@ func writeZip(repoRoot string, files []string, outPath string) error {
 	// file entries alone (no folder entries) loads but reports no skills.
 	written := map[string]bool{}
 	for _, rel := range files {
-		if err := addDirEntries(zw, filepath.ToSlash(rel), written); err != nil {
+		archiveName := strings.TrimPrefix(filepath.ToSlash(rel), pluginDirSlash)
+		if err := addDirEntries(zw, archiveName, written); err != nil {
 			return err
 		}
-		if err := addFile(zw, repoRoot, rel); err != nil {
+		if err := addFile(zw, repoRoot, rel, archiveName); err != nil {
 			return err
 		}
 	}
@@ -186,7 +181,7 @@ func addDirEntries(zw *zip.Writer, relSlash string, written map[string]bool) err
 	return nil
 }
 
-func addFile(zw *zip.Writer, repoRoot, rel string) error {
+func addFile(zw *zip.Writer, repoRoot, rel, archiveName string) error {
 	full := filepath.Join(repoRoot, rel)
 	info, err := os.Stat(full)
 	if err != nil {
@@ -197,9 +192,10 @@ func addFile(zw *zip.Writer, repoRoot, rel string) error {
 	if err != nil {
 		return fmt.Errorf("build zip header for %s: %w", rel, err)
 	}
-	// Forward-slash, repo-relative name so the archive unzips to a flat,
-	// portable plugin directory regardless of the host OS.
-	header.Name = filepath.ToSlash(rel)
+	// Forward-slash name relative to the plugin dir (not the repo root) so
+	// the archive unzips to a flat, portable plugin directory regardless
+	// of the host OS.
+	header.Name = archiveName
 	header.Method = zip.Deflate
 
 	w, err := zw.CreateHeader(header)

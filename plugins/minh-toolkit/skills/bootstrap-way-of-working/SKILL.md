@@ -69,9 +69,37 @@ user before writing anything, and let them override it.
 | **2 — Standard** | Multi-contributor and/or multi-session, real stakes | Full anchor doc + task-approval gate + ledger/detail-doc split + bug log + decision log. Retro log optional — offer it, install only if the user wants continuous-improvement tracking across tasks. |
 | **3 — Standard + ground truth** | Tier 2, plus a real external oracle to port/conform against | Everything in Tier 2, plus the ground-truth-derivation TDD pattern for the specific functions that port against that oracle (not the whole codebase). |
 
-If you're genuinely unsure between two tiers, default to the lighter one and
-tell the user you can add more later — process is much easier to add when
-a real need shows up than to strip out once it's calcified into habit.
+If you're genuinely unsure between two tiers, don't default to lighter
+across the board — the four questions aren't symmetric. Question 4 (blast
+radius) is the one where guessing wrong is expensive in only one direction:
+under-provisioning it lets real harm accumulate silently, while
+over-provisioning it just costs some unused ceremony. So: if the
+uncertainty is on questions 1–3 (contributors, lifespan, oracle), default
+light. If the uncertainty is on question 4 — you can't rule out that a
+silent mistake would actually hurt someone — round up on the bug log and
+decision log specifically (they're cheap) even if the rest of the tier
+stays light. Tell the user you can add more later either way — process is
+much easier to add when a real need shows up than to strip out once it's
+calcified into habit (see "Revisit and decommission" in Step 4).
+
+### Re-calibration triggers — don't let the tier go stale
+
+The tier chosen today is a snapshot, not a permanent fact about the
+project. Explicitly name, in the anchor doc, the conditions under which
+the user should re-run this calibration rather than relying on them to
+remember unprompted:
+
+- A second contributor (human or a separate AI session acting like one)
+  joins.
+- The project starts handling real user data, money, credentials, or
+  anything else that raises question 4's answer.
+- The project outlives its expected lifespan (the "throwaway script" is
+  still alive and being extended six months later).
+- You (a future session) notice the installed tier visibly mismatches
+  current reality — e.g. writing a task-approval doc feels like theater,
+  or the lack of one is causing real confusion — treat that observation
+  itself as a re-calibration trigger, not something to silently push
+  through or silently start ignoring.
 
 ## Step 2: Install the artifacts for the chosen tier
 
@@ -134,6 +162,17 @@ Critically: logging a bug is not fixing it. Wait for an explicit decision
 before applying a fix, the same way the task gate waits for approval
 before implementation — a bug log that gets silently auto-fixed provides
 none of its audit value.
+
+**Exception: actively dangerous findings don't wait.** If what you found
+is a live security hole, data-loss path, or anything else causing ongoing
+harm right now (not "this could theoretically go wrong" — actual live
+exposure), the wait-for-decision rule is the wrong tool: log it as usual
+for the audit trail, but also flag it to the user immediately and outside
+the normal review cadence, and say plainly that you think it warrants
+fixing now rather than waiting in the queue. The gate exists to prevent
+silent unreviewed changes, not to force known-live harm to sit
+unaddressed — don't let the ceremony become the reason a real problem
+went unfixed for longer than it needed to.
 
 ### Decision log (Tier 1+)
 
@@ -202,6 +241,55 @@ patterns themselves matter: an unstated omission looks like an oversight,
 a stated one looks like a decision. If the project's needs change later
 (a second contributor joins, stakes go up), the user can come back and ask
 for the next tier explicitly rather than the skill guessing wrong now.
+
+## Step 4: Revisit and decommission — the exit path this discipline needs too
+
+This skill warns that process is "much easier to add than to strip out
+once it's calcified into habit" — which means it owes an actual answer for
+when stripping it out is the right call, not just a warning that it's
+hard. Watch for these signs that an installed artifact has become dead
+weight rather than a safeguard:
+
+- A log (bug, decision, or retro) hasn't been touched across several
+  recent tasks even though tasks of the kind it should catch clearly
+  happened — that's the "looks authoritative while being stale" failure
+  the skill exists to avoid, now happening to the skill's own artifacts.
+- The task-approval gate is being filled out as a formality after the
+  fact rather than before starting work — the gate has stopped gating
+  anything.
+- The team shrank back to solo, or the project's stakes genuinely
+  dropped, and question 4's answer changed for the better.
+
+When you notice one of these, don't just quietly stop maintaining the
+artifact (that recreates the stale-but-authoritative problem) and don't
+silently delete it either (that erases the audit trail it already built
+up). Instead: name it to the user as a re-calibration moment (see Step 1),
+recommend the specific artifact to retire, and if they agree:
+
+1. Archive rather than delete anything with real history — e.g. move
+   `docs/BUGS.md` to `docs/archive/BUGS.md` instead of `rm`-ing it, so
+   past entries stay reachable.
+2. Update the anchor doc's "Way of working" section to state the new,
+   lighter tier and remove the reference to the retired artifact — an
+   anchor doc pointing at a file that no longer exists is worse than no
+   anchor doc.
+3. Leave existing cross-references alone (old commit messages or task
+   docs that link to a bug/decision entry) — don't rewrite history to
+   scrub them, just stop writing new ones.
+
+## Step 5: Report what you installed — and what you deliberately skipped
+
+Close by telling the user, in a short summary: the tier chosen and why,
+which artifacts were created, and which patterns were *not* installed and
+why not (e.g. "skipped the task-approval gate — solo project, you have full
+context already; skipped the ground-truth TDD pattern — no external oracle
+this project ports against"). This matters for the same reason the
+patterns themselves matter: an unstated omission looks like an oversight,
+a stated one looks like a decision. If the project's needs change later
+(a second contributor joins, stakes go up), the user can come back and ask
+for the next tier explicitly rather than the skill guessing wrong now —
+see the re-calibration triggers in Step 1 and the decommissioning path in
+Step 4 for both directions of that change.
 
 See `references/templates.md` for adaptable file content for every
 artifact above.

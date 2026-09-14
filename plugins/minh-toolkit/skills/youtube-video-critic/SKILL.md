@@ -115,10 +115,7 @@ Always weigh the verdict against the video's actual duration — a 5-minute vide
 
 When the personal relevance row is genuinely strong (a real stated goal or active project, not an invented one), let it pull the verdict up a notch from what substance/filler alone would suggest — a video with mediocre substance-to-filler ratio can still be worth a full watch if it sits squarely on something the user is actively trying to do, and the reverse also holds: don't inflate a verdict for a video with no real personal connection just because it's well-produced. State explicitly when personal relevance is the deciding factor in the verdict, so the user can see why the call was made.
 
-With the verdict now fully formed — substance/filler, duration weighting, and personal relevance all folded in — run two closing checks before sending:
-
-- **Reverse-attitude check.** Would this verdict change if the user's evident attitude toward the video were flipped (excited ↔ skeptical)? The persona already guards against inflating scores for an excited user — this check covers the mirror case too: don't deflate a score just because the user seems skeptical or asked for the evaluation defensively. If flipping the imagined attitude would flip the verdict, the call is tracking the user's mood instead of the evidence — recompute the verdict itself from the transcript alone.
-- **Hype-language audit.** Once the verdict from the check above is locked in and the TL;DR/verdict paragraph are drafted, re-read your own wording. The same "no hype language" rule the persona applies to judging the video applies to how the verdict is written — if your own wording is doing persuading rather than reasoning, flatten it. This is a wording pass only; it doesn't re-open the verdict itself.
+With the verdict now fully formed — substance/filler, duration weighting, and personal relevance all folded in — the verdict is locked here. The reverse-attitude and hype-language checks that used to run inline at this point now run as part of the Step 4.5 grading pass instead, with fresh context instead of the reasoning that's still active while writing.
 
 ## Step 4: Core takeaways and personal application
 
@@ -134,6 +131,52 @@ After the verdict, always add two more sections — this is what turns an evalua
 Always include these two sections as part of a full evaluation output, not just on request. Skip them only for the claim-check/follow-up shape from Step 1, not for a full evaluation or an already-scoped one.
 
 **Before moving on to Step 5, confirm the response actually contains, in order: TL;DR, the table, the title-gap line, the verdict + value score, then Core takeaways and (if applicable) Personal application.** These sections are not optional filler and don't become optional just because a later step (the ledger) also needs attention.
+
+## Step 4.5: Grade the draft before delivering
+
+Once the full draft is assembled — TL;DR, table, title-gap line, verdict, value
+score, core takeaways, and personal application (if present) — run one grading
+pass before sending it to the user. Skip this step only for the claim-check/
+follow-up shape from Step 1, the same carve-out as Step 4.
+
+Run the grading pass as a separate pass: read only the finished draft and the
+rubric below. Do not carry over the reasoning, transcript excerpts, or working
+notes that produced it — grading with only the output in view catches vague or
+inconsistent wording that a writer, still holding the reasoning behind it, tends
+to read as clear.
+
+Check each item as pass/fail:
+
+1. The TL;DR is the first line and matches `TL;DR: <verdict> — Value score: X/10`
+   exactly.
+2. The table has exactly five rows, in order: Substance vs. filler, Source &
+   incentive, Novelty, Actionability, Personal relevance.
+3. The title-gap line appears after the table, separate from it, and states
+   either a real, specific gap or plainly says the title matches — never a
+   vague or invented gap.
+4. The verdict uses one of the three exact verdict names from Step 3, not a
+   paraphrase.
+5. The value-score gap sentence names a specific, concrete thing keeping the
+   video from a 10 — not vague praise, not a generic catch-all.
+6. Every core takeaway either states the video's own mechanism/reasoning, or
+   explicitly says the video doesn't explain one — none just restate the
+   bottom-line conclusion.
+7. No sentence in the TL;DR or verdict paragraph uses hype language
+   (persuading rather than reasoning).
+8. The verdict would not flip if the user's evident attitude toward the video
+   were reversed (excited ↔ skeptical).
+9. Personal application, if present, ties each item to something concrete
+   about the user's actual context, never a forced or generic connection. If
+   nothing qualified, confirm the section was correctly omitted rather than
+   left empty.
+
+If an item fails, name it and quote the offending line, then fix only that
+line — never a full rewrite. Re-check only the failed items after a fix, not
+the whole rubric.
+
+This step is independent of Step 5, the same way Step 4 is — never skip Step
+4.5 as a side effect of ledger trouble, and never skip the ledger because Step
+4.5 found something to fix.
 
 ## Step 5: Maintain the ledger (optional)
 

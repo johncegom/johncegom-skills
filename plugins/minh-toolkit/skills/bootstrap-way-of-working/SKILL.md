@@ -138,6 +138,16 @@ break the DoD into numbered checkable sub-items and check them off as you
 go, so an interrupted or compacted session can resume from the doc instead
 of re-deriving state.
 
+When the task meets the program-design conditions in
+references/templates.md (multi-file interaction that isn't obvious, or an
+agent generating a substantial chunk of new code in one pass — not any
+agent involvement, and not a small mechanical edit), also fill in the
+Program design section before starting implementation — types, signatures,
+and call graph by default, plus package/file layout when the task spans
+more than one package. This is the step most often skipped in agentic
+workflows, and it's where a human catches structural problems before
+generation happens rather than after.
+
 Alongside the gate, install the **no-silent-scope-expansion** rule: if you
 notice something unrelated while working (a stale doc, an adjacent bug),
 don't fold the fix into the current diff — flag it separately (as a new

@@ -34,8 +34,11 @@ since it's currently solo-maintained"].
 
 ### Task approval (Tier 2+)
 Before implementing a non-trivial task, write a Definition of Done and
-Test Plan into `docs/tasks/<slug>/TASK.md` and get it reviewed before
-starting. Don't expand scope mid-task — log unrelated findings separately.
+Test Plan into `docs/tasks/<slug>/TASK.md`, including a Program design note
+(types, signatures, call graph, and package layout for multi-package tasks)
+when the task is multi-file or an agent will generate a substantial chunk
+of new code in one pass, and get it reviewed before starting. Don't expand
+scope mid-task — log unrelated findings separately.
 
 ### Proportionality
 Don't add abstraction, defensive code, or process ceremony beyond what a
@@ -75,6 +78,33 @@ Resume checklist: <what a new session should read first, and in what order>
 - Unit-tested: <what, and how>
 - Manually smoke-tested: <what, and the exact steps/commands>
 - Commands: `<exact commands to run>`
+
+## Program design (fill only when the conditions below apply — otherwise omit this section entirely)
+- Types/interfaces to add or change: <...>
+- Key method signatures: <...>
+- Call graph sketch: <function A calls B calls C, in what order — or, for
+  async/event-driven code where a linear call chain doesn't fit, the
+  event/data flow instead: what triggers what, in what order>
+- Package/file layout (only when the task spans more than one package): <...>
+
+Fill the first three lines when:
+- The task touches more than one file/function whose interaction isn't
+  obvious, OR
+- An agent will generate a substantial chunk of new code in one pass,
+  rather than a human extending an existing, obvious pattern by hand or an
+  agent making a small, mechanical edit to one (this is exactly where RL
+  gives the model no maintainability signal, so a human needs to pin down
+  structure before generation — it is not a blanket rule that any agent
+  involvement requires this section).
+
+Also fill the package/file layout line when the task spans more than one
+package — e.g. deciding whether new logic goes in an existing package or
+a new one, and where the boundary sits. Within a single package this
+line is usually redundant with the types/call-graph lines above and can
+stay blank.
+
+Skip the whole section when the task is a small, localized fix or the
+person is coding it by hand without agent generation.
 
 ## Sub-tasks (for long-running work — omit if the task is small)
 - [x] 1.1 <done>
@@ -140,3 +170,9 @@ Before logging, apply the generalization test: would this change how a
 *different future task* gets approached? If it's really just narration of
 what happened on this one task, put it in that task's own detail doc
 instead.
+
+The generalization test above doesn't apply to the Program design section:
+whether to fill it in is a binary condition check (does the task touch
+multiple files/packages, or will an agent generate a substantial chunk of
+new code in one pass), not a judgment call about whether a future reviewer
+would want it explained.

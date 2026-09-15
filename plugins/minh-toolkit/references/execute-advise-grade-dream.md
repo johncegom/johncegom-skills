@@ -12,7 +12,7 @@ A role that just wrote a draft is bad at grading it, because it still holds the 
 
 **Advise** — a synchronous, mid-run consultation Execute calls out to when it hits a decision it shouldn't resolve alone: an ambiguous judgment call, a need for external verification, a borderline case worth a second opinion. Execute calls Advise and waits for the answer before continuing. This is not a parallel process running alongside Execute — it's a blocking call inside one run, and Execute doesn't proceed until it has the answer.
 
-**Grade** — runs only after Execute finishes one complete run. Scores the finished output against a rubric, given *only* the output and the rubric — not the reasoning, transcript excerpts, or working notes that produced it. This is the same "fresh eyes" principle behind `youtube-video-critic`'s Step 4.5: grading with only the output in view catches vague or inconsistent wording that a writer, still holding the reasoning behind it, tends to read as clear. A failed item should get a targeted fix, not necessarily a full restart of Execute. Fail loops back to Execute; pass moves on to Dream.
+**Grade** — runs only after Execute finishes one complete run. Scores the finished output against a rubric, given *only* the output and the rubric — not the reasoning, transcript excerpts, or working notes that produced it. This is the same "fresh eyes" principle behind `youtube-video-critic`'s Step 4.5: grading with only the output in view catches vague or inconsistent wording that a writer, still holding the reasoning behind it, tends to read as clear. A fail loops back to Execute, but not always the same way — see "Grade's two fail modes" below. Pass moves on to Dream.
 
 **Dream** — runs only after a Grade pass. Reads back the full run history — not just the final output, but the reasoning, any Advise consultations along the way, and the Grade verdict — and distills durable learnings into persistent memory: a ledger, a profile file, a decision log, anything future runs will read. Low-frequency (only on a pass), reflective, and typically asynchronous relative to the user-facing interaction — nothing the user is waiting on.
 
@@ -29,12 +29,20 @@ Execute finishes one full run
    ▼
 Grade (output + rubric only, no reasoning carried over)
    │
-   ├── fail ──> back to Execute (targeted fix)
+   ├── fail ──> back to Execute (full rerun, or a targeted fix — see below)
    │
    └── pass ──> Dream (reads back full run history, writes learnings to memory)
 ```
 
 This is the default flow, not an absolute law — a skill can deliberately run Dream independent of Grade's outcome, same as it can skip roles it doesn't need (see "Not every skill needs all four roles" below). The bar for deviating is that it's a stated, deliberate choice with a reason, not an accidental gap. `youtube-video-critic`'s Step 5 ledger is exactly this kind of deliberate deviation — see its entry below.
+
+### Grade's two fail modes
+
+A Grade fail doesn't always call for the same response. There are two distinct modes, and a skill's Step 4.5-equivalent section should say explicitly which one it uses — guessing wrong either wastes tokens (a full rerun for a one-line fix) or under-corrects (patching one span when the whole output needed rethinking).
+
+**Full rerun (the default).** Grade sends the run back to Execute to redo the task from scratch. This is the right call when the failure is about the output as a whole, not one identifiable spot: the wrong approach was taken, a whole section is missing, or the reasoning that produced the output was flawed in a way likely to have touched more than one place. Default to full rerun whenever Grade cannot point to a single bounded span that, fixed in isolation, would actually resolve the failure.
+
+**Targeted fix.** Grade names the exact failing item and points to the specific offending span — a line, a sentence, a field — and Execute patches only that span, leaving the rest of the output untouched. This applies only when the failure is genuinely local: Grade can point to a specific, bounded piece of the output that caused it, fixing that piece resolves the failure without touching anything else, and there's no reason to think the same flaw recurs elsewhere in the output unchecked. `youtube-video-critic`'s Step 4.5 uses this mode exclusively, and says so directly: "If an item fails, name it and quote the offending line, then fix only that line — never a full rewrite. Re-check only the failed items after a fix, not the whole rubric." That works because each of its 9 rubric items maps to one identifiable span (a specific line, a specific sentence) rather than a property of the output as a whole.
 
 Two things worth being explicit about, because they're easy to blur:
 

@@ -264,6 +264,34 @@ lower engagement. Apply these extra rules:
 
 ## Quality Checklist (Run Before Returning)
 
+This section is this skill's Grade role. See
+[references/execute-advise-grade-dream.md](../../references/execute-advise-grade-dream.md)
+for what that means mechanically — a separate pass, fresh context, no
+carried-over reasoning. The checklist below is specific to this skill and
+stays here rather than in the shared file.
+
+Grade's input here is the draft, the checklist below, and the voice selected
+for this piece (from `references/voices.md`) — not just draft + checklist.
+The voice matters because the "matches the selected voice's rhythm, tone, and
+signature qualities" item can't be graded without knowing which voice was the
+target.
+
+Run this Grade pass on Sonnet, not the shared file's default of Haiku.
+Roughly half this checklist is mechanically countable — banned-word counts,
+em dash frequency, tricolons, parallel negation, "And"/"But" presence — a
+genuine Haiku fit. But the other half requires judging prose feel: matching
+voice rhythm, reading like a real person rather than a polished essay,
+word choices that feel specific rather than predictable. That's a call
+Haiku is less reliable at than Sonnet, so the whole pass runs on Sonnet
+rather than splitting mechanical items from judgment items.
+
+Fail mode: targeted fix by default. Grade names the specific failing
+checklist item(s), and the fix touches only what those items need — never a
+full rewrite of Passes 1-3. Escalate to a full rerun of the three-pass
+process only when Grade finds the selected voice itself wasn't followed at
+all (the wrong voice throughout, not a partial miss) — that kind of failure
+can't be patched line by line.
+
 Before presenting the rewritten or first-drafted text, verify every single item:
 
 - [ ] Zero Tier 1 banned words remain

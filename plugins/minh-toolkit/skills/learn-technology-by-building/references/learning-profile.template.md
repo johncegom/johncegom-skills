@@ -50,7 +50,10 @@ detail would materially change how you teach.
 
 <Your read on their experience level, what kind of scaffolding they need, and
 how to calibrate metaphors, pacing, and depth. Update this as evidence accumulates
-— don't leave it as a first impression.>
+— don't leave it as a first impression. A single flagged trap-check occurrence
+isn't evidence of a pattern; update this only once something repeats (see
+"Recurring flags" in SKILL.md's trap-check section) and changes how a future
+checkpoint should be paced or taught.>
 
 ## Dynamic values to recalibrate
 

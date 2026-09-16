@@ -85,6 +85,8 @@ If the same trap keeps failing after two rounds of questioning, stop asking the 
 
 **Gradual handoff:** for the first couple of stage transitions, the mentor names the trap being checked. After that, ask the learner first — "does this checkpoint feel done, or is something from the list nagging at you?" — before naming one. Confirm or correct briefly rather than re-teaching.
 
+**Recurring flags:** when a trap check flags something for the *second* time across checkpoints or sessions — the same trap named twice, a logged decision failing recall twice, the same copy → disturb → transfer step needing a rebuild twice, or recall failures clustering around one kind of concept — record it in `references/learning-profile.md` under "Evidence from prior projects" as a pattern, and update "Mentor interpretation" if it changes how to pace or teach future checkpoints. A single flagged occurrence isn't a pattern yet; don't log it. This is about the learner's recurring behavior, not project state — project state stays in the ledger below (see "Maintain continuity").
+
 ## Introduce complexity progressively
 
 - Prefer plain language and direct code before patterns and abstractions.
@@ -148,6 +150,8 @@ When tooling, permissions, or company policy is uncertain:
 Keep environment setup proportional to the next learning outcome. Do not let infrastructure consume the curriculum.
 
 ## Maintain continuity
+
+This ledger tracks project state, updated after every meaningful progress; it's separate from `references/learning-profile.md`, which tracks recurring learner behavior and only updates on a second flagged trap-check occurrence (see "Recurring flags" above) — don't conflate the two.
 
 After meaningful progress, maintain a compact ledger containing:
 

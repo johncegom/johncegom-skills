@@ -1,0 +1,13 @@
+# Skill design decisions
+
+A running log of judgment calls made while authoring skills in this repo — what was decided, why, and what was rejected.
+
+## 2026-09-16 — `learn-technology-by-building`: sharpen the existing learner-profile mechanism instead of adding a second "Dream" section
+
+**Decided.** Cross-session learner-pattern capture stays inside the structures that already exist: a "Recurring flags" paragraph appended to the trap-check section (log to `references/learning-profile.md` only on a *second* occurrence — same trap twice, a logged decision failing recall twice, the same copy→disturb→transfer step rebuilt twice, or recall failures clustering by concept type), one line in "Maintain continuity" separating the ledger (project state, every meaningful progress) from `learning-profile.md` (learner patterns, second flagged occurrence), and a tightened "Mentor interpretation" section in `references/learning-profile.template.md` that updates only once something repeats. No new `## Dream` section, and no edit to the shared `execute-advise-grade-dream.md` reference doc.
+
+**Why.** The proposal's genuinely new content was the rigor, not the mechanism: a hard trigger condition, a "learner patterns, not project state" boundary, and a second-occurrence gate. All three attach cleanly to `learning-profile.md` and its template, which are already read every session and already have the right homes for this data ("Evidence from prior projects", "Mentor interpretation"). Labeling a new mechanism "Dream" would have forced a correction to the shared reference doc, whose worked example (lines 85-88) names this skill's continuity ledger as its Dream role — leaving the skill with two differently-triggered things called Dream for zero learner-facing gain. A per-flagged-trap Opus spawn also fights the skill's own budget discipline: never displace building, no standalone ceremony.
+
+**Rejected.** Adding a new top-level `## Dream: capture learner patterns` section after the trap check, with its own Opus spawn on every flagged trap. Rejected for the duplicate-Dream conflict above and for the per-trap cost. (The proposal also pointed at `references/execute-advise-grade-dream.md` inside this skill, a path that doesn't exist — that doc lives only at `plugins/minh-toolkit/references/` and in this repo's `docs/`.)
+
+**Generalizes to.** When a proposal's real value is added rigor rather than a new capability, attach the rigor to the structure that already owns the data. Reserve a role label like "Dream" for one mechanism per skill — a second one contradicts the shared reference doc's characterization and buys nothing.

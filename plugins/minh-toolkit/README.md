@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.10.3-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-11-informational)
+![version](https://img.shields.io/badge/version-0.11.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-12-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. One skill (`youtube-video-critic`) optionally connects to a separate local tool; everything else works the moment it's installed.
 
@@ -44,6 +44,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 | `real-personal-branding` | Personal branding help focused on real outcomes (opportunities, inbound), not vanity metrics. |
 | `socratic-brainstorm` | **Opt-in only** — say "socratic brainstorm this" and it'll stress-test your idea with questions before giving direct feedback. Won't trigger on its own. |
 | `bootstrap-way-of-working` | **Opt-in only** — run `/bootstrap-way-of-working` to set up a CLAUDE.md/AGENTS.md plus calibrated bug/decision/retro logs and a task-approval gate, sized to the project's actual risk and team size. Won't trigger on its own. |
+| `bootstrap-eagd-pattern` | **Opt-in only** — run `/bootstrap-eagd-pattern` to install a live, repo-wide mechanism (in your CLAUDE.md/AGENTS.md) letting a future agent session spawn an Advise/Grade/Dream sub-agent with a model you name, when it hits a matching trigger. Won't trigger on its own. |
 
 **Needs one extra install step:**
 
@@ -53,7 +54,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 ## FAQ
 
-**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Nine trigger automatically from what you say; `socratic-brainstorm` and `bootstrap-way-of-working` are the exceptions and only run when you explicitly ask for them.
+**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Nine trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
 
 **Will this change how Claude normally behaves?** Only `sound-human` runs by default in the background, rewriting Claude's own prose before it reaches you — everything else only activates when it matches what you're asking for.
 

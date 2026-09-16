@@ -1,169 +1,150 @@
 ---
 name: bootstrap-eagd-pattern
-description: Opt-in only — do not trigger automatically from general conversation about skill design or multi-agent architecture. Invoke only when the user explicitly runs /bootstrap-eagd-pattern or directly asks by name (e.g. "set up the Execute/Advise/Grade/Dream pattern for this skill", "bootstrap EAGD"). Adopts the Execute/Advise/Grade/Dream role-separation pattern (references/execute-advise-grade-dream.md) into a specific skill or project — installing only the roles it actually needs, and always asking the user which model runs each installed role rather than assuming a default.
+description: Opt-in only — do not trigger automatically from general conversation about process, CLAUDE.md, or multi-agent architecture. Invoke only when the user explicitly runs /bootstrap-eagd-pattern or directly asks by name (e.g. "set up EAGD for this repo", "bootstrap the Execute/Advise/Grade/Dream way of working"). Documents the Execute/Advise/Grade/Dream role-separation pattern (references/execute-advise-grade-dream.md) as a repo-wide convention in the project's anchor doc — calibrating which roles the convention should recommend, and always asking the user which model runs each role rather than assuming a default.
 ---
 
-# Bootstrap Execute / Advise / Grade / Dream
+# Bootstrap Execute / Advise / Grade / Dream — repo-wide way of working
 
 ## Why this exists, and the trap to avoid
 
-`references/execute-advise-grade-dream.md` names a reusable pattern: split a
-skill's work across up to four roles (Execute, Advise, Grade, Dream) instead
-of one role doing everything, because a role that just produced an output is
-bad at judging it — fresh eyes catch what the author's own reasoning hides
-from itself. That file is deliberately just a reference, not a mandate: it
-says outright that most skills need one or two roles, not all four, and that
-adopting it into any specific skill is "a separate, deliberate pass."
+`references/execute-advise-grade-dream.md` names a reusable pattern: split
+work across up to four roles (Execute, Advise, Grade, Dream) instead of one
+role doing everything, because a role that just produced an output is bad
+at judging it — fresh eyes catch what the author's own reasoning hides from
+itself. That file is deliberately just a reference, not a mandate: it says
+outright that most skills need one or two roles, not all four, and that
+adopting it into anything specific is "a separate, deliberate pass."
 
-This skill *is* that deliberate pass, made repeatable. The trap to avoid is
-the same one `bootstrap-way-of-working` names for its own domain: a
-bootstrapper that always installs the full four-role ceremony isn't being
-disciplined, it's being lazy about calibration. A one-step mechanical task
-doesn't need Advise; a skill with no rubric-shaped output doesn't need
-Grade; a skill with nothing worth remembering across runs doesn't need
-Dream. Install only what the target actually needs, and say so.
+This skill installs that pattern as a **documented convention for the
+repo**, not as runtime code for any one skill. The output is a section in
+the project's anchor doc (`CLAUDE.md`/`AGENTS.md`) that tells future
+work — future skills, future sessions, future contributors — when this
+pattern applies and how to apply it, so it gets rediscovered deliberately
+each time instead of reinvented or skipped by accident. It does not, by
+itself, rewrite any existing skill to use the pattern; that stays a
+separate, explicit task per skill (see Step 4).
 
-The second trap is specific to this pattern: the token-saving pitch ("route
-the expensive model to Advise only, save money everywhere else") **only
-pays off if the roles genuinely run as separate model calls.** If Execute,
-Advise, Grade, and Dream are just labeled sections inside one continuous
-agent conversation, nothing is actually being routed to a different model —
-you get the quality benefit of fresh-eyes review, but zero cost benefit.
-Be explicit with the user about which one they're getting (see Step 3).
+Two traps to avoid, both about calibration:
 
-## Step 1: Clarify the target and scope
+1. **Don't write a convention that mandates all four roles.** Most tasks
+   this repo's skills do won't need Advise, Grade, or Dream at all. A
+   convention doc that reads as "every skill should have all four" isn't
+   discipline, it's ceremony nobody will actually follow — and an
+   unfollowed convention is worse than none, because it looks authoritative
+   while being ignored.
+2. **Don't let the convention imply cost savings it can't deliver.** The
+   pattern's token-saving pitch ("route the expensive model to Advise
+   only") only holds if a role genuinely runs as a separate model call.
+   If a future skill just labels sections Execute/Advise/Grade/Dream
+   inside one continuous conversation, it gets the fresh-eyes quality
+   benefit but nothing routes to a different model, so nothing is actually
+   saved. The convention must say which of these two modes it's
+   recommending, not leave it ambiguous (see Step 3).
 
-Ask, don't assume:
+## Step 1: Confirm scope and find the anchor doc
 
-1. **What is this pattern being applied to?**
-   - A single skill (existing or being authored) — the roles live inside
-     that skill's own `SKILL.md`, invoked as `Agent` tool calls at defined
-     points in its instructions.
-   - A repo-wide way of working — the pattern becomes a documented
-     convention in the project's anchor doc (`CLAUDE.md`/`AGENTS.md`) that
-     future skills or tasks are expected to follow, not runtime code
-     installed today. This is closer to policy than implementation.
-   - Both — a convention documented at the repo level, demonstrated
-     concretely in one pilot skill first rather than retrofitted everywhere
-     at once.
+Confirm this is about the repo's general way of working, not any one
+skill's implementation — if the user actually wants a specific skill
+rewritten to use this pattern, that's a different, narrower task than this
+skill does; say so and hand it back to a plain editing pass on that skill's
+`SKILL.md` instead of forcing it through this convention-writing flow.
 
-2. **If it's a project-wide adoption, is there a pilot skill to start
-   with?** Retrofitting every skill in a repo in one pass is exactly the
-   kind of unforced ceremony this pattern's own reference doc warns
-   against installing wholesale. Prefer one real skill with a genuine need
-   for at least one extra role, get that working and reviewed, then let the
-   user decide whether to repeat it elsewhere.
+Find or ask where the project's anchor doc already lives
+(`CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, `docs/DEVELOPMENT.md`).
+Extend that file rather than creating a competing one — same rule
+`bootstrap-way-of-working` follows for its own anchor doc.
 
-## Step 2: Calibrate which roles are actually needed
+## Step 2: Calibrate what the convention should recommend
 
-Never default to installing all four. For the target skill, ask three
-concrete questions — mirroring the reference doc's own worked examples
-(`goal-to-code-unblock` uses only Advise; `sound-human` has Execute + a
-Grade-shaped step and nothing else):
+Don't write "always use all four roles." Instead, state the same three
+trigger questions the reference doc's worked examples use to decide
+per-task, so a future session can apply them without re-deriving the
+pattern from scratch:
 
-1. **Does Execute hit a mid-run judgment call it shouldn't resolve alone** —
-   an ambiguous choice, something needing external verification, a
-   borderline case worth a second opinion? If yes → install **Advise**.
-   If Execute never pauses for a call like this, skip it.
-2. **Does the finished output have a rubric-shaped quality check** — a
-   checklist, a pass/fail structure, criteria a fresh reader could apply
-   without needing the reasoning that produced the draft? If yes → install
-   **Grade**. If quality here isn't checklist-shaped, or the skill doesn't
-   need a formal gate, skip it.
-3. **Is there something worth persisting across separate runs** — a
-   learned profile, a ledger of past decisions, anything a future run
-   should read back rather than rebuild from scratch? If yes → install
-   **Dream**. Note Dream normally follows a Grade pass — a skill can have
-   Grade without Dream, but Dream without any Grade means nothing is
-   gating what gets written to memory.
+1. **Advise** — does the task hit a mid-run judgment call that shouldn't be
+   resolved alone: an ambiguous choice, something needing external
+   verification, a borderline case worth a second opinion?
+2. **Grade** — does the finished output have a rubric-shaped quality
+   check: a checklist or pass/fail structure a fresh reader could apply
+   without needing the reasoning that produced the draft?
+3. **Dream** — is there something worth persisting across separate runs:
+   a learned profile, a ledger, anything a future run should read back
+   instead of rebuilding from scratch? (Dream normally follows a Grade
+   pass — recommend against installing Dream with no Grade gating what
+   gets written to memory.)
 
-State which roles you're installing and which you're skipping, with the
-reason, before writing anything — the same transparency
-`bootstrap-way-of-working` requires for its tiers.
+The convention's job is to state these questions and the default posture
+("Execute alone is enough unless one of these clearly applies") — not to
+pre-decide which future tasks need which roles. That decision is made
+per-task, when it comes up, same as `bootstrap-way-of-working`'s tiers are
+chosen per-project rather than fixed in advance.
 
-## Step 3: Ask about models and routing — don't default
+## Step 3: Ask the user which model runs each role, and which routing mode
 
-For every role being installed, ask the user directly which model should
-run it. Do **not** silently apply the reference doc's suggested defaults
-(Sonnet/Opus/Haiku/Opus) — those are a starting point to show the user, not
-an instruction to follow. Present the table from
-`execute-advise-grade-dream.md` as context, then ask.
+Ask directly — do not default to the reference doc's suggested table
+(Sonnet/Opus/Haiku/Opus). That table is context to show the user, not an
+instruction to apply silently. Get an explicit answer for each role the
+convention will cover (Advise, Grade, Dream — Execute is whatever model is
+already running the main task) and record the answer by name (e.g.
+"Advise: Opus 5, Grade: Haiku 4.5, Dream: Opus 5").
 
-Also resolve the mechanism question directly, since it changes what you
-build:
+Also resolve, and state in the convention, which routing mode it
+recommends:
 
-- **Real model routing (actual token savings):** each installed
-  non-Execute role runs as a genuinely separate `Agent` tool call with an
-  explicit `model` override — Advise's call blocks and waits for the
-  answer before Execute continues; Grade's call gets only the rubric and
-  finished output, no inherited context; Dream's call gets the full run
-  history, no output of its own gates anything. This is the only version
-  that saves tokens, because it's the only version where a cheaper/faster
-  model actually executes some of the work instead of the top-tier model
-  doing everything in one long context.
-- **Role separation without model routing (quality benefit only, no cost
-  benefit):** all roles run in the same session/model, just as distinct,
-  clearly separated phases with the fresh-eyes context boundary enforced
-  by instruction (Grade genuinely doesn't get shown the reasoning, even
-  though it's the same model in the same conversation). This is fine for
-  skills where the point is catching a writer's blind spot, not saving
-  money — but say explicitly that this is what's being built, so the user
-  doesn't expect a token-cost reduction that isn't happening.
+- **Real model routing (actual token savings):** a role that gets invoked
+  runs as a genuinely separate `Agent` tool call with an explicit `model`
+  override — Advise blocks and waits for the answer before Execute
+  continues; Grade is a fresh call (no inherited context) given only the
+  rubric and finished output; Dream is a call given the full run history,
+  writing to a named persistent file. This is the only mode that saves
+  tokens, because it's the only one where a different model actually does
+  some of the work instead of the top-tier model carrying the whole
+  conversation.
+- **Role separation without model routing (quality only, no cost
+  benefit):** all roles stay in the same session/model, as distinct,
+  clearly separated phases with the fresh-eyes boundary enforced by
+  instruction alone (Grade genuinely isn't shown the reasoning, even
+  though it's the same model in the same conversation). Fine when the
+  goal is catching blind spots, not saving money — but the convention
+  must say this is what it recommends, so nobody expects a cost reduction
+  that isn't happening.
 
-If the user wants real routing, confirm each role's model choice by name
-(e.g. "Advise: Opus 5, Grade: Haiku 4.5, Dream: Opus 5") and record it in
-the skill/doc you're writing — don't leave the model implicit.
+If the user wants both modes available (e.g. real routing for expensive
+long-running skills, same-session separation for cheap ones), the
+convention should say which situations call for which, not leave every
+future skill to guess.
 
-## Step 4: Wire up the mechanics for what was chosen
+## Step 4: Write the convention section into the anchor doc
 
-**Skill-scoped, real routing.** In the target `SKILL.md`, write:
+Add a section (name it something findable, e.g. "Execute / Advise / Grade
+/ Dream") stating:
 
-- **Execute** — the skill's normal instructions, run in the primary
-  session. No change needed here beyond adding call-out points to the
-  other roles where relevant.
-- **Advise** — at each identified decision point, an explicit instruction
-  to call the `Agent` tool with `model: <chosen>`, a prompt containing
-  *only* the specific decision and the context needed to resolve it (not
-  the whole transcript), and to wait for the reply before continuing. Name
-  the trigger condition precisely — "when X is ambiguous," not "whenever
-  unsure."
-- **Grade** — after Execute finishes one full run, a fresh `Agent` tool
-  call (no inherited context) with `model: <chosen>`, given the rubric and
-  the finished output only. State explicitly which fail mode applies —
-  full rerun (default, when failure isn't localizable to one span) or
-  targeted fix (only when Grade can name one exact offending span whose
-  fix doesn't require touching anything else) — per the reference doc's
-  "Grade's two fail modes."
-- **Dream** — after a Grade pass, an `Agent` tool call with
-  `model: <chosen>`, given the full run history (reasoning, Advise
-  exchanges, Grade verdict), instructed to write durable learnings to a
-  named persistent file (ledger, profile, decision log — state the path).
+- One line naming the pattern and pointing at
+  `references/execute-advise-grade-dream.md` (or wherever this repo's copy
+  of that reference lives) for the full explanation — don't duplicate the
+  whole reference doc's content into the anchor doc.
+- The three trigger questions from Step 2, and the default posture
+  (Execute-only unless one clearly applies).
+- The model assignment and routing mode from Step 3, stated as this
+  repo's convention, not a personal preference buried in memory.
+- An explicit statement that adopting this into any specific skill is a
+  separate, deliberate pass — this convention section tells a future
+  session *when* and *how* to do that pass, it does not do the pass
+  itself. Do not retrofit any existing skill as part of this step.
 
-**Skill-scoped, no routing.** Write the same four sections, but as
-instructions to the single running session: Execute proceeds normally;
-at an Advise point, explicitly reason through the decision as a distinct,
-labeled step before continuing; Grade re-reads the finished output fresh
-against the rubric as a separate pass without referring back to the
-reasoning that produced it; Dream, if installed, writes learnings to the
-same kind of persistent file. No `Agent` calls, no model field.
+## Step 5: Report what was written
 
-**Repo-wide.** Add a section to the anchor doc naming the pattern, when a
-skill should adopt it (the three questions from Step 2), and the default
-model-routing stance the user chose in Step 3 for skills that do adopt it.
-Do not retrofit existing skills as part of this — that's a separate,
-explicit task per skill.
-
-## Step 5: Report what was installed and what was skipped
-
-Close with a short summary: which roles were installed and why, which were
-skipped and why, whether real model routing or single-session role
-separation was chosen (and therefore whether any token savings should
-actually be expected), and which models were assigned to which role. An
-unstated omission reads as an oversight; a stated one reads as a decision.
+Close with a short summary: where the convention section was added, what
+it recommends (which questions gate which role, which models, which
+routing mode), and confirm explicitly that no existing skill was modified
+to use the pattern — only the convention was recorded. If the user wants a
+pilot skill built against this convention next, that's a distinct,
+separate task.
 
 ## Step 6: Re-check trigger
 
-Name one condition worth revisiting later: if Advise is being called on
-nearly every run rather than rarely, the token-saving premise for routing
-it to a pricier model stops paying for itself — that's worth flagging back
-to the user rather than letting the routing run unexamined.
+Name one condition worth revisiting later: once a skill actually adopts
+this convention, if its Advise role ends up called on nearly every run
+rather than rarely, the token-saving premise behind routing it to a
+pricier model stops paying for itself — worth flagging back to the user
+rather than letting the routing run unexamined.

@@ -44,7 +44,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 | `real-personal-branding` | Personal branding help focused on real outcomes (opportunities, inbound), not vanity metrics. |
 | `socratic-brainstorm` | **Opt-in only** — say "socratic brainstorm this" and it'll stress-test your idea with questions before giving direct feedback. Won't trigger on its own. |
 | `bootstrap-way-of-working` | **Opt-in only** — run `/bootstrap-way-of-working` to set up a CLAUDE.md/AGENTS.md plus calibrated bug/decision/retro logs and a task-approval gate, sized to the project's actual risk and team size. Won't trigger on its own. |
-| `bootstrap-eagd-pattern` | **Opt-in only** — run `/bootstrap-eagd-pattern` to adopt the Execute/Advise/Grade/Dream role-separation pattern into a skill or project, installing only the roles it needs and asking you which model runs each one. Won't trigger on its own. |
+| `bootstrap-eagd-pattern` | **Opt-in only** — run `/bootstrap-eagd-pattern` to document the Execute/Advise/Grade/Dream role-separation pattern as a repo-wide convention in your CLAUDE.md/AGENTS.md, naming which roles apply when and asking you which model runs each one. Won't trigger on its own. |
 
 **Needs one extra install step:**
 

@@ -25,9 +25,13 @@ sub-agent with a specific model before this ran, and does after.
 
 `references/execute-advise-grade-dream.md` is the design rationale behind
 the mechanism (why four roles, why fresh eyes, why routing to a different
-model only pays off if the call is genuinely separate) — link to it from
-the anchor doc, don't duplicate it. This skill's job is narrower and more
-concrete: turn that rationale into imperative, directly-actionable
+model only pays off if the call is genuinely separate). **Copy this file
+into the target repo** (Step 4) rather than linking to it inside the
+plugin — a plugin can be uninstalled or updated independently of the
+repos it was used to bootstrap, and a mechanism whose rationale doc
+disappears the moment someone removes `minh-toolkit` isn't durable. The
+copy belongs to the target repo from that point on; this skill's job is
+narrower and more concrete: turn that rationale into imperative, directly-actionable
 instructions an agent will actually follow mid-task.
 
 ## Step 1: Confirm scope and find the anchor doc
@@ -87,9 +91,17 @@ choice — confirm which one they want, because the anchor doc's wording has
 to say "spawn an Agent call" for the first and "treat this as a distinct
 reasoning phase" for the second, and they are not interchangeable.
 
-## Step 4: Write the mechanism into the anchor doc
+## Step 4: Copy the rationale doc, then write the mechanism into the anchor doc
 
-Write imperative instructions addressed to the agent, not descriptive
+**Copy `references/execute-advise-grade-dream.md`'s content into the
+target repo first** — e.g. `docs/execute-advise-grade-dream.md`, or
+wherever the repo's own docs live — so the design rationale survives
+independently of this plugin being installed. Point the anchor doc's
+mechanism section at that local copy, not at a path inside
+`plugins/minh-toolkit/`. If the repo already has its own copy from a
+previous run, don't duplicate it — check first.
+
+Then write imperative instructions addressed to the agent, not descriptive
 prose addressed to a human reader. For each installed role, name:
 
 - **The trigger condition**, stated precisely enough to act on without

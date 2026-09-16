@@ -1,11 +1,12 @@
 {
   "name": "minh-toolkit",
-  "version": "0.10.3",
+  "version": "0.11.0",
   "description": "Minh's personal skill collection: coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. Each skill's own SKILL.md documents its purpose in detail.",
   "author": {
     "name": "Minh"
   },
   "skills": [
+    "./skills/bootstrap-eagd-pattern",
     "./skills/bootstrap-way-of-working",
     "./skills/goal-to-code-unblock",
     "./skills/learn-technology-by-building",

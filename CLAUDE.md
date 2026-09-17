@@ -14,33 +14,24 @@ repo at `docs/execute-advise-grade-dream.md` (kept local, not a link into
 `plugins/minh-toolkit/`, so this mechanism survives if that plugin is ever
 uninstalled).
 
-**Advise.** Call it when one of these observable conditions holds — not
-when you merely feel unsure (see "Advise's trigger and context" in the
-rationale doc for why felt doubt is the wrong trigger):
-- You are about to create a new `SKILL.md`, or change an existing skill's
-  frontmatter `description` (the line that decides when it triggers): one
-  Advise call on scope, always, before drafting, however confident you are.
-- A change has more than one plausible home (an existing skill, a new
-  skill, a `references/` file, this anchor doc) and you have already read
-  every candidate home and still can't place it.
-- You are changing this file or `docs/execute-advise-grade-dream.md` in a
-  way that alters how future sessions behave.
+**Advise.** Fires on observable conditions, never on felt doubt:
+- a new `SKILL.md`, or a change to an existing skill's `description`
+  line — one call on scope, always, before drafting;
+- a change with more than one plausible home (existing skill, new skill,
+  `references/`, this file) after you've read every candidate;
+- an edit to this file or `docs/execute-advise-grade-dream.md` that
+  changes how future sessions behave.
 
-Route by question type first — this is a filter, not a sequence of
-checkpoints: a question answerable by reading the repo ("does a skill with
-this scope already exist?" — read the descriptions) never goes to Advise;
-a preference only the user can settle (which of two valid scopes they
-want) goes to `AskUserQuestion`, not Advise, unless it has an obvious
-default, in which case take it and say so; only a judgment call — no fact
-settles it, and it's yours to make — goes to Advise. For those, write your
-leaning and why in one or two lines, then call the `Agent` tool with `model: claude-opus-5`,
-giving it the question, your leaning with the case for and against, and
-the artifacts verbatim — the candidate skills' `description` lines, the
-relevant `plugins/minh-toolkit/README.md` skill-table rows, the diff — not
-your summary of them. Ask it to name any context it needed and didn't get.
-Wait for the reply before continuing. Afterward, append one line to
-`docs/eagd-log.md` (create it with a one-line header if missing): date,
-branch, question, prior leaning, advisor's answer, which was taken.
+Only judgment calls go to Advise: anything answerable by reading the repo,
+read; a preference only the user can settle goes to `AskUserQuestion`, or
+take the obvious default and say so. Write your leaning and why in one or
+two lines, then call the `Agent` tool with `model: claude-opus-5`, giving
+it the question, your leaning with the case for and against, and the
+artifacts verbatim (candidate `description` lines, README skill-table
+rows, the diff) — not your summary. Ask it to name any context it lacked.
+Wait for the reply. Afterward append one line to `docs/eagd-log.md`
+(create with a one-line header if missing): date, branch, question, prior
+leaning, answer, which was taken.
 
 **Grade.** After drafting a new `SKILL.md` or substantially editing an
 existing one, before opening the PR, call the `Agent` tool fresh (no

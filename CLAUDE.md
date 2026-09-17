@@ -26,12 +26,14 @@ rationale doc for why felt doubt is the wrong trigger):
 - You are changing this file or `docs/execute-advise-grade-dream.md` in a
   way that alters how future sessions behave.
 
-Before calling, in order: (1) if the question is answerable by reading the
-repo — "does a skill with this scope already exist?" is answered by
-reading the skill descriptions, not by asking — do that first; (2) if it's
+Route by question type first — this is a filter, not a sequence of
+checkpoints: a question answerable by reading the repo ("does a skill with
+this scope already exist?" — read the descriptions) never goes to Advise;
 a preference only the user can settle (which of two valid scopes they
-want), use `AskUserQuestion`, not Advise; (3) write your leaning and why in
-one or two lines. Then call the `Agent` tool with `model: claude-opus-5`,
+want) goes to `AskUserQuestion`, not Advise, unless it has an obvious
+default, in which case take it and say so; only a judgment call — no fact
+settles it, and it's yours to make — goes to Advise. For those, write your
+leaning and why in one or two lines, then call the `Agent` tool with `model: claude-opus-5`,
 giving it the question, your leaning with the case for and against, and
 the artifacts verbatim — the candidate skills' `description` lines, the
 relevant `plugins/minh-toolkit/README.md` skill-table rows, the diff — not

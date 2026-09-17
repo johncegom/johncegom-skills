@@ -55,8 +55,11 @@ rubric-shaped output anywhere" would argue against Grade) whether it earns
 a place in the mechanism:
 
 1. **Advise** — will tasks in this repo plausibly hit a mid-run judgment
-   call worth a second opinion (an ambiguous choice, something needing
-   external verification, a borderline call)? If yes, install it.
+   call worth a second opinion — a decision no fact settles and the user
+   has delegated (not something answerable by reading the repo, and not a
+   preference only the user can make)? If yes, install it, and identify
+   the *observable* condition that marks such a decision in this repo — a
+   kind of change, a stage, or a unit of work that always gets one call.
 2. **Grade** — does this repo produce outputs with a rubric-shaped quality
    check (a checklist, explicit pass/fail criteria) that benefits from a
    fresh read with no access to the reasoning that produced it? If yes,
@@ -104,17 +107,27 @@ previous run, don't duplicate it — check first.
 Then write imperative instructions addressed to the agent, not descriptive
 prose addressed to a human reader. For each installed role, name:
 
-- **The trigger condition**, stated precisely enough to act on without
-  re-deriving it each time (e.g. "when a decision is genuinely ambiguous
-  and a wrong guess would be costly to unwind" — not "whenever unsure").
+- **The trigger condition**, stated as something an outside reader could
+  check, not as a feeling (Advise: "before drafting any new module's
+  public interface" or "one call per new `SKILL.md`, always" — not
+  "when genuinely ambiguous" or "whenever unsure"; see "Advise's trigger
+  and context" in the reference doc for why felt doubt is the wrong
+  trigger). For Advise, also state the routing: verifiable questions go
+  to research, preferences go to the user or a stated default, and only
+  judgment calls reach Advise — a filter, not a sequence of checkpoints.
 - **The exact action**: call the `Agent` tool with `model: <the model
   named in Step 3>`, and what the prompt must and must not contain
-  (Advise: only the specific decision plus context needed to resolve it,
-  not the whole transcript; Grade: only the rubric and finished output,
-  explicitly withholding the reasoning that produced it; Dream: the full
-  run history — reasoning, Advise exchanges, Grade verdict).
+  (Advise: the question, Execute's prior leaning with the case for and
+  against, and the artifacts the decision turns on verbatim — not
+  Execute's summary and not the whole transcript — plus a request that
+  the advisor name any context it lacked; Grade: only the rubric and
+  finished output, explicitly withholding the reasoning that produced it;
+  Dream: the full run history — reasoning, Advise exchanges, Grade
+  verdict).
 - **What to do with the result**: Advise blocks and Execute waits for the
-  answer before continuing; Grade's fail path names which of the
+  answer before continuing, then appends one line to a named log file in
+  the repo (date, task, question, prior leaning, answer, which was taken)
+  so the re-calibration trigger in Step 6 has something to read; Grade's fail path names which of the
   reference doc's two fail modes applies by default for this repo (full
   rerun vs. targeted fix — state one as the default and when the other is
   allowed); Dream writes to a named, real file path in this repo (state
@@ -122,11 +135,17 @@ prose addressed to a human reader. For each installed role, name:
 
 Example shape for one role, to calibrate how concrete this needs to be:
 
-> **Advise.** When you hit a decision that's genuinely ambiguous and hard
-> to reverse if wrong, don't resolve it alone: call the `Agent` tool with
-> `model: claude-opus-5`, describing only the specific decision and the
-> minimum context needed to answer it. Wait for the reply before
-> continuing.
+> **Advise.** Fires on observable conditions, never on felt doubt: before
+> drafting any new `SKILL.md` or changing an existing skill's `description`
+> line — one call on scope, always. Only judgment calls go here: anything
+> answerable by reading the repo, read; a preference only the user can
+> settle goes to `AskUserQuestion`. Write your leaning and why in one or
+> two lines, then call the `Agent` tool with `model: claude-opus-5`, giving
+> it the question, your leaning with the case for and against, and the
+> artifacts verbatim — not your summary. Ask it to name any context it
+> lacked. Wait for the reply. Afterward append one line to
+> `docs/eagd-log.md`: date, task, question, prior leaning, answer, which
+> was taken.
 
 That's the bar — an agent reading it mid-task should be able to act on it
 immediately, without needing to consult the reference doc first.
@@ -142,11 +161,15 @@ did implicitly.
 
 ## Step 6: Re-calibration trigger
 
-Name this explicitly in the anchor doc so it isn't lost: if a spawned
-role — especially Advise — ends up firing on nearly every task rather
-than rarely, the token-saving premise behind routing it to a pricier model
-stops paying for itself, and it's worth coming back to re-run this setup
-with a narrower trigger or a cheaper model. Same idea if a role never
-fires at all after a long period — that's a sign the trigger is either
-miscalibrated or the role was never actually needed, and it's worth
-removing rather than leaving it as unused ceremony in the anchor doc.
+Name this explicitly in the anchor doc so it isn't lost, and point it at
+the log file from Step 4 — without a log, none of these conditions can be
+detected. If a spawned role — especially Advise — ends up firing on
+nearly every task rather than rarely, the token-saving premise behind
+routing it to a pricier model stops paying for itself, and it's worth
+coming back to re-run this setup with a narrower trigger or a cheaper
+model. Same idea if a role never fires at all after a long period — a
+sign the trigger is miscalibrated or the role was never needed, worth
+removing rather than leaving as unused ceremony. And if Advise's
+decision-change rate (calls where the answer differed from the prior
+leaning) sits near zero, the calls are ceremony: the answer was always
+what Execute would have done anyway.

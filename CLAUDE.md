@@ -14,14 +14,31 @@ repo at `docs/execute-advise-grade-dream.md` (kept local, not a link into
 `plugins/minh-toolkit/`, so this mechanism survives if that plugin is ever
 uninstalled).
 
-**Advise.** When a new or edited skill's scope is genuinely ambiguous —
-it could plausibly duplicate an existing skill, or it's unclear whether a
-change belongs in this skill vs. a new one vs. the repo's anchor doc — and
-getting it wrong means redoing already-merged work, don't resolve it
-alone: call the `Agent` tool with `model: claude-opus-5`, describing only
-the specific scope question and the minimum context needed to answer it
-(the candidate skill's purpose, the name/description of anything it might
-overlap with). Wait for the reply before continuing.
+**Advise.** Call it when one of these observable conditions holds — not
+when you merely feel unsure (see "Advise's trigger and context" in the
+rationale doc for why felt doubt is the wrong trigger):
+- You are about to create a new `SKILL.md`, or change an existing skill's
+  frontmatter `description` (the line that decides when it triggers): one
+  Advise call on scope, always, before drafting, however confident you are.
+- A change has more than one plausible home (an existing skill, a new
+  skill, a `references/` file, this anchor doc) and you have already read
+  every candidate home and still can't place it.
+- You are changing this file or `docs/execute-advise-grade-dream.md` in a
+  way that alters how future sessions behave.
+
+Before calling, in order: (1) if the question is answerable by reading the
+repo — "does a skill with this scope already exist?" is answered by
+reading the skill descriptions, not by asking — do that first; (2) if it's
+a preference only the user can settle (which of two valid scopes they
+want), use `AskUserQuestion`, not Advise; (3) write your leaning and why in
+one or two lines. Then call the `Agent` tool with `model: claude-opus-5`,
+giving it the question, your leaning with the case for and against, and
+the artifacts verbatim — the candidate skills' `description` lines, the
+relevant `plugins/minh-toolkit/README.md` skill-table rows, the diff — not
+your summary of them. Ask it to name any context it needed and didn't get.
+Wait for the reply before continuing. Afterward, append one line to
+`docs/eagd-log.md` (create it with a one-line header if missing): date,
+branch, question, prior leaning, advisor's answer, which was taken.
 
 **Grade.** After drafting a new `SKILL.md` or substantially editing an
 existing one, before opening the PR, call the `Agent` tool fresh (no
@@ -51,7 +68,10 @@ verdict), and have it append one entry to `docs/skill-design-decisions.md`
 decided, why, and what alternative was rejected. Skip this when nothing
 about the run was actually a judgment call worth remembering.
 
-**Re-calibration trigger.** If Advise ends up firing on nearly every skill
-edit rather than genuinely ambiguous ones, or a role hasn't fired across
-many skill-authoring sessions, come back and re-run `bootstrap-eagd-pattern`
-to narrow the trigger, change the model, or drop the role.
+**Re-calibration trigger.** Check `docs/eagd-log.md` occasionally. If
+Advise averages more than about one call per PR, or hasn't fired across
+roughly ten skill-authoring sessions, or its decision-change rate (calls
+where the advisor's answer differed from the prior leaning) sits near
+zero, come back and re-run `bootstrap-eagd-pattern` to narrow the
+trigger, change the model, or drop the role. Same for Grade and Dream if
+they never fire.

@@ -14,6 +14,9 @@ Append-only record of Execute / Advise / Grade / Dream activity. Add each row at
 
 | Date | Role | Tool | Old | New | Reason |
 |---|---|---|---|---|---|
+| 2026-09-18 | advise | Agent | legacy `claude-opus-5` (unverified, full id) | model=opus status=ok reported=claude-opus-5 | Migrated legacy block to a probe-verified binding row; probe used a model different from the session's own (Sonnet 5) |
+| 2026-09-18 | grade | Agent | legacy `claude-haiku-4-5-20251001` (unverified, full id) | model=haiku status=ok reported=claude-haiku-4-5-20251001 | Migrated legacy block to a probe-verified binding row; probe used a model different from the session's own (Sonnet 5) |
+| 2026-09-18 | dream | Agent | legacy `claude-opus-5` (unverified, full id) | model=opus status=ok reported=claude-opus-5 | Migrated legacy block to a probe-verified binding row; probe used a model different from the session's own (Sonnet 5) |
 
 ## Grade fallbacks
 

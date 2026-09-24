@@ -23,9 +23,9 @@ a different sub-agent tool has no row yet — re-run the skill from that
 harness.
 
 <!-- eagd-bindings:start -->
-eagd-binding: role=advise tool=Agent model=opus status=ok probed=2026-09-18 reported=claude-opus-5
+eagd-binding: role=advise tool=Agent model=opus status=ok probed=2026-09-24 reported=claude-opus-5-5
 eagd-binding: role=grade tool=Agent model=haiku status=ok probed=2026-09-18 reported=claude-haiku-4-5-20251001
-eagd-binding: role=dream tool=Agent model=opus status=ok probed=2026-09-18 reported=claude-opus-5
+eagd-binding: role=dream tool=Agent model=opus status=ok probed=2026-09-24 reported=claude-opus-5-5
 <!-- eagd-bindings:end -->
 
 **No usable row** (none for the tool you hold, the row isn't `status=ok`, or

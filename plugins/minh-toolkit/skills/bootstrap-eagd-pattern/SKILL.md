@@ -1,6 +1,6 @@
 ---
 name: bootstrap-eagd-pattern
-description: Opt-in only — do not trigger automatically from general conversation about process, CLAUDE.md, or multi-agent architecture. Invoke only when the user explicitly runs /bootstrap-eagd-pattern or directly asks by name (e.g. "set up EAGD for this repo", "give this repo a mechanism to spawn an advisor agent"). Installs a standing, repo-wide mechanism — live instructions in the project's anchor doc — that let any future agent session in this repo autonomously spawn an Advise/Grade/Dream role agent (via the harness's sub-agent tool, with a probe-verified named model per tool) when it hits a matching trigger, without the human setting it up again. Also handles re-runs, where existing model bindings are read and kept rather than re-asked. Runs once per setup or re-calibration; does not run continuously.
+description: Opt-in only — do not trigger automatically from general conversation about process, CLAUDE.md, or multi-agent architecture. Invoke only when the user explicitly runs /bootstrap-eagd-pattern or directly asks by name (e.g. "set up EAGD for this repo", "give this repo a mechanism to spawn an advisor agent"). Installs a standing, repo-wide mechanism — live instructions in the project's anchor doc, or kept outside the repo when it can't hold agent files — that let any future agent session in this repo autonomously spawn an Advise/Grade/Dream role agent (via the harness's sub-agent tool, with a probe-verified named model per tool) when it hits a matching trigger, without the human setting it up again. Also handles re-runs, where existing model bindings are read and kept rather than re-asked. Runs once per setup or re-calibration; does not run continuously.
 ---
 
 # Bootstrap Execute / Advise / Grade / Dream — repo-wide spawn mechanism
@@ -57,7 +57,9 @@ fold this into whatever file the agent is already told to read at session
 start.
 
 **Then check whether a mechanism block already exists** (look for the
-`eagd-bindings:start` marker from Step 4). If it does, this is a re-run,
+`eagd-bindings:start` marker from Step 4, in the anchor doc and also in
+`<state-dir>` if the user-level pointer from "Storage scope" below is
+present). If it does, this is a re-run,
 and it is a **re-calibration by default** — not a fresh setup. Read the
 existing roles, spawn-vs-phase choice, and binding rows *before asking
 anything*, show them to the user, and carry them forward as defaults in
@@ -65,6 +67,40 @@ Steps 2 and 3. Only treat it as a fresh setup if the user says so
 explicitly ("fresh", "start over"); in that case replace the whole block
 and log the replacement. The user does not need to remember what was
 probed earlier — the file and this session's own tool list answer that.
+
+## Storage scope: committed or out-of-tree
+
+Everything this skill writes is a file, so decide where the files may live
+before writing any. On a fresh install ask once, with the default stated:
+"Everything goes in committed files unless your repo can't hold agent
+artifacts. Should it be kept out of the repo instead?" On a re-run don't
+ask — the mode is wherever the existing block was found. Two modes:
+
+- **Committed (default).** `<state-dir>` is the repo (the log and Dream
+  file at the paths in Step 4) and the loader is the anchor doc. Loading is
+  guaranteed, because every session reads that file.
+- **Out-of-tree.** For a repo or organisation that does not allow agent
+  files in commits. `<state-dir>` is `~/.claude/eagd/<repo-key>/`, holding
+  the directive, the `eagd-binding` rows, the rationale-doc copy, the log
+  and the Dream file, and **nothing is written inside the repo** — not even
+  a `.gitignore` edit, which would itself be a committed change. The loader
+  is a pointer in a user-level instruction file your harness loads every
+  session (for Claude Code, `~/.claude/CLAUDE.md`; confirm your version
+  supports it and any `@import` you rely on, and confirm the harness reads
+  a user-level file at all). Key `<repo-key>` on the remote URL slug rather
+  than a local path, so two clones of one repo share one state. The pointer
+  must be conditional — "only when working in the repo whose remote is X,
+  read `<state-dir>/directive.md`" — because a user-level file applies to
+  every repo.
+
+Later steps write to `<state-dir>` and do not branch on the mode. Two
+limits to say to the user: in out-of-tree mode teammates do not get the
+mechanism, and if the org's policy also covers files under `~/.claude` (for
+instance if it is synced or managed), out-of-tree does not satisfy it. Do
+not offer a local-untracked variant (files in the working tree hidden with
+`.git/info/exclude`) — the directive would still need an untracked loader,
+which is the same problem, and the files vanish on re-clone and in new
+worktrees.
 
 ## Step 2: Calibrate which triggers the mechanism should cover
 
@@ -148,13 +184,14 @@ reasoning phase" for the second, and they are not interchangeable.
 
 ## Step 4: Copy the rationale doc, then write the mechanism into the anchor doc
 
-**Copy `references/execute-advise-grade-dream.md`'s content into the
-target repo first** — e.g. `docs/execute-advise-grade-dream.md`, or
-wherever the repo's own docs live — so the design rationale survives
-independently of this plugin being installed. Point the anchor doc's
-mechanism section at that local copy, not at a path inside
-`plugins/minh-toolkit/`. If the repo already has its own copy from a
-previous run, don't duplicate it — check first.
+**Copy the plugin's `references/execute-advise-grade-dream.md` (at the
+plugin root, not inside this skill's folder) into the target first** —
+in committed mode e.g. `docs/execute-advise-grade-dream.md`, or wherever
+the repo's own docs live; in out-of-tree mode into `<state-dir>` — so the
+design rationale survives independently of this plugin being installed.
+Point the mechanism section at that local copy, not at a path inside
+`plugins/minh-toolkit/`. If a copy already exists from a previous run,
+don't duplicate it — check first.
 
 **Write the bindings as fixed one-line rows** inside marker comments, so a
 later re-run can update them in place instead of re-reading prose:
@@ -176,7 +213,8 @@ from what is stored — an identical result refreshes nothing and logs
 nothing. Whenever a row's model or status does change, add one row to the
 log's "Binding changes" table (see "The log file" below).
 
-**The log file.** Default path `docs/eagd-log.md`. Its format must match
+**The log file.** Default path `docs/eagd-log.md` in committed mode,
+`<state-dir>/eagd-log.md` in out-of-tree mode. Its format must match
 its file type, so the fields stay identical whatever the container is:
 
 - **A markdown file (the default).** Create it if missing with a `# EAGD
@@ -277,7 +315,11 @@ the model bound to each installed role for this session's tool, and the
 probe result behind each. List any rows left untouched ("not re-verified
 from this harness" or "could not re-verify") and any harness the user said
 is in use but has no binding yet. Confirm no existing skill was rewritten —
-this only touches the anchor doc. If the user wants a specific skill's
+this only touches the anchor doc, or in out-of-tree mode only
+`<state-dir>` and the user-level pointer, with nothing inside the repo. In
+out-of-tree mode, also tell the user to open a new session in the repo and
+ask it to quote the EAGD Advise trigger — a manual check that the
+directive loads, since nothing else guarantees it. If the user wants a specific skill's
 `SKILL.md` rewritten to call into this mechanism explicitly, that's a
 separate, deliberate task, not something this run did implicitly.
 
@@ -295,6 +337,11 @@ removing rather than leaving as unused ceremony. And if Advise's
 decision-change rate (calls where the answer differed from the prior
 leaning) sits near zero, the calls are ceremony: the answer was always
 what Execute would have done anyway.
+
+In out-of-tree mode, if a role never fires, first check that the directive
+is still loading (the manual check in Step 5) before narrowing its
+trigger — a pointer that stopped loading looks exactly like a role that
+was never needed.
 
 Two additions for repos with more than one harness. Before narrowing or
 widening a trigger, **count the `SKIPPED` rows per Tool** — a low firing

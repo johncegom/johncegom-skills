@@ -73,14 +73,35 @@ produced it):
    skill's `SKILL.md`?
 4. If it's opt-in, does the description say so explicitly, and is that
    reflected in `plugins/minh-toolkit/README.md`'s skill table?
+5. Could an agent on another harness (Copilot, Codex, Cursor) follow every
+   instruction? Applies to `plugins/**` skills only. N/A if the `description`
+   contains the exact phrase `Claude Code only`, and that phrase must also be
+   in the skill's README row. Otherwise fail each line that relies on one of
+   these with no harness-neutral alternative in the same sentence or bullet:
+   a Claude Code tool name used as a tool (`AskUserQuestion`, `Agent`/`Task`,
+   `TodoWrite`, `Skill`, `ToolSearch`); a slash command as the only way to
+   invoke something; a `.claude/` or `~/.claude` path, `settings.json`, or a
+   hook; `CLAUDE.md` with no mention of `AGENTS.md` or "the anchor doc"; a
+   model alias (`opus`, `sonnet`, `haiku`) used as the model to request.
+   Not failures: calling the agent "Claude"; Claude-first wording with a
+   fallback beside it (e.g. "use AskUserQuestion, or your harness's
+   ask-the-user tool, else ask in plain text"); a named MCP server or
+   external CLI stated as a requirement; `references/` files, which Grade
+   does not see. Quote every offending line and the marker it hits. This
+   grades only what could fail, so "optimized for Claude" is kept by allowing
+   Claude-first wording, not scored. Item 5 grades the whole file; existing
+   skills are not swept and come into line the next time they are
+   substantially edited.
 
 Default fail mode: **full rerun** — send it back to Execute to redraft,
 unless Grade can name one single exact offending line whose fix in
 isolation resolves the failure with no risk of the same flaw recurring
 elsewhere in the file, in which case name that line and apply a targeted
-fix only. If Grade had to fall back to your own model (no usable row), add
-a row to the "Grade fallbacks" table in `docs/eagd-log.md`: date, branch,
-tool, reason.
+fix only. For item 5, fix only the quoted lines unless the skill's
+approach itself depends on the Claude-only feature; then either redraft
+or declare `Claude Code only`. If Grade had to fall back to your own model
+(no usable row), add a row to the "Grade fallbacks" table in
+`docs/eagd-log.md`: date, branch, tool, reason.
 
 **Dream.** After a Grade pass (pass or fail) that involved a genuine
 design tradeoff — a scope decision, a naming call, a resolved

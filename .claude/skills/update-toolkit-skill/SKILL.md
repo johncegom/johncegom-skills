@@ -59,6 +59,11 @@ claude plugin validate .                                                    # ma
 ```
 Both must print `✔ Validation passed`. This is the exact check CI runs (looping `claude plugin validate` over every `plugins/*/.claude-plugin/plugin.json`) — catching a failure here saves a round trip.
 
+Also check size, since skills must load on other harnesses too (GitHub Copilot failed to load a 22 KB skill). CI fails any `SKILL.md` over 20000 bytes and warns from 18000:
+```
+wc -c plugins/*/skills/*/SKILL.md   # must be <= 20000; move cold-path detail into references/
+```
+
 Optional, for a closer end-to-end check: build a local `.zip`/`.plugin` package (`cd tools/package-plugin && go run . plugins/<plugin-name>`) and load it directly to confirm skills actually resolve:
 ```
 claude --plugin-dir path/to/packaged.plugin -p "list the skill names available to you, one per line"

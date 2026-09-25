@@ -53,16 +53,21 @@ jobs:
 
           exit $fail
 
-      - name: Check SKILL.md size limits (max 20000 bytes)
+      - name: Check SKILL.md size budget (max 20000 bytes)
         run: |
           fail=0
           for skill in plugins/*/skills/*/SKILL.md; do
             size=$(wc -c < "$skill")
             if [ "$size" -gt 20000 ]; then
-              echo "::error file=$skill::$skill is $size bytes, exceeds the 20000-byte limit some harnesses (e.g. GitHub Copilot) enforce. Move cold-path detail into references/."
+              echo "::error file=$skill::$skill is $size bytes, exceeds the 20000-byte context budget for this repo (not a documented harness limit). Move cold-path detail into references/."
               fail=1
             elif [ "$size" -ge 18000 ]; then
-              echo "::warning file=$skill::$skill is $size bytes, within 2000 of the 20000-byte limit."
+              echo "::warning file=$skill::$skill is $size bytes, within 2000 of the 20000-byte budget."
             fi
           done
           exit $fail
+
+      - name: Check SKILL.md frontmatter against the Agent Skills spec
+        run: |
+          pip install --quiet pyyaml
+          python3 .github/scripts/check_skill_frontmatter.py

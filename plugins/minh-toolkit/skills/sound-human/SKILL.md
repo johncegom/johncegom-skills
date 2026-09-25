@@ -264,11 +264,9 @@ lower engagement. Apply these extra rules:
 
 ## Quality Checklist (Run Before Returning)
 
-This section is this skill's Grade role. See
-[references/execute-advise-grade-dream.md](../../references/execute-advise-grade-dream.md)
-for what that means mechanically — a separate pass, fresh context, no
-carried-over reasoning. The checklist below is specific to this skill and
-stays here rather than in the shared file.
+This section is this skill's Grade role: a separate pass, fresh context, no
+carried-over reasoning from the draft. The checklist below is specific to
+this skill.
 
 Grade's input here is the draft, the checklist below, and the voice selected
 for this piece (from `references/voices.md`) — not just draft + checklist.
@@ -276,7 +274,7 @@ The voice matters because the "matches the selected voice's rhythm, tone, and
 signature qualities" item can't be graded without knowing which voice was the
 target.
 
-Run this Grade pass on Sonnet, not the shared file's default of Haiku.
+Run this Grade pass on Sonnet, not the usual Haiku default for Grade.
 Roughly half this checklist is mechanically countable — banned-word counts,
 em dash frequency, tricolons, parallel negation, "And"/"But" presence — a
 genuine Haiku fit. But the other half requires judging prose feel: matching

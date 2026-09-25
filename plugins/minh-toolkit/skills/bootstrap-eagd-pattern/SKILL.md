@@ -4,19 +4,16 @@ description: >
   Opt-in only. Do not trigger from general conversation about process,
   agent-instruction files (CLAUDE.md, AGENTS.md, Copilot or Cursor rules),
   or multi-agent architecture. Invoke only when the user explicitly asks
-  for it by name, either by running /bootstrap-eagd-pattern where the
-  harness supports slash commands, or by saying something like "set up
-  EAGD for this repo" or "give this repo a mechanism to spawn an advisor
-  agent". Installs a standing, repo-wide mechanism, as live instructions in
-  the project's anchor doc or kept outside the repo when it can't hold
-  agent files, that lets any future agent session in this repo
-  autonomously spawn an Advise/Grade/Dream role agent when it hits a
-  matching trigger, without the human setting it up again. Works on any
-  agent harness that has a sub-agent tool (optimised for Claude Code),
-  with a probe-verified named model bound per sub-agent tool. Also handles
-  re-runs, where existing model bindings are read and kept rather than
-  re-asked. Runs once per setup or re-calibration; does not run
-  continuously.
+  for it by name, by running /bootstrap-eagd-pattern where the harness
+  supports slash commands, or by saying something like "set up EAGD for
+  this repo" or "give this repo a mechanism to spawn an advisor agent".
+  Installs a standing, repo-wide mechanism, as live instructions in the
+  project's anchor doc or kept outside the repo when it can't hold agent
+  files, that lets a future agent session in this repo autonomously spawn
+  an Advise/Grade/Dream role agent when it hits a matching trigger. Works
+  on any harness with a sub-agent tool (optimised for Claude Code), with a
+  probe-verified model per tool. Also handles re-runs, keeping existing
+  model bindings. Runs once per setup or re-calibration.
 ---
 
 # Bootstrap Execute / Advise / Grade / Dream — repo-wide spawn mechanism

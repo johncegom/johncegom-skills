@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.14.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-13-informational)
+![version](https://img.shields.io/badge/version-0.14.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-13-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. One skill (`youtube-video-critic`) optionally connects to a separate local tool; everything else works the moment it's installed.
 
@@ -19,14 +19,32 @@ In Claude Desktop: **Settings → Plugins → Marketplaces → Add**, paste the 
 
 To stay current: enable "Sync automatically" on the `minh-skills` marketplace in Claude Desktop, or run `claude plugin update minh-toolkit` manually.
 
-## Try it in one message
+## Example use cases
 
-Nothing to configure, no command to memorize — just talk to Claude normally and the right skill picks itself up:
+Nothing to configure, no command to memorize — just talk to Claude normally and the right skill picks itself up. The three opt-in skills (last group) only run when you ask for them by name.
 
+**Starting on an unfamiliar codebase**
+- *"I just joined this team and need to understand the core fast."* → `codebase-onboarding` writes architecture and business-logic notes with `path:line` evidence, has a separate pass check them against the source, and adds a first-PR checklist. Notes are saved outside the repo, in `~/onboarding-notes/<repo>/`.
+
+**Learning to code**
 - *"I don't know where to start with this Django project"* → `goal-to-code-unblock` hands you the first step, not the finished code.
-- *"Test me on SQL joins"* → `smart-quiz-maker` builds a quiz calibrated to how well you actually know it.
+- *"I want to learn Go, make me a plan"* → `learn-technology-by-building` gives you one cumulative project with weekly checkpoints. If you freeze on one line, it hands off to `goal-to-code-unblock`.
+- *"Test me on SQL joins"* or *"Quiz me for a backend interview"* → `smart-quiz-maker` builds a quiz calibrated to how well you actually know it and adjusts as you answer.
+- *"My brain is fried, but I don't want to break my streak"* → `low-power-learning` runs a short, near-passive session.
+
+**Writing and career**
 - *"Help me turn these notes into a blog post, but I want to actually practice writing"* → `writing-practice` coaches you through it instead of writing it for you.
-- Ask Claude to draft an email or post for you, normally — `sound-human` quietly checks its own output before handing it back, so you don't get the "clearly written by AI" tone. No trigger phrase needed.
+- Ask Claude to draft an email or post for you, normally — `sound-human` quietly checks its own output before handing it back, so you don't get the "clearly written by AI" tone. No trigger phrase needed. Paste your own draft and say "too robotic" to have it fixed.
+- *"Plan LinkedIn content that brings me inbound job leads"* → `real-personal-branding` builds a plan around real outcomes, not likes.
+
+**Deciding what to watch or do**
+- *"Is this video worth watching?"* plus a link → `youtube-video-critic` judges it from the real transcript (needs the extra install step below).
+- *"Turn this goal into a schedule I can keep"* → `personal-planner-engine` fits it to your real capacity and adds a bad-day fallback.
+
+**Opt-in, ask by name**
+- *"Use socratic-brainstorm on my idea"* → `socratic-brainstorm` questions you before it gives feedback.
+- `/bootstrap-way-of-working` → sets up a `CLAUDE.md` or `AGENTS.md` with bug, decision and retro logs.
+- *"Set up EAGD for this repo"* → `bootstrap-eagd-pattern` installs the Advise/Grade/Dream sub-agent mechanism.
 
 ## What's inside
 

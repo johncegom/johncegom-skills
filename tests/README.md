@@ -16,7 +16,7 @@ tests/
 ```
 
 Each skill gets its own directory, named to match its folder under `plugins/<plugin-name>/skills/`. Only
-`youtube-video-critic` has cases today; add a sibling directory (`tests/<skill-name>/`) the
+`youtube-video-critic` and `bootstrap-eagd-pattern` have cases today; add a sibling directory (`tests/<skill-name>/`) the
 first time another skill gets this kind of scrutiny — don't pre-create empty ones.
 
 ## Case file format

@@ -1,6 +1,22 @@
 ---
 name: bootstrap-eagd-pattern
-description: Opt-in only — do not trigger automatically from general conversation about process, CLAUDE.md, or multi-agent architecture. Invoke only when the user explicitly runs /bootstrap-eagd-pattern or directly asks by name (e.g. "set up EAGD for this repo", "give this repo a mechanism to spawn an advisor agent"). Installs a standing, repo-wide mechanism — live instructions in the project's anchor doc, or kept outside the repo when it can't hold agent files — that let any future agent session in this repo autonomously spawn an Advise/Grade/Dream role agent (via the harness's sub-agent tool, with a probe-verified named model per tool) when it hits a matching trigger, without the human setting it up again. Also handles re-runs, where existing model bindings are read and kept rather than re-asked. Runs once per setup or re-calibration; does not run continuously.
+description: >
+  Opt-in only. Do not trigger from general conversation about process,
+  agent-instruction files (CLAUDE.md, AGENTS.md, Copilot or Cursor rules),
+  or multi-agent architecture. Invoke only when the user explicitly asks
+  for it by name, either by running /bootstrap-eagd-pattern where the
+  harness supports slash commands, or by saying something like "set up
+  EAGD for this repo" or "give this repo a mechanism to spawn an advisor
+  agent". Installs a standing, repo-wide mechanism, as live instructions in
+  the project's anchor doc or kept outside the repo when it can't hold
+  agent files, that lets any future agent session in this repo
+  autonomously spawn an Advise/Grade/Dream role agent when it hits a
+  matching trigger, without the human setting it up again. Works on any
+  agent harness that has a sub-agent tool (optimised for Claude Code),
+  with a probe-verified named model bound per sub-agent tool. Also handles
+  re-runs, where existing model bindings are read and kept rather than
+  re-asked. Runs once per setup or re-calibration; does not run
+  continuously.
 ---
 
 # Bootstrap Execute / Advise / Grade / Dream — repo-wide spawn mechanism
@@ -58,7 +74,7 @@ start.
 
 **Then check whether a mechanism block already exists** (look for the
 `eagd-bindings:start` marker from Step 4, in the anchor doc and also in
-`<state-dir>` if the user-level pointer from "Storage scope" below is
+`<state-dir>` if the user-level pointer from Step 1b below is
 present). If it does, this is a re-run,
 and it is a **re-calibration by default** — not a fresh setup. Read the
 existing roles, spawn-vs-phase choice, and binding rows *before asking
@@ -68,30 +84,39 @@ explicitly ("fresh", "start over"); in that case replace the whole block
 and log the replacement. The user does not need to remember what was
 probed earlier — the file and this session's own tool list answer that.
 
-## Storage scope: committed or out-of-tree
+## Step 1b: Storage scope, committed or out-of-tree
 
 Everything this skill writes is a file, so decide where the files may live
-before writing any. On a fresh install ask once, with the default stated:
-"Everything goes in committed files unless your repo can't hold agent
-artifacts. Should it be kept out of the repo instead?" On a re-run don't
-ask — the mode is wherever the existing block was found. Two modes:
+before writing any. **On a fresh install this is a required question, not
+background reading: stop and ask it now, in its own message, and do not
+start Step 2 or write anything until the user has answered — even if the
+repo looks ordinary and the answer seems obvious.** Use the harness's
+question tool if it has one, otherwise plain text. Ask once, with the
+default stated: "Everything goes in committed files unless your repo can't
+hold agent artifacts. Should it be kept out of the repo instead?" On a
+re-run don't ask — the mode is wherever the existing block was found. Two
+modes:
 
 - **Committed (default).** `<state-dir>` is the repo (the log and Dream
   file at the paths in Step 4) and the loader is the anchor doc. Loading is
   guaranteed, because every session reads that file.
 - **Out-of-tree.** For a repo or organisation that does not allow agent
-  files in commits. `<state-dir>` is `~/.claude/eagd/<repo-key>/`, holding
-  the directive, the `eagd-binding` rows, the rationale-doc copy, the log
-  and the Dream file, and **nothing is written inside the repo** — not even
-  a `.gitignore` edit, which would itself be a committed change. The loader
-  is a pointer in a user-level instruction file your harness loads every
-  session (for Claude Code, `~/.claude/CLAUDE.md`; confirm your version
-  supports it and any `@import` you rely on, and confirm the harness reads
-  a user-level file at all). Key `<repo-key>` on the remote URL slug rather
-  than a local path, so two clones of one repo share one state. The pointer
-  must be conditional — "only when working in the repo whose remote is X,
-  read `<state-dir>/directive.md`" — because a user-level file applies to
-  every repo.
+  files in commits. `<state-dir>` is `~/.claude/eagd/<repo-key>/` (Claude
+  Code's default; any stable per-user directory works on another
+  harness), holding the directive, the `eagd-binding` rows, the
+  rationale-doc copy, the log and the Dream file, and **nothing is
+  written inside the repo** — not even a `.gitignore` edit, which would
+  itself be a committed change. The loader is a pointer in a user-level
+  instruction file your harness loads every session (for Claude Code,
+  `~/.claude/CLAUDE.md`; confirm your version supports it and any
+  `@import` you rely on, and confirm the harness reads a user-level file
+  at all). Key `<repo-key>` on the remote URL slug rather than a local
+  path, so two clones of one repo share one state. The pointer must be
+  conditional — "only when working in the repo whose remote is X, read
+  `<state-dir>/directive.md`" — because a user-level file applies to
+  every repo. If the harness loads no user-level instruction file, stop
+  before Step 2: tell the user out-of-tree cannot be loaded here, write
+  nothing, and offer committed mode or no install.
 
 Later steps write to `<state-dir>` and do not branch on the mode. Two
 limits to say to the user: in out-of-tree mode teammates do not get the
@@ -291,7 +316,8 @@ Example shape for one role, to calibrate how concrete this needs to be:
 > drafting any new `SKILL.md` or changing an existing skill's `description`
 > line — one call on scope, always. Only judgment calls go here: anything
 > answerable by reading the repo, read; a preference only the user can
-> settle goes to `AskUserQuestion`. Write your leaning and why in one or
+> settle goes to `AskUserQuestion` (or your harness's ask-the-user tool,
+> else ask in plain text). Write your leaning and why in one or
 > two lines. Then find the `eagd-binding` row for `role=advise` whose
 > `tool` is the sub-agent tool you actually hold (check your tool list; do
 > not guess your vendor) and whose `status=ok`, and call that tool with

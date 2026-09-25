@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.13.5-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-12-informational)
+![version](https://img.shields.io/badge/version-0.14.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-13-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. One skill (`youtube-video-critic`) optionally connects to a separate local tool; everything else works the moment it's installed.
 
@@ -34,6 +34,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 | Skill | What it does |
 |---|---|
+| `codebase-onboarding` | Gets you oriented in an unfamiliar codebase fast: architecture and business-logic notes checked by an independent pass, plus a first-PR checklist, saved outside the repo. |
 | `goal-to-code-unblock` | Coaches you to write the code yourself from a vague goal — reviews, never authors. |
 | `learn-technology-by-building` | Multi-session mentor for learning a new technology through one cumulative project, with diagrams. |
 | `low-power-learning` | A short, near-passive session for a tired or burned-out brain, so the learning streak survives anyway. |
@@ -54,7 +55,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 ## FAQ
 
-**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Nine trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
+**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Ten trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
 
 **Will this change how Claude normally behaves?** Only `sound-human` runs by default in the background, rewriting Claude's own prose before it reaches you — everything else only activates when it matches what you're asking for.
 

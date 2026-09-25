@@ -31,7 +31,7 @@ would have to guess), and a binding is only written **after a probe proved
 the harness honours the model override**. A session with no verified
 binding does not improvise a model — see Step 4.
 
-`references/execute-advise-grade-dream.md` is the design rationale behind
+This skill's own `references/execute-advise-grade-dream.md` is the design rationale behind
 the mechanism (why four roles, why fresh eyes, why routing to a different
 model only pays off if the call is genuinely separate). **Copy this file
 into the target repo** (Step 4) rather than linking to it inside the
@@ -184,8 +184,8 @@ reasoning phase" for the second, and they are not interchangeable.
 
 ## Step 4: Copy the rationale doc, then write the mechanism into the anchor doc
 
-**Copy the plugin's `references/execute-advise-grade-dream.md` (at the
-plugin root, not inside this skill's folder) into the target first** —
+**Copy this skill's own `references/execute-advise-grade-dream.md` (next
+to this `SKILL.md`, so it travels with a per-skill install) into the target first** —
 in committed mode e.g. `docs/execute-advise-grade-dream.md`, or wherever
 the repo's own docs live; in out-of-tree mode into `<state-dir>` — so the
 design rationale survives independently of this plugin being installed.

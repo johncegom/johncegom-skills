@@ -139,7 +139,7 @@ score, core takeaways, and personal application (if present) — run one grading
 pass before sending it to the user. Skip this step only for the claim-check/
 follow-up shape from Step 1, the same carve-out as Step 4.
 
-This step is this skill's Grade role. See [references/execute-advise-grade-dream.md](../../references/execute-advise-grade-dream.md) for what that means mechanically — a separate pass, fresh context, no carried-over reasoning. The rubric below is specific to this skill and stays here rather than in the shared file.
+This step is this skill's Grade role: a separate pass, fresh context, no carried-over reasoning from the draft. The rubric below is specific to this skill.
 
 Check each item as pass/fail:
 
@@ -166,7 +166,7 @@ Check each item as pass/fail:
    nothing qualified, confirm the section was correctly omitted rather than
    left empty.
 
-This step uses the shared file's targeted-fix fail mode, not full-rerun — each
+This step uses a targeted-fix fail mode, not full-rerun — each
 rubric item maps to one identifiable line or sentence, so a fail never calls
 for redoing the whole draft. If an item fails, name it and quote the offending
 line, then fix only that line — never a full rewrite. Re-check only the failed

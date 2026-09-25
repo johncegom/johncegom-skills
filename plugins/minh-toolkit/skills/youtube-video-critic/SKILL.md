@@ -37,7 +37,7 @@ This skill requires youtube-mcp tools. Primary: `get_video_brief` (metadata, cha
 **The live tool description is the source of truth for tool behavior, not this file.** This skill states tool facts only to constrain defaults (no download tools, no retry on 429, use the full transcript despite any sampling suggestion). Elsewhere defer to `tool_search` or the tool's own description at call time.
 
 1. Call `tool_search` with a query like "youtube transcript metadata" to check which tools load.
-2. If no youtube-related tools are found, **stop and tell the user directly** that this skill needs the youtube-mcp-cli connector (https://github.com/johncegom/go-youtube-mcp-cli) and it doesn't appear to be available. Do not guess about the video from the title alone; an evaluation without a transcript is a guess. Binary setup hints (`PATH`, `YOUTUBE_MCP_BIN`) are in [references/analysis-and-output-detail.md](references/analysis-and-output-detail.md).
+2. If no youtube-related tools are found, **stop and tell the user directly** that this skill needs the youtube-mcp-cli connector (https://github.com/johncegom/go-youtube-mcp-cli) and it doesn't appear to be available. Do not guess about the video from the title alone; an evaluation without a transcript is a guess. Binary setup hints (`PATH`, `YOUTUBE_MCP_BIN`) are in [references/gathering-and-rate-limits.md](references/gathering-and-rate-limits.md).
 3. The same `tool_search` call also shows which of the optional tools above loaded. Don't block or warn on their absence — just remember what's available, since Step 1's branching below depends on it.
 4. If the required tools load, proceed.
 
@@ -74,9 +74,9 @@ Work through all six angles below. Do not skip any of them, even if the answer s
 
 1. **Substance vs. filler ratio.** Read the transcript and separate genuine informational content (explanations, data, demonstrations, arguments) from filler (self-promotion, sponsor reads, storytelling that doesn't carry information, repeated points, jokes, calls to subscribe). Estimate the split as a rough percentage (e.g. "roughly 60% substance, 40% filler/promotion"). Say what the filler actually consists of, don't just give a number.
 2. **Source and bias.** Who made this and what do they gain from the viewer having a positive impression — selling a product, a course, a tool they built, ad revenue, reputation? This doesn't automatically make the video worthless, but it changes how much weight to give enthusiastic claims. Distinguish measured claims (data, reproducible steps) from anecdotal ones ("people love this", one user's story).
-3. **Novelty.** Is the core information new, or a repackaging of common knowledge? Name the dimension of novelty (new idea or finding, new packaging, new application or angle, new evidence, new combination) rather than collapsing it into one verdict, and be specific about what, if anything, is novel.
+3. **Novelty.** Is the core information genuinely new, or a repackaging of concepts that are common knowledge or easily found elsewhere? Be specific about what, if anything, is novel, and name the dimension: a new idea or finding, a new way of presenting an existing idea, a new application or angle on something established, new evidence for a known claim, or a novel combination of existing ideas. Don't collapse these into one verdict: a video can be low-novelty on the core idea but genuinely novel in framing or application, and that is worth stating plainly rather than averaging away. The reader can judge what is new to them even if it isn't new in an absolute sense.
 4. **Actionability.** Can the viewer do something concrete with this after watching — a step, a tool, a decision — or is it purely inspirational/entertainment with no follow-up action?
-5. **Personal relevance.** Check whether the video connects to something the user is actually doing or aims to do (projects, tools, stated goals and aspirations, from this conversation or memory), re-checked against the fullest context available. Use only genuinely relevant context; with none, skip this row rather than inventing relevance.
+5. **Personal relevance.** If you have context about the user (projects, tools, interests, from this conversation or memory), check whether the video connects to something they are actually doing. Stated goals and aspirations count as much as active projects (a "side interest I want to develop" is a valid anchor). A goal stated later in the conversation re-shapes this row even for videos evaluated before it was mentioned, so re-check against the fullest context available. Use only genuinely relevant context; with none, skip this row rather than inventing relevance.
 6. **True title vs. stated title.** After the analysis, write a short title-length sentence for what the content actually delivers, grounded in the transcript, not guessed intent, and set it next to the real title. This is a minor secondary note: if they match, say so in one line; otherwise name the specific kind of gap (e.g. singular framing for plural content, universal scope for a narrow context, certainty for a disputed claim), not a vague "clickbait-y."
 
 ## Step 3: Deliver the verdict
@@ -107,9 +107,9 @@ Right after the verdict, add **Value score: X/10**, a single number for value-pe
 
 Always weigh the verdict against the video's actual duration — a 5-minute video with 30% filler is a different judgment than a 40-minute video with 30% filler.
 
-When personal relevance is genuinely strong (a real stated goal or active project), let it pull the verdict up a notch; don't inflate a verdict for a video with no real personal connection. State explicitly when personal relevance is the deciding factor.
+When personal relevance is genuinely strong (a real stated goal or active project, not an invented one), let it pull the verdict up a notch: a video with a mediocre substance-to-filler ratio can still be worth a full watch if it sits squarely on something the user is actively trying to do. Don't inflate a verdict for a video with no real personal connection just because it's well-produced. State explicitly when personal relevance is the deciding factor.
 
-With the verdict now fully formed — substance/filler, duration weighting, and personal relevance all folded in — the verdict is locked here. The reverse-attitude and hype-language checks that used to run inline at this point now run as part of the Step 4.5 grading pass instead, with fresh context instead of the reasoning that's still active while writing.
+The verdict is locked here; the reverse-attitude and hype-language checks run in Step 4.5.
 
 ## Step 4: Core takeaways and personal application
 
@@ -124,41 +124,23 @@ After the verdict, always add two more sections — this is what turns an evalua
 
 Always include these two sections as part of a full evaluation output, not just on request. Skip them only for the claim-check/follow-up shape from Step 1, not for a full evaluation or an already-scoped one.
 
-**Before moving on to Step 5, confirm the response actually contains, in order: TL;DR, the table, the title-gap line, the verdict + value score, then Core takeaways and (if applicable) Personal application.** These sections are not optional filler and don't become optional just because a later step (the ledger) also needs attention.
-
 ## Step 4.5: Grade the draft before delivering
 
-Once the full draft is assembled — TL;DR, table, title-gap line, verdict, value
-score, core takeaways, and personal application (if present) — run one grading
-pass before sending it to the user. Skip this step only for the claim-check/
-follow-up shape from Step 1, the same carve-out as Step 4.
+Once the full draft is assembled — TL;DR, table, title-gap line, verdict, value score, core takeaways, and personal application (if present) — run one grading pass before sending it to the user. Skip this step only for the claim-check/ follow-up shape from Step 1, the same carve-out as Step 4.
 
 This step is this skill's Grade role: a separate pass, fresh context, no carried-over reasoning from the draft. The rubric below is specific to this skill.
 
 Check each item as pass/fail:
 
-1. The TL;DR is the first line and matches `TL;DR: <verdict> — Value score: X/10`
-   exactly.
-2. The table has exactly five rows, in order: Substance vs. filler, Source &
-   incentive, Novelty, Actionability, Personal relevance.
-3. The title-gap line appears after the table, separate from it, and states
-   either a real, specific gap or plainly says the title matches — never a
-   vague or invented gap.
-4. The verdict uses one of the three exact verdict names from Step 3, not a
-   paraphrase.
-5. The value-score gap sentence names a specific, concrete thing keeping the
-   video from a 10 — not vague praise, not a generic catch-all.
-6. Every core takeaway either states the video's own mechanism/reasoning, or
-   explicitly says the video doesn't explain one — none just restate the
-   bottom-line conclusion.
-7. No sentence in the TL;DR or verdict paragraph uses hype language
-   (persuading rather than reasoning).
-8. The verdict would not flip if the user's evident attitude toward the video
-   were reversed (excited ↔ skeptical).
-9. Personal application, if present, ties each item to something concrete
-   about the user's actual context, never a forced or generic connection. If
-   nothing qualified, confirm the section was correctly omitted rather than
-   left empty.
+1. The TL;DR is the first line and matches `TL;DR: <verdict> — Value score: X/10` exactly.
+2. The table has exactly five rows, in order: Substance vs. filler, Source & incentive, Novelty, Actionability, Personal relevance.
+3. The title-gap line appears after the table, separate from it, and states either a real, specific gap or plainly says the title matches — never a vague or invented gap.
+4. The verdict uses one of the three exact verdict names from Step 3, not a paraphrase.
+5. The value-score gap sentence names a specific, concrete thing keeping the video from a 10 — not vague praise, not a generic catch-all.
+6. Every core takeaway either states the video's own mechanism/reasoning, or explicitly says the video doesn't explain one — none just restate the bottom-line conclusion.
+7. No sentence in the TL;DR or verdict paragraph uses hype language (persuading rather than reasoning).
+8. The verdict would not flip if the user's evident attitude toward the video were reversed (excited ↔ skeptical).
+9. Personal application, if present, ties each item to something concrete about the user's actual context, never a forced or generic connection. If nothing qualified, confirm the section was correctly omitted rather than left empty.
 
 This step uses a targeted-fix fail mode, not full-rerun: each rubric item maps to one line, so name the failed item, quote the offending line, fix only that line, and re-check only the failed items.
 
@@ -174,9 +156,8 @@ This step is secondary to the evaluation itself: if something has to give under 
 
 ## Language and tone
 
-- Respond in the same language the user used to ask (if they wrote in Vietnamese, answer in Vietnamese) — this includes the structural labels in Step 3/4 (table headers, row labels, the three verdict names, "Value score", "Core takeaways", "Personal application"), not just the surrounding prose. This file's instructions are written in English for consistency across skills in this plugin, but that's a source-language choice, not a runtime constraint — nothing here stays fixed in English when the user is asking in another language.
+- Respond in the language the user asked in, including the structural labels in Steps 3 and 4 (table headers, row labels, the three verdict names, "Value score", "Core takeaways", "Personal application").
 - Use plain, direct wording. Short sentences. No hype language, no jargon left unexplained.
-- Never just praise or just dismiss — the goal is an honest, specific judgment, not a verdict designed to please the user.
 
 ## Copyright constraint
 

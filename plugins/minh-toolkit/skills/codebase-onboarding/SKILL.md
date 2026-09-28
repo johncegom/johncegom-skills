@@ -3,19 +3,18 @@ name: codebase-onboarding
 description: >
   Fast onboarding into an unfamiliar codebase: a new job, an old project
   handed back, or an open-source dive. Reverse-extracts architecture and
-  business-logic specs with file evidence, has a fresh-context pass verify
-  those claims, then saves notes plus a first-PR checklist outside the
-  repo. Can also add, on request, an architecture diagram and a
-  repo-agnostic list of design concepts worth carrying to a future
-  project. Use when the user needs a project's core fast, just joined a
-  codebase, or picked one back up and wants a durable orientation, not one
-  answer. Do NOT use for a quick one-file/function/flow question (answer
-  it directly), writing onboarding docs for other people, designing new
-  architecture, mentoring the build of a new project
-  (learn-technology-by-building — this skill only writes down concepts
-  from an existing repo, it doesn't teach or build with them), being stuck
-  on one function (goal-to-code-unblock), or debugging/reviewing a
-  specific change.
+  business-logic specs with file evidence, including a solution-architect
+  read of the existing design (tradeoffs, structural decisions, data
+  ownership, failure modes, scaling limits), has a fresh-context pass
+  verify every claim, then saves notes plus a first-PR checklist outside
+  the repo. On request, also a diagram and repo-agnostic design concepts.
+  Use when the user needs a project's core fast, just joined or picked a
+  codebase back up, and wants a durable orientation, not one answer. Do
+  NOT use for a quick one-file/function/flow question (answer it
+  directly), onboarding docs for others, designing or reviewing a
+  proposed new architecture, learning system design or building a new
+  project (learn-technology-by-building), being stuck on one function
+  (goal-to-code-unblock), or debugging/reviewing one change.
 ---
 
 # Codebase Onboarding
@@ -53,8 +52,24 @@ Read the repo in this order, stopping when the picture is stable rather than rea
 
 Write two specs. Every non-trivial claim carries evidence as `path:line`, and anything inferred rather than read is marked **(inferred)**.
 
-- **Architecture spec:** components and responsibilities, boundaries and dependency direction, external systems, how it is built, tested, and deployed. Also include a **primary flow**: one concrete path relevant to the Goal, traced in order through the actual files and functions it passes through. This is the throughline that ties the components together — a list of components with no flow through them is why notes can read as inert facts with no "now what".
+- **Architecture spec:** components and responsibilities, boundaries and dependency direction (including trust boundaries: where untrusted input enters, where authn/authz is enforced), external systems, how it is built, tested, and deployed (runtime and deploy topology). Also include a **primary flow**: one concrete path relevant to the Goal, traced in order through the actual files and functions it passes through. This is the throughline that ties the components together — a list of components with no flow through them is why notes can read as inert facts with no "now what".
 - **Business-logic spec:** the domain concepts, the core rules and invariants the code enforces, the important state transitions, and where each rule lives. For rules and decisions load-bearing enough to matter for the Goal, also say why: the problem it solves, the tradeoff or alternative it reflects, and what would justify changing it — drawn from commit messages, ADRs, tests, or a contrast visible in the code, and marked **(inferred)** like any other inference, never asserted as known intent. For everything else, describe what the code does and say plainly when intent is unclear instead of guessing a purpose.
+
+- **System design view** (a required section of `architecture.md`, not a separate file): a solution architect's read of the *existing* design, as built. It takes structural decisions only (sync vs async, service split, datastore and consistency choice, where state lives, caching); domain rules stay in the business-logic spec, so the same claim never appears twice. Cover, at most 3 items per subsection:
+  - **Qualities favored and sacrificed:** latency, consistency, availability, security, cost, changeability.
+  - **Structural decisions:** chosen option, a plausible alternative, and the cost of the choice. The alternative is always **(inferred)**.
+  - **Data ownership and consistency:** who writes each key entity, and where consistency is eventual.
+  - **Failure modes and blast radius:** what happens when each external dependency is slow or down, found by looking for timeouts and fallbacks and for where they are missing.
+  - **Scaling limits:** worded as "under load the bottleneck would be X because Y **(inferred)**", never as a throughput number.
+  - **Evolution risk and tech debt:** ranked by how much each touches the Goal.
+  - **Goal implications:** which of the above the Goal will run into, and how. This feeds the first-PR pick in step 4 and the prediction in step 5.
+
+  Rules that keep this section honest, since it invites fluent filler:
+  - **Mechanism gate:** a quality or tradeoff claim needs a concrete mechanism at `path:line` (a timeout, retry, idempotency key, cache, index, transaction boundary, queue, rate limit, auth middleware). "Optimizes for X" with no mechanism is cut, not downgraded to inferred.
+  - **Inference needs a signal:** an **(inferred)** claim here names what it came from ("no retry around the call at `path:line`"). No signal, cut it.
+  - **Swap test:** if the sentence would be true of any app on this stack ("uses Postgres for durability"), cut it.
+  - **Not determinable is a valid answer:** real traffic, SLOs, and incidents are not in a repo. Write "Not determinable from the repo. Ask: ..." and add it to the open questions. This section reads the design as built, not how it behaves in production.
+  - **Scale to the repo:** for a library, CLI, or small repo keep only the subsections that apply and say which were skipped and why. A three-line section is a finished result. Anything unrelated to the Goal gets one line at most.
 
 If diagrams-and-concepts was requested in step 1, follow `references/diagrams-and-concepts.md` now, alongside the architecture spec.
 
@@ -70,15 +85,17 @@ Then fix the specs: correct wrong claims, drop or downgrade unsupported ones to 
 
 Why-claims (problem solved, tradeoff, what would justify a change) get checked the same way as any other claim: unsupported ones are downgraded to **(inferred)** or dropped, never left standing as asserted fact just because they read as insight.
 
+The system design view gets the same pass plus three extra checks. For decision claims, verify only the chosen side; the alternative stays **(inferred)**. Platitude check: could a claim have been written from the README and the stack alone? If yes, cut it. Punt check: for each "not determinable" item, the verifier spends a quick search on whether the answer is actually in the repo, and for failure-mode claims it cites where handling exists or confirms it is absent ("no timeout" is a claim too).
+
 If no sub-agent tool exists, do a self-audit instead: re-open the source for each claim without looking at your earlier reasoning. It is weaker, and the notes must say so.
 
-Record in the notes which check ran (independent sub-agent or self-audit) and the tally of verified, corrected, and dropped claims.
+Record in the notes which check ran (independent sub-agent or self-audit) and the tally of verified, corrected, and dropped claims, with the system design view tallied separately (verified, corrected, dropped, not determinable) so it is visible over time whether that section carries substance.
 
 If diagrams-and-concepts was requested, the same pass also covers every diagram edge and every kept concept — see `references/diagrams-and-concepts.md`.
 
 ## 4. First-PR checklist
 
-Build it from evidence in this repo, not generic advice: the commands actually found for setup, build, test, and lint, the branch and commit conventions from CONTRIBUTING or history, what CI checks, who reviews (CODEOWNERS), and a suggested first change of low risk (a documented issue, a small test gap, a doc fix) with the files it would touch. Prefer a first change that moves toward the Goal from step 1 over an unrelated easy one, when both exist. Mark any step you could not confirm.
+Build it from evidence in this repo, not generic advice: the commands actually found for setup, build, test, and lint, the branch and commit conventions from CONTRIBUTING or history, what CI checks, who reviews (CODEOWNERS), and a suggested first change of low risk (a documented issue, a small test gap, a doc fix) with the files it would touch. Prefer a first change that moves toward the Goal from step 1 over an unrelated easy one, when both exist. Use the system design view's Goal implications to steer around, or deliberately into, a known constraint. Mark any step you could not confirm.
 
 ## 5. Save and hand over
 
@@ -94,7 +111,7 @@ Finish with a short summary in chat, in this order, not as a document dump:
 2. **One prediction:** ask where the user thinks the Goal-relevant behavior lives, or how the primary flow works, before pointing them at the notes to check. This is one question, not a comprehension-check ceremony — it's the difference between reading a fact and testing your own model of it, and it costs the user under a minute.
 3. **Where the notes are, and the open questions.**
 
-If the user says up front they just want the notes for now, skip the prediction and stop after step 3 — fast passive reference is a legitimate use of this skill too, not a fallback. Ask at most one prediction; do not turn this into a quiz round.
+If the user says up front they just want the notes for now, skip the prediction and stop after item 3 — fast passive reference is a legitimate use of this skill too, not a fallback. Ask at most one prediction; do not turn this into a quiz round.
 
 ## Guardrails
 

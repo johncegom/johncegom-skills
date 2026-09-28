@@ -5,6 +5,30 @@ This is `johncegom/johncegom-skills`, a Claude Code plugin marketplace. See
 `.claude/skills/update-toolkit-skill/SKILL.md` for the branch/validate/PR
 workflow required to land any change here.
 
+## Preview of changes
+
+Whenever you hand work back to the owner after changing files in this repo
+(end of task, or the reply that reports a commit, push, or PR), show a
+preview of the whole change in the chat reply itself, not only in a file
+or artifact:
+
+1. Scope: `git diff --stat $(git merge-base main HEAD)` plus `git status
+   --short` for untracked files. This covers committed and uncommitted work
+   on the branch.
+2. Hunks: the full diff for every file that carries behaviour (SKILL.md,
+   this file, docs that direct sessions, scripts, CI), and the full content
+   of any new untracked file. One line each is enough for version bumps,
+   log/table rows, and generated edits. If you leave anything out, say what.
+3. A few plain-words lines on what changed and why.
+
+Show it once per hand-off. If you change files after a preview, show only
+the new part. A PR opened from an already-previewed state just gets its
+link. Don't skip it because the change is small or wasn't asked for this
+time. It is a preview, not an approval gate: keep going unless the owner
+asks you to wait. Files written outside the repo are listed by path.
+Sub-agents don't preview; their caller does. No files changed means no
+preview; say so in one line.
+
 ## Execute / Advise / Grade / Dream
 
 This repo's actual task is authoring and editing skills — a task that

@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.14.2-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-13-informational)
+![version](https://img.shields.io/badge/version-0.15.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-13-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. One skill (`youtube-video-critic`) optionally connects to a separate local tool; everything else works the moment it's installed.
 
@@ -25,6 +25,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 **Starting on an unfamiliar codebase**
 - *"I just joined this team and need to understand the core fast."* → `codebase-onboarding` writes architecture and business-logic notes with `path:line` evidence, has a separate pass check them against the source, and adds a first-PR checklist. Notes are saved outside the repo, in `~/onboarding-notes/<repo>/`.
+- *"I want to study this repo's stack and design to build my own app."* → `codebase-onboarding` also handles this: same verified notes, but a reuse dossier (what to adopt, adapt, or skip, and what's specific to this repo) instead of a first-PR checklist.
 
 **Learning to code**
 - *"I don't know where to start with this Django project"* → `goal-to-code-unblock` hands you the first step, not the finished code.
@@ -52,7 +53,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 | Skill | What it does |
 |---|---|
-| `codebase-onboarding` | Gets you oriented in an unfamiliar codebase fast: architecture and business-logic notes checked by an independent pass, plus a first-PR checklist, saved outside the repo. |
+| `codebase-onboarding` | Gets you oriented in an unfamiliar codebase fast: architecture and business-logic notes checked by an independent pass, plus a first-PR checklist or a reuse dossier for building a different app from its patterns, saved outside the repo. |
 | `goal-to-code-unblock` | Coaches you to write the code yourself from a vague goal — reviews, never authors. |
 | `learn-technology-by-building` | Multi-session mentor for learning a new technology through one cumulative project, with diagrams. |
 | `low-power-learning` | A short, near-passive session for a tired or burned-out brain, so the learning streak survives anyway. |

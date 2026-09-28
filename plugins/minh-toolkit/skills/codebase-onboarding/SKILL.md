@@ -31,7 +31,11 @@ Establish, from context first and by asking only what is missing:
 - **Situation:** new job, returning to an old project, or open-source dive. It changes the emphasis: a new job needs team conventions and where to ask; a returning user needs what changed and what rotted; an open-source dive needs contribution rules.
 - **Goal:** what the user must be able to do soon (fix a bug area, ship a feature, review PRs).
 - **Scope:** in a large repo or monorepo, ask which area first instead of skimming everything. Onboard one area well, then extend.
-- **Notes folder:** propose `~/onboarding-notes/<repo-name>/` (or the user's preferred location) and get a yes. Refuse any path inside the target repo, and check the chosen path is not under the repo root. If the folder already exists, this is a returning run: read the existing notes and update them rather than regenerating.
+- **Notes folder:** propose `~/onboarding-notes/<repo-name>/` (or the user's preferred location) and get a yes. Refuse any path inside the target repo, and check the chosen path is not under the repo root.
+
+  Detect a returning run by **repo identity**, not by folder name — a repo can be cloned to a new path or renamed between sessions, and two unrelated repos can share a folder name. Compute the identity once: the normalized `origin` remote URL if one exists (strip protocol/`.git`/trailing-slash differences, and treat the SSH form `git@host:org/repo` and the HTTPS form `https://host/org/repo` as the same identity), otherwise the repo's root commit hash(es) (`git rev-list --max-parents=0 HEAD`). If neither is available (no git history reachable, e.g. a shallow clone with no remote), fall back to folder-name matching alone and record in `index.md` that identity detection was weaker for this run.
+
+  If the proposed folder exists and its recorded identity in `index.md` matches: this is a returning run, no further check needed — read the existing notes and update them rather than regenerating. If it exists but the identity does *not* match (a folder-name collision with a different repo): treat this as a fresh run under a disambiguated name, don't overwrite. If the proposed folder doesn't exist, or its identity doesn't match: check sibling folders under the notes root for one whose recorded identity matches — the repo may have been renamed or moved. If found, tell the user and use that existing folder as the returning run rather than silently starting a disconnected new one; if not found, proceed as a fresh run.
 - **Diagrams and portable concepts:** ask once, in the same message as the notes-folder question: "Also want an architecture diagram plus a portable `general-concepts.md` — design ideas written without this repo's code or names, so they carry to your next repo? Adds a few minutes." Ask every run; don't self-decide from Situation. Default is no; treat an explicit signal already in the request (e.g. "with diagrams") as the answer instead of asking again. If yes, read `references/diagrams-and-concepts.md` before step 2. On a returning run, reuse the recorded answer from `index.md` rather than asking again.
 
 Carry the Goal forward: it decides which flow gets traced in step 2, which first-PR item to suggest in step 4, and what the handover in step 5 asks the user to try. Notes with no goal behind them read as a pile of facts about the whole repo instead of an answer to what the user actually needs.
@@ -78,7 +82,7 @@ Build it from evidence in this repo, not generic advice: the commands actually f
 
 ## 5. Save and hand over
 
-Write to the notes folder, not the repo: `architecture.md`, `business-logic.md`, `first-pr-checklist.md`, and an `index.md` with the date, repo commit hash, situation, verification result, and open questions.
+Write to the notes folder, not the repo: `architecture.md`, `business-logic.md`, `first-pr-checklist.md`, and an `index.md` with the date, repo commit hash, **repo identity** (the remote URL or root commit hash used for returning-run detection, and a note if detection fell back to folder-name only), situation, verification result, and open questions.
 
 If diagrams-and-concepts was requested, add `general-concepts.md` to that list, and record the yes/no answer itself in `index.md` so a returning run doesn't have to ask again.
 

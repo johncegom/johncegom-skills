@@ -61,9 +61,9 @@ or "crazy" ideas, not a polished proposal. Don't evaluate anything at this step.
 If they give more than one idea, that's fine — let them.
 
 **If the user has no idea at all and asks you to just decide:** don't jump
-straight to step 4 — that's not "stuck," it's not having tried yet, and
-skipping straight to an answer defeats the point of an opt-in skill the user
-chose specifically for this loop. Give one gentle, concrete nudge instead —
+straight to an answer (step 5) — that's not "stuck," it's not having tried
+yet, and skipping straight to an answer defeats the point of an opt-in skill
+the user chose specifically for this loop. Give one gentle, concrete nudge instead —
 narrow the open question into something small enough to guess at ("kể cả một
 hướng bạn nghĩ có thể sai cũng được — bạn sẽ thử cách nào trước?"). Only treat
 it as genuine step-4 "stuck" if they still can't produce anything after that

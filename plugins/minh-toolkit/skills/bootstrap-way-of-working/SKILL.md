@@ -287,19 +287,18 @@ recommend the specific artifact to retire, and if they agree:
    docs that link to a bug/decision entry) — don't rewrite history to
    scrub them, just stop writing new ones.
 
-## Step 5: Report what you installed — and what you deliberately skipped
+## Step 5: After a re-calibration or decommission pass, report again
 
-Close by telling the user, in a short summary: the tier chosen and why,
-which artifacts were created, and which patterns were *not* installed and
-why not (e.g. "skipped the task-approval gate — solo project, you have full
-context already; skipped the ground-truth TDD pattern — no external oracle
-this project ports against"). This matters for the same reason the
-patterns themselves matter: an unstated omission looks like an oversight,
-a stated one looks like a decision. If the project's needs change later
-(a second contributor joins, stakes go up), the user can come back and ask
-for the next tier explicitly rather than the skill guessing wrong now —
-see the re-calibration triggers in Step 1 and the decommissioning path in
-Step 4 for both directions of that change.
+Step 4's re-calibration and decommission flow ends the same way Step 3 did at
+first install: don't just update the anchor doc and move on silently. Tell
+the user, in a short summary, what changed and why this time — which tier
+the project is on now, which artifacts were retired or newly added, and
+what stayed the same. The same reasoning from Step 3 applies here: an
+unstated change looks like drift or an oversight, a stated one looks like a
+decision the project deliberately made. This report is specific to whatever
+prompted the re-calibration (see Step 1's triggers) or decommission (see
+Step 4's signs) — it's a different report than Step 3's first-install
+summary, not a repeat of it.
 
 See `references/templates.md` for adaptable file content for every
 artifact above.

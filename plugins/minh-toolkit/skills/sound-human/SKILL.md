@@ -274,14 +274,15 @@ The voice matters because the "matches the selected voice's rhythm, tone, and
 signature qualities" item can't be graded without knowing which voice was the
 target.
 
-Run this Grade pass on Sonnet, not the usual Haiku default for Grade.
-Roughly half this checklist is mechanically countable — banned-word counts,
-em dash frequency, tricolons, parallel negation, "And"/"But" presence — a
-genuine Haiku fit. But the other half requires judging prose feel: matching
-voice rhythm, reading like a real person rather than a polished essay,
-word choices that feel specific rather than predictable. That's a call
-Haiku is less reliable at than Sonnet, so the whole pass runs on Sonnet
-rather than splitting mechanical items from judgment items.
+Run this Grade pass on Sonnet, or your harness's most capable available model,
+not the usual lighter default for Grade. Roughly half this checklist is
+mechanically countable — banned-word counts, em dash frequency, tricolons,
+parallel negation, "And"/"But" presence — a fit for a lighter/faster model.
+But the other half requires judging prose feel: matching voice rhythm,
+reading like a real person rather than a polished essay, word choices that
+feel specific rather than predictable. That's a call a lighter model is less
+reliable at, so the whole pass runs on the stronger model rather than
+splitting mechanical items from judgment items.
 
 Fail mode: targeted fix by default. Grade names the specific failing
 checklist item(s), and the fix touches only what those items need — never a
@@ -310,6 +311,15 @@ Before presenting the rewritten or first-drafted text, verify every single item:
 - [ ] Word choices include some less predictable, specific phrasing
 - [ ] Output matches the selected voice's rhythm, tone, and signature qualities
 - [ ] Reads like a real person talking, not a polished essay
+
+**Short drafts (one paragraph, or only a sentence or two):** several items above
+assume room to vary — a percentage of paragraphs, a sentence that isn't the
+only one, two consecutive sentences to compare. When the draft is too short
+for an item to structurally apply, that item is satisfied by omission, not by
+inserting an extra sentence, splitting a paragraph, or forcing an "And"/"But"
+clause the text doesn't need. Padding or reshaping a short draft just to clear
+a checklist box is the over-correction "What to Protect" already warns
+against — the length and shape stay driven by what the content needs.
 
 When this runs as a self-check on your own draft (purpose 1), do this pass silently
 before the text ever reaches the user — don't show the checklist or narrate the

@@ -21,7 +21,7 @@ description: >
 
 Get the user oriented in a codebase they did not write, fast, without touching the repo. The agent does the reading and extraction; the output is a small set of notes the user can trust because an independent pass checked them against the source, plus either a checklist for landing a first PR or a dossier of what to reuse elsewhere, depending on why the user is here.
 
-Everything this skill needs is in this file. Work read-only on the target repo: never create, edit, or commit files inside it.
+Everything is in this file except the optional diagrams-and-concepts pass, in `references/diagrams-and-concepts.md`, loaded only if the user says yes in step 1. Work read-only on the target repo: never create, edit, or commit files inside it.
 
 ## 1. Frame the onboarding
 
@@ -31,6 +31,7 @@ Establish, from context first and by asking only what is missing:
 - **Goal:** what the user must be able to do soon. For the first three situations: fix a bug area, ship a feature, review PRs. For a reference study: what the user's own app is, and how it differs from this repo (domain, scale, constraints) — this decides what's worth adopting versus what's specific to this repo and shouldn't be copied uncritically.
 - **Scope:** in a large repo or monorepo, ask which area first instead of skimming everything. Onboard one area well, then extend.
 - **Notes folder:** propose `~/onboarding-notes/<repo-name>/` (or the user's preferred location) and get a yes. Refuse any path inside the target repo, and check the chosen path is not under the repo root. If the folder already exists, this is a returning run: read the existing notes and update them rather than regenerating.
+- **Diagrams and portable concepts:** ask once, in the same message as the notes-folder question, for every situation: "Also want an architecture diagram plus a portable `general-concepts.md` — design ideas written without this repo's code or names, so they carry to your next repo? Adds a few minutes." Default is no; treat an explicit signal already in the request (e.g. "with diagrams") as the answer instead of asking again. If yes, read `references/diagrams-and-concepts.md` before step 2. On a returning run, reuse the recorded answer from `index.md` rather than asking again.
 
 Carry the Goal forward: it decides which flow gets traced in step 2, which first-PR item to suggest in step 4, and what the handover in step 5 asks the user to try. Notes with no goal behind them read as a pile of facts about the whole repo instead of an answer to what the user actually needs.
 
@@ -52,13 +53,15 @@ Write two specs. Every non-trivial claim carries evidence as `path:line`, and an
 
 For a reference study, shift emphasis rather than the reading order: weight dependency manifests and the reasoning behind each technology choice over CONTRIBUTING and git-history hot files, and keep the business-logic spec short unless the user's own app shares this repo's domain.
 
+If diagrams-and-concepts was requested in step 1, follow `references/diagrams-and-concepts.md`'s diagram guidance now, alongside the architecture spec.
+
 Keep each spec short enough to read in one sitting. Also list **open questions** the code could not answer, worded so the user can ask a teammate.
 
 ## 3. Verification pass
 
 Do not save the specs before an independent check.
 
-Spawn a fresh sub-agent with no inherited context, using whatever sub-agent tool this session has. Give it only the two specs and read access to the repo, and withhold your reasoning. Ask it to mark every claim **verified**, **unsupported**, or **wrong**, citing the `path:line` it actually checked, and to list important behavior in the code that the specs omit.
+Spawn a fresh sub-agent with no inherited context, using whatever sub-agent tool this session has. Give it only the two specs, `general-concepts.md` if diagrams-and-concepts was requested, and read access to the repo, and withhold your reasoning. Ask it to mark every claim **verified**, **unsupported**, or **wrong**, citing the `path:line` it actually checked, and to list important behavior in the code that the specs omit.
 
 Then fix the specs: correct wrong claims, drop or downgrade unsupported ones to **(inferred)**, and add material omissions. If the verifier finds more than a few wrong claims, redo the affected section and verify it again instead of patching.
 
@@ -68,6 +71,8 @@ If no sub-agent tool exists, do a self-audit instead: re-open the source for eac
 
 Record in the notes which check ran (independent sub-agent or self-audit) and the tally of verified, corrected, and dropped claims.
 
+If diagrams-and-concepts was requested, the same pass also covers every diagram edge and every `Concept:` tag — see `references/diagrams-and-concepts.md`.
+
 ## 4. First-PR checklist, or reuse dossier
 
 For the first three situations, build a **first-PR checklist** from evidence in this repo, not generic advice: the commands actually found for setup, build, test, and lint, the branch and commit conventions from CONTRIBUTING or history, what CI checks, who reviews (CODEOWNERS), and a suggested first change of low risk (a documented issue, a small test gap, a doc fix) with the files it would touch. Prefer a first change that moves toward the Goal from step 1 over an unrelated easy one, when both exist. Mark any step you could not confirm.
@@ -76,7 +81,7 @@ For a **reference study**, build a **reuse dossier** instead — there is no PR 
 
 1. **Target app:** the user's app in one line (from the Goal), and how it differs from this repo.
 2. **Stack table:** technology → its role here → why this repo chose it (`path:line` or **(inferred)**) → verdict for the user's app: adopt, adapt, or skip, with the reason.
-3. **Design patterns:** for each, where it lives (`path:line`), the problem it solves, the constraint of this repo it depends on, and the same adopt/adapt/skip verdict.
+3. **Design patterns:** for each, where it lives (`path:line`), the problem it solves, the constraint of this repo it depends on, and the same adopt/adapt/skip verdict. If diagrams-and-concepts was requested, point each pattern at its `general-concepts.md` entry (`Concept: <name>`) instead of restating it here.
 4. **Don't copy:** complexity that is scale-driven, legacy, or specific to this repo's own organization or constraints.
 5. **License:** what this repo's `LICENSE` file says, in one line, so the user knows what copying code (not just ideas) would require.
 6. **First slice:** the smallest pattern worth reimplementing first.
@@ -89,7 +94,9 @@ For the first three situations, write to the notes folder, not the repo: `archit
 
 For a reference study, write `architecture.md`, `business-logic.md`, `reuse-notes.md`, and the same `index.md`.
 
-On a returning run, update the files and note what changed since the recorded commit.
+If diagrams-and-concepts was requested, add `general-concepts.md` to whichever list above applies, and record the yes/no answer itself in `index.md` so a returning run doesn't have to ask again.
+
+On a returning run, update the files and note what changed since the recorded commit; re-run the diagrams-and-concepts pass only if it was requested last time.
 
 Finish with a short summary in chat, in this order, not as a document dump:
 

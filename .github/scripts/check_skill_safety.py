@@ -44,7 +44,7 @@ URL_ALLOWLIST = (
 
 # Zero-width, bidi-control and other invisible characters (U+FEFF only counts
 # when it is not the very first character, where it is an ordinary BOM).
-HIDDEN_CHARS = "[​-‏‪-‮⁠-⁤⁦-⁩﻿­᠎]"
+HIDDEN_CHARS = "[\u200b-\u200f\u202a-\u202e\u2060-\u2064\u2066-\u2069\ufeff\u00ad\u180e]"
 
 RULES = [
     ("hidden-unicode", HIDDEN_CHARS,
@@ -95,7 +95,7 @@ if not files:
 
 for path in files:
     text = open(path, encoding="utf-8", errors="replace").read()
-    if text.startswith("﻿"):
+    if text.startswith("\ufeff"):
         text = text[1:]
     lines = text.split("\n")
     for rule, pattern, why in RULES:

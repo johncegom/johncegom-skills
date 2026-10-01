@@ -77,3 +77,8 @@ jobs:
         run: |
           pip install --quiet pyyaml
           python3 .github/scripts/check_skill_frontmatter.py
+
+      # Warning-only for now: findings show as annotations but do not fail the
+      # job. Add --strict once the false-positive rate is known to be low.
+      - name: Scan plugin content for risky patterns
+        run: python3 .github/scripts/check_skill_safety.py

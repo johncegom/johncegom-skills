@@ -65,6 +65,8 @@ python .github/scripts/check_skill_frontmatter.py   # needs PyYAML
 wc -c plugins/*/skills/*/SKILL.md                    # <= 20000; move cold-path detail into references/
 ```
 
+CI also runs `.github/scripts/check_skill_safety.py`, a tripwire for supply-chain patterns in anything under `plugins/` (pipe-to-shell, credential paths, invisible Unicode, injection phrasing, unlisted URLs). It is warning-only for now. Run `python .github/scripts/check_skill_safety.py` locally; to accept a reviewed false positive, put `safety-ok: <rule-id> <reason>` on that line or the line above it.
+
 Optional, for a closer end-to-end check: build a local `.zip`/`.plugin` package (`cd tools/package-plugin && go run . plugins/<plugin-name>`) and load it directly to confirm skills actually resolve:
 ```
 claude --plugin-dir path/to/packaged.plugin -p "list the skill names available to you, one per line"

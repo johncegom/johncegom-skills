@@ -31,24 +31,21 @@ preview; say so in one line.
 
 ## Skill authoring reference
 
-When drafting a new `SKILL.md` or substantially editing one or its
-`references/` (a new or changed `description`, a new or restructured section,
-content moved to or from `references/`; not typos, version bumps or log rows),
-read `docs/skill-authoring-best-practices.md`: a verbatim copy of Anthropic's
-skill authoring guide. Its source link and hash are in the comment at the
-bottom; refresh it only by the procedure there, never hand-edit it. Always read
-its "Checklist for effective Skills". Read "Writing effective descriptions"
-when touching a `description`, "Progressive disclosure patterns" when splitting
-into `references/`, and "Advanced: Skills with executable code" when a skill
-ships scripts.
+Before drafting a new `SKILL.md` or substantially editing one (a new or changed
+`description`, a new or restructured section, content moved to or from
+`references/`), read `docs/skill-authoring-best-practices.md`, a verbatim copy
+of Anthropic's skill guide. Don't hand-edit it; refresh steps are in its bottom
+comment. Find sections by heading with Grep rather than reading the whole file.
+Always read "Checklist for effective Skills"; also "Writing effective
+descriptions" when touching a `description`, "Progressive disclosure patterns"
+when splitting into `references/`, and "Advanced: Skills with executable code"
+for scripts.
 
-This repo wins where they conflict: folded `>` descriptions (see
-`update-toolkit-skill`); the 20000-byte CI cap over the guide's 500-line
-guideline; never rename an existing skill (gerund names are optional for new
-ones); third-person description voice only on descriptions you are already
-editing, no sweeps; the checklist's Testing items are advisory, not a PR gate;
-and Grade item 5 (portability) over Claude-specific advice such as MCP tool
-prefix formats and model aliases.
+This repo wins on conflicts: folded `>` descriptions (`update-toolkit-skill`);
+the 20000-byte cap over the guide's 500 lines; no renaming existing skills
+(gerund names optional for new ones); third-person voice only on descriptions
+you're already editing; Testing items advisory; Grade item 5 portability over
+MCP prefix formats and model aliases.
 
 ## Execute / Advise / Grade / Dream
 

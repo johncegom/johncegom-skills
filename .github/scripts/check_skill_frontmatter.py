@@ -7,6 +7,11 @@ Copilot enforce by silently skipping a skill that breaks it:
 - name: 1-64 chars, a-z 0-9 and hyphens, no leading, trailing or double hyphen,
   and equal to the skill's folder name
 - description: non-empty, at most 1024 characters of the parsed value
+
+It also enforces the skill-authoring guide's body size rule (docs/skill-
+authoring-best-practices.md: "Keep SKILL.md body under 500 lines"): the lines
+after the closing frontmatter delimiter must number fewer than 500. This is a
+hard failure, with no warning tier. references/ files have no limit.
 """
 import glob
 import os
@@ -20,6 +25,7 @@ except ImportError:
 
 MAX_DESC = 1024
 WARN_DESC = 950
+MAX_BODY_LINES = 500  # the body must be under this many lines
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 
 
@@ -39,6 +45,10 @@ for path in paths:
         error(path, "no YAML frontmatter block; harnesses will skip this skill")
         failed = True
         continue
+    body_lines = len(text[match.end():].splitlines())
+    if body_lines >= MAX_BODY_LINES:
+        error(path, f"body is {body_lines} lines; the skill-authoring guide requires under {MAX_BODY_LINES}. Move cold-path detail into references/")
+        failed = True
     try:
         fm = yaml.safe_load(match.group(1))
     except yaml.YAMLError as exc:

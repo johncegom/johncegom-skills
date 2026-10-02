@@ -8,7 +8,8 @@ description: >
   "review video giúp tôi", or asks to judge, rate or give a critical opinion on
   the value of a YouTube video. For a playlist link, it asks which video to
   evaluate rather than judging every entry. Do not use for a plain summary or
-  transcript request where no judgment is asked.
+  transcript request; if the user also asks for a verdict, rating or critical
+  opinion, use it.
   Requires the youtube-mcp-cli tools (github.com/johncegom/go-youtube-mcp-cli).
 ---
 

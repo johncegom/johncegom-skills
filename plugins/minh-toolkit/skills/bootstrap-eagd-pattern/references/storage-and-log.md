@@ -1,6 +1,6 @@
 # Storage modes and the log file
 
-Detail for Steps 1b, 4 and 6 of `SKILL.md`. Read the section you need when
+Detail for Steps 1b, 3, 4 and 6 of `SKILL.md`. Read the section you need when
 the step points here.
 
 ## Out-of-tree mode
@@ -40,14 +40,18 @@ identical whatever the container is.
   heading, one sentence of append rules, and three sections, each a real
   markdown table with header and separator rows:
   - `## Advise calls`: Date, Branch, Question, Prior leaning, Answer,
-    Taken, Tool, Requested, Reported, Status
+    Taken, Tool, Requested, Reported, Status, Changed (`yes`, `no` or `—`;
+    `yes` when the answer altered the prior leaning)
   - `## Binding changes`: Date, Role, Tool, Old, New, Reason
   - `## Grade fallbacks`: Date, Branch, Tool, Reason
 
   Append each row at the end of its own table. One row per event, a single
   line, no line breaks inside a cell, a literal `|` written as `\|`, `—` for
-  a field that doesn't apply. Status is `answered` or
-  `SKIPPED reason=<code>`, so skips can be counted per Tool with a search.
+  a field that doesn't apply. Status is `answered`,
+  `answered flag=unverified` (the row was `status=flagged`) or
+  `SKIPPED reason=<code>`, so skips and unverified answers can be counted
+  per Tool with a search. Older rows without a Changed cell read as `—`;
+  don't backfill them.
 - **An existing file the user points at instead** (a decision log, a
   `.jsonl` or `.csv` file). Read it first and follow its format: same file
   type conventions, same field set, new fields at the end. Never put
@@ -56,6 +60,15 @@ identical whatever the container is.
   can't hold the fields, say so and ask instead of improvising.
 - **A log from an earlier run:** append to it. Don't recreate it, and don't
   rewrite older rows to new columns unless asked (a missing field is `—`).
+
+## Suspect `ok` rows from an older probe
+
+An earlier probe text had no branch for an uninformative reply, so a row
+written then may say `status=ok` with `reported=` empty, `—`, a bare family
+name ("Claude", "GPT-4"), or just the requested string. Treat such a row as
+unprobed: on a re-run or verify, re-probe it, and if the reply is still
+uninformative, ask the run-and-flag or skip question and add a
+Binding-changes row. Rows with a specific reported id need no change.
 
 ## Re-calibration, extra checks
 
@@ -68,4 +81,15 @@ identical whatever the container is.
   missing bindings is a binding problem, fixed by re-running this skill from
   that harness. Read the decision-change rate **per Tool value**, not in
   aggregate, since different harnesses' advisors can disagree with their
-  sessions systematically.
+  sessions systematically. The rate is `Changed=yes` over answered rows,
+  with `flag=unverified` rows counted separately.
+- The rate cannot detect an ignored override: a same-model advisor still
+  disagrees sometimes, a good leaning gets agreement from any model, and
+  Advise fires about once per PR, too few calls for a baseline. Use it for
+  re-calibration only, and never switch a `flagged` tool to skip
+  automatically; the user decides.
+- A per-call resolved-model field in the harness's tool result could later
+  earn `ok`, but only if it passes a discrimination test: a bogus id errors
+  or comes back as something else, an alias resolves to a full id, and a
+  model different from the session's own comes back as that model. A field
+  that echoes the request, or lists the ids the tool accepts, proves nothing.

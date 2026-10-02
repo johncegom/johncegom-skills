@@ -42,10 +42,9 @@ when splitting into `references/`, and "Advanced: Skills with executable code"
 for scripts.
 
 This repo wins on conflicts: folded `>` descriptions (`update-toolkit-skill`);
-the 20000-byte cap over the guide's 500 lines; no renaming existing skills
-(gerund names optional for new ones); third-person voice only on descriptions
-you're already editing; Testing items advisory; Grade item 5 portability over
-MCP prefix formats and model aliases.
+no renaming existing skills (gerund names optional for new ones);
+third-person voice only on descriptions you're already editing; Testing items
+advisory; Grade item 5 portability over MCP prefix formats and model aliases.
 
 ## Execute / Advise / Grade / Dream
 

@@ -59,10 +59,9 @@ claude plugin validate .                                                    # ma
 ```
 Both must print `✔ Validation passed`. This is the exact check CI runs (looping `claude plugin validate` over every `plugins/*/.claude-plugin/plugin.json`) — catching a failure here saves a round trip.
 
-Also check that the skill loads on other harnesses. The spec (agentskills.io) caps `description` at 1024 characters and requires `name` to equal the folder name; GitHub Copilot and VS Code silently skip a skill that breaks either, and a `description` edit is how this happens without anyone noticing. CI enforces both via `.github/scripts/check_skill_frontmatter.py`, so run it locally too. Separately, CI fails any `SKILL.md` over 20000 bytes and warns from 18000. That is this repo's context budget, not a documented Copilot limit (an earlier 22 KB Copilot failure was really an over-long description).
+Also check that the skill loads on other harnesses. The spec (agentskills.io) caps `description` at 1024 characters and requires `name` to equal the folder name; GitHub Copilot and VS Code silently skip a skill that breaks either, and a `description` edit is how this happens without anyone noticing. CI enforces both via `.github/scripts/check_skill_frontmatter.py`, so run it locally too. The same script fails any `plugins/*/skills/*/SKILL.md` whose body (the lines after the frontmatter) is 500 lines or more, which is the skill-authoring guide's "under 500 lines" rule; move cold-path detail into `references/`. It does not cover this repo's own `.claude/skills/`, and `references/` files have no limit.
 ```
-python .github/scripts/check_skill_frontmatter.py   # needs PyYAML
-wc -c plugins/*/skills/*/SKILL.md                    # <= 20000; move cold-path detail into references/
+python .github/scripts/check_skill_frontmatter.py   # needs PyYAML; also fails a body of 500+ lines
 ```
 
 CI also runs `.github/scripts/check_skill_safety.py`, a tripwire for supply-chain patterns in anything under `plugins/` (pipe-to-shell, credential paths, invisible Unicode, injection phrasing, unlisted URLs). It is warning-only for now. Run `python .github/scripts/check_skill_safety.py` locally; to accept a reviewed false positive, put `safety-ok: <rule-id> <reason>` on that line or the line above it.

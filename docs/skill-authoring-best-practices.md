@@ -1184,18 +1184,9 @@ Before sharing a Skill, verify:
   </Card>
 </CardGroup>
 
----
-
-## Source stamp
-
-This file is a verbatim copy of Anthropic's "Skill authoring best practices", kept here as the reference for building and updating skills in this repo. Everything above this line is the upstream text; only this stamp is ours.
-
-| | |
-|---|---|
-| Source | https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices |
-| Raw Markdown | https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices.md |
-| Retrieved | 2026-10-02 |
-| Last upstream change noticed | not tracked (the page shows no changelog) |
-| SHA-256 of upstream text | `542eee1e150ff7e2853099dd9e24b94626817d5a50ba50af4a4c35101a355f13` |
-
-To refresh: re-download the raw Markdown, replace everything above the `---` that precedes this section, then update the Retrieved date and the SHA-256 (`sha256sum` of the downloaded file, before the stamp is appended). If the hash is unchanged, nothing changed upstream.
+<!--
+source: https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+retrieved: 2026-10-02
+sha256 of text above: 542eee1e150ff7e2853099dd9e24b94626817d5a50ba50af4a4c35101a355f13
+refresh: curl -sSL <source>.md, compare sha256 with the line above; if it differs, replace everything above this comment and update retrieved + sha256
+-->

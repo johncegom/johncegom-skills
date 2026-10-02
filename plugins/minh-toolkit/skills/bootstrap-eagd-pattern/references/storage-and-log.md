@@ -48,9 +48,11 @@ identical whatever the container is.
   Append each row at the end of its own table. One row per event, a single
   line, no line breaks inside a cell, a literal `|` written as `\|`, `—` for
   a field that doesn't apply. Status is `answered`,
-  `answered flag=unverified` (the row was `status=flagged`) or
-  `SKIPPED reason=<code>`, so skips and unverified answers can be counted
-  per Tool with a search. Older rows without a Changed cell read as `—`;
+  `answered flag=unverified` (the row was `status=flagged`),
+  `answered flag=drift-assumed` or `answered flag=drift-unconfirmed` (the
+  alias moved and the reply's new id sits in the Reported column), or
+  `SKIPPED reason=<code>` (including `drift-declined`), so skips and flagged
+  answers can be counted per Tool with a search. Older rows without a Changed cell read as `—`;
   don't backfill them.
 - **An existing file the user points at instead** (a decision log, a
   `.jsonl` or `.csv` file). Read it first and follow its format: same file
@@ -60,6 +62,50 @@ identical whatever the container is.
   can't hold the fields, say so and ask instead of improvising.
 - **A log from an earlier run:** append to it. Don't recreate it, and don't
   rewrite older rows to new columns unless asked (a missing field is `—`).
+
+## Judging the `model:` reply at runtime
+
+Aliases move: `model=opus` resolves to a newer version at each release, so an
+exact match against `reported=` stalls a working binding. A name can't say
+whether the new version is better or worse (`opus-4` vs `opus-5-5`, `mini`
+vs none), so the agent never decides that: it asks the human a plain
+two-choice question and records the answer. First match wins, after
+lowercasing, trimming surrounding whitespace, removing every quote and backtick character, then dropping one trailing period, then a trailing `-latest`, on both sides:
+
+| Reply id | Action |
+|---|---|
+| Your own id | `stale`, skip, Binding-changes row |
+| Equal to `reported=` | Proceed |
+| Uninformative: empty or missing, equal to `model=`, a bare family (an id with no digit in it), or a display name (spaces inside the normalized id) | `stale` on an `ok` row, no change on a `flagged` one |
+| Neither contains nor is contained in `model=` | `stale`, skip, Binding-changes row |
+| Anything else (alias moved) | `ok` row: ask "Use `<new>`" or "Keep the binding and use the answer"; `flagged` row: proceed |
+
+Notes:
+- With a full-id `model=` (`claude-opus-5-5`) any other version is the fourth
+  row, not an alias move; an alias move needs a family-style `model=`.
+- "Use `<new>`" rewrites `reported=` on every `ok` row sharing the tool and
+  `model=`, leaves `model=` and `probed=` alone, and adds one Binding-changes
+  row per row (old id, new id, "version drift, owner chose the new id"). The
+  row then matches under the second case, so nothing asks again. In committed
+  mode it is a file edit on the current branch: other branches keep asking
+  until it merges, and two branches that both accept can conflict on the row.
+- "Keep the binding" leaves the row `ok`, not `flagged`: `flagged` means the
+  tool can't self-report and carries `reported=—`. The next conversation asks
+  again because the row still holds the old id. Three or more
+  `drift-assumed` rows for one new id mean it is time to pick "Use `<new>`" or
+  re-run verify.
+- Ask only with an ask-the-user tool, and not from a sub-agent. A plain-text
+  question in a headless run (`-p`, CI, a scheduled run) ends the run with
+  nothing logged; the unconfirmed path still runs the call and logs it.
+- "Once per id" means once per conversation; after context compaction the
+  agent may ask again, which is harmless.
+- A flagged row's alias-moved reply asks nothing: proceed and suggest a
+  verify re-run.
+- Self-reports can flap (a model sometimes names an older sibling), so one
+  id can reappear in `drift-*` rows; that is noise, not a failing binding.
+- A re-run replaces only the span between the binding markers, so it does not
+  update the directive's prose in an already-installed anchor doc. When this
+  rule changes, hand-patch the installed copy.
 
 ## Suspect `ok` rows from an older probe
 

@@ -45,8 +45,8 @@ This skill's job is narrower: turn that rationale into imperative
 instructions an agent will follow mid-task.
 
 `references/storage-and-log.md` holds the out-of-tree mode details, the log
-file format, and extra re-calibration checks. Read it when Steps 1b, 3, 4 or 6
-point there.
+file format, how to judge the runtime `model:` reply, and extra
+re-calibration checks. Read it when Steps 1b, 3, 4 or 6 point there.
 
 ## Step 1: Confirm scope, find the anchor doc, and check for an existing block
 
@@ -152,7 +152,8 @@ exactly the model id you are running as, nothing else." Then:
 
 **On a re-run, probe only what was touched**: a changed model, a missing row
 for this tool, or a user request to "verify" (probe every row for tools this
-session holds; a mismatch sets `status=stale` and asks for a replacement).
+session holds; a mismatch other than an alias move sets `status=stale` and
+asks for a replacement, and an alias move asks the Step 4 drift question).
 Don't re-probe unchanged rows; renames are caught at runtime by the
 `model:` reply check in Step 4. On a re-run, ask "keep `flagged`?" for
 unverified tools the way you ask "keep `<model>`?", and re-probe any `ok` row
@@ -198,8 +199,8 @@ tools this session doesn't hold are never touched; list them in the report
 as "not re-verified from this harness". If the session holds the tool but
 the probe errors, leave the row and report "could not re-verify". A probe
 result changes a row only when it differs from what's stored. Whenever a
-row's model or status changes, add one row to the log's "Binding changes"
-table.
+row's model, status or reported id changes, add one row to the log's "Binding
+changes" table.
 
 **The log file** (default `docs/eagd-log.md`; format, tables and
 existing-file rules are in `references/storage-and-log.md`). Create it if
@@ -240,16 +241,31 @@ prose for a human. For each installed role, name:
 - **What to do with the result**: Advise blocks and Execute waits, then adds
   one row to the Advise-calls table (date, branch, question, prior leaning,
   answer, which was taken, tool, requested model, reported model, status,
-  changed yes/no). If the reported model doesn't match the row, treat the
-  binding as stale: set `status=stale`, add a Binding-changes row, and skip
-  Advise until fixed. On a `flagged` row only a reply naming a *different
-  specific* model is a mismatch; an uninformative reply is not. Log a
-  `flagged` call with Status `answered flag=unverified`, and say in the PR
-  body or final report "Advise ran unverified on `<tool>`: the model override
-  could not be confirmed". Grade on a `flagged` row runs and adds a
-  Grade-fallbacks row with `reason=unverified-binding`; Dream follows
-  Advise's policy and marks its entry `(model unverified)`. When a `flagged`
-  call returns an informative `model:` reply, suggest a verify re-run.
+  changed yes/no). Judge the id after `model:` on the reply's first line.
+  Normalize it and every id you compare it with, including the row's `model=`:
+  lowercase, trim surrounding whitespace, remove every quote and backtick
+  character, then drop one trailing period, then a trailing `-latest`. First
+  match wins: (1) your own id → set `status=stale`, add a Binding-changes row,
+  and skip Advise until fixed; (2) equal to `reported=` → proceed; (3)
+  uninformative (empty or missing, equal to `model=`, a bare family (an id
+  with no digit in it), or a display name, meaning spaces inside the
+  normalized id) → `stale` on an `ok` row, no change on a `flagged` one; (4)
+  neither contains nor is contained in the row's `model=` → `stale`, as in
+  (1); (5) otherwise the alias moved, so don't edit the row yourself. On a
+  `flagged` row (5) asks nothing: proceed. On an `ok` row, if you hold an
+  ask-the-user tool and aren't a sub-agent, ask once per id per conversation,
+  showing both ids. "Use `<new>`" sets `reported=<new>` (normalized) on every
+  `ok` row with this `tool` and `model=` and adds a Binding-changes row (log
+  the call as plain `answered`); "Keep the binding and use the answer" logs
+  `answered flag=drift-assumed` and names the id in the final report; any
+  other reply sets `status=stale` and logs `SKIPPED reason=drift-declined`. If
+  you can't ask, act as "Keep the binding" but log `flag=drift-unconfirmed`.
+  Log a `flagged` call with Status `answered flag=unverified`, and say in the
+  PR body or final report "Advise ran unverified on `<tool>`: the model
+  override could not be confirmed". Grade on a `flagged` row runs and adds a
+  Grade-fallbacks row with `reason=unverified-binding`; Dream follows Advise's
+  policy and marks its entry `(model unverified)`. When a `flagged` call
+  returns an informative `model:` reply, suggest a verify re-run.
   Grade's fail path names which of the reference doc's two fail modes is the
   default here (full rerun vs. targeted fix) and when the other is allowed.
   Dream writes to a named, real file path in this repo; state the path.

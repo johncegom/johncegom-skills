@@ -69,10 +69,10 @@ eagd-binding: role=grade tool=Agent model=haiku status=ok probed=2026-09-18 repo
 eagd-binding: role=dream tool=Agent model=opus status=ok probed=2026-09-24 reported=claude-opus-5-5
 <!-- eagd-bindings:end -->
 
-**No usable row** (none for the tool you hold, the row isn't `status=ok`, or
-the spawn errors): Advise and Dream **skip** — never run them on your own
-model or an unknown one, because a same-model "consultation" looks like a
-second opinion and is not. Proceed on your recorded leaning and say in the
+**No usable row** (none for the tool you hold, the row isn't `status=ok`, the
+row's model is your own, or the spawn errors): Advise and Dream **skip** —
+never run them on your own model or an unknown one, because a same-model
+"consultation" looks like a second opinion and is not. Proceed on your recorded leaning and say in the
 PR body or final report that the role did not run. Grade **may fall back** to
 a fresh, context-free call on your own model, since fresh eyes is its main
 value.
@@ -83,7 +83,8 @@ value.
 - a change with more than one plausible home (existing skill, new skill,
   `references/`, this file) after you've read every candidate;
 - an edit to this file or `docs/execute-advise-grade-dream.md` that
-  changes how future sessions behave.
+  changes how future sessions behave (a binding-row update under the reply
+  rule below is not one).
 
 Only judgment calls go to Advise: anything answerable by reading the repo,
 read; a preference only the user can settle goes to `AskUserQuestion`, or
@@ -93,13 +94,35 @@ two lines, then call the sub-agent tool with the `model` from your
 and against, and the artifacts verbatim (candidate `description` lines,
 README skill-table rows, the diff) — not your summary. Ask it to name any
 context it lacked, and to begin its reply with `model: <its own id>`. Wait
-for the reply. If the reported id doesn't match the row's `reported=`, treat
-the binding as stale: set the row to `status=stale`, add a row to the
-"Binding changes" table, and skip Advise until it's fixed. Afterward add one
-row to the "Advise calls" table in `docs/eagd-log.md`: date, branch,
-question, prior leaning, answer, which was taken, tool, requested model,
-reported model, status (`answered`, or `SKIPPED reason=<code>` when no usable
-row — e.g. `no-verified-model-binding` — so skips can be counted per tool).
+for the reply. Judge the id after `model:` on its first line. Normalize it
+and every id you compare it with, including the row's `model=`: lowercase,
+trim surrounding whitespace, remove every quote and backtick character, then
+drop one trailing period, then a trailing `-latest`. Take the first case that
+fits:
+1. It is your own id → set the row to `status=stale`, add a row to the
+   "Binding changes" table, and skip Advise until it's fixed.
+2. It equals `reported=` → proceed.
+3. It is uninformative (empty or missing, equal to `model=`, a bare family
+   (an id with no digit in it), or a display name, meaning spaces inside the
+   normalized id) → set `status=stale`, as in 1.
+4. Neither it nor `model=` contains the other → set `status=stale`, as in 1.
+5. Otherwise the alias moved, so don't edit the row yourself. Ask once per
+   id per conversation with `AskUserQuestion`, showing both ids:
+   - "Use `<new>`": set `reported=<new>` (normalized) on every `ok` row with
+     this `tool` and `model=`, add a "Binding changes" row, and log the call
+     as plain `answered`.
+   - "Keep the binding and use the answer": log `answered flag=drift-assumed`
+     and name the id in the final report.
+   - Any other reply: set `status=stale` and log `SKIPPED reason=drift-declined`.
+
+   If you can't ask (a sub-agent, or no ask tool), act as "Keep the binding"
+   but log `flag=drift-unconfirmed`.
+
+Afterward add one row to the "Advise calls" table in `docs/eagd-log.md`:
+date, branch, question, prior leaning, answer, which was taken, tool,
+requested model, reported model, status (`answered`, or `SKIPPED reason=<code>` when no usable
+row — e.g. `no-verified-model-binding` — so skips can be counted per tool),
+changed (yes/no).
 
 **Grade.** After drafting a new `SKILL.md` or substantially editing an
 existing one, before opening the PR, call the sub-agent tool fresh (no
@@ -152,8 +175,7 @@ question, any Advise answer, the Grade verdict) and told to begin its reply
 with `model: <its own id>`, and have it append one entry to
 `docs/skill-design-decisions.md` (create the file with a one-line header if
 it doesn't exist yet): what was decided, why, and what alternative was
-rejected. If the reported id doesn't match the row, treat the binding as
-stale as under Advise. Skip this when nothing about the run was actually a
+rejected. Judge the reported id as under Advise. Skip this when nothing about the run was actually a
 judgment call worth remembering.
 
 **Re-calibration trigger.** Check `docs/eagd-log.md` occasionally. If

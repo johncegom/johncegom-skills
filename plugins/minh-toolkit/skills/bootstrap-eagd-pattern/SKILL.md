@@ -45,7 +45,7 @@ This skill's job is narrower: turn that rationale into imperative
 instructions an agent will follow mid-task.
 
 `references/storage-and-log.md` holds the out-of-tree mode details, the log
-file format, and extra re-calibration checks. Read it when Steps 1b, 4 or 6
+file format, and extra re-calibration checks. Read it when Steps 1b, 3, 4 or 6
 point there.
 
 ## Step 1: Confirm scope, find the anchor doc, and check for an existing block
@@ -82,9 +82,10 @@ the existing block was found.
   the Step 4 paths) and the loader is the anchor doc, which every session
   reads.
 - **Out-of-tree.** For repos that don't allow agent files in commits.
-  `<state-dir>` is `~/.claude/eagd/<repo-key>/` and nothing is written in
-  the repo; a conditional pointer in a user-level instruction file is the
-  loader. Read `references/storage-and-log.md` before writing anything in
+  `<state-dir>` is a stable per-user directory such as
+  `~/.claude/eagd/<repo-key>/` on Claude Code (any equivalent on another
+  harness) and nothing is written in the repo; a conditional pointer in a
+  user-level instruction file is the loader. Read `references/storage-and-log.md` before writing anything in
   this mode, and state its limits to the user.
 
 Later steps write to `<state-dir>` and don't branch on the mode.
@@ -130,20 +131,32 @@ takes ids).
 **Probe before writing a row.** Spawn the chosen model once with "Reply with
 exactly the model id you are running as, nothing else." Then:
 
-- Reply plausibly matches the requested model → write the row with
-  `status=ok` and the reply as `reported=`.
-- The spawn errors, or the reply names a different model (typically this
-  session's own) → the override was rejected or ignored. Write no `ok` row,
-  tell the user, and let them pick another value or accept fallback-only.
+- Reply names the requested model specifically (a version or full id; a
+  bare family name such as "Claude" or "GPT-4" is uninformative) → write the
+  row with `status=ok` and the reply as `reported=`. `ok` means
+  self-reported, not proven.
+- The spawn errors, or the reply names a different specific model (typically
+  this session's own) → the override was rejected or ignored. Write no `ok`
+  row, tell the user, and let them pick another value or accept
+  fallback-only.
+- The reply is uninformative (empty, a bare family name, or the harness hides
+  the model) → this tool can't verify the override. Say so plainly and ask
+  once per tool: run Advise and Dream anyway with the explicit id, flagged in
+  the log (`status=flagged`), or skip them (`status=unverified`)? Write that
+  status in every role row for this tool and leave `reported=—`.
 - The requested model is the same as this session's own → the probe proves
   nothing. First probe a model *different* from this session's own to show
-  overrides work on this tool, then probe the requested one.
+  overrides work on this tool, then probe the requested one. A tool that
+  can't self-report can't run the control probe either: ask the question
+  above.
 
 **On a re-run, probe only what was touched**: a changed model, a missing row
 for this tool, or a user request to "verify" (probe every row for tools this
 session holds; a mismatch sets `status=stale` and asks for a replacement).
 Don't re-probe unchanged rows; renames are caught at runtime by the
-`model:` reply check in Step 4.
+`model:` reply check in Step 4. On a re-run, ask "keep `flagged`?" for
+unverified tools the way you ask "keep `<model>`?", and re-probe any `ok` row
+that `references/storage-and-log.md` lists as suspect.
 
 Confirm one more thing: **this only saves tokens if the spawned call is a
 genuinely separate sub-agent invocation with its own model field** — Advise
@@ -169,10 +182,15 @@ re-run can update them in place:
 
 ```
 <!-- eagd-bindings:start -->
-eagd-binding: role=advise tool=Agent model=opus status=ok probed=2026-09-18 reported=claude-opus-5
-eagd-binding: role=grade tool=Agent model=haiku status=ok probed=2026-09-18 reported=claude-haiku-4-5-20251001
+eagd-binding: role=advise tool=<tool> model=<requested> status=ok probed=<date> reported=<id from probe>
+eagd-binding: role=grade tool=<tool> model=<requested> status=ok probed=<date> reported=<id from probe>
 <!-- eagd-bindings:end -->
 ```
+
+Fill every value from this session's own probe; never copy a model id or
+date from this example, since ids drift between model releases. `status` is
+one of `ok | flagged | unverified | stale`; none is a prefix of another, so a
+loose search for `status=ok` never matches the others.
 
 The key is `(role, tool)`. Update a row in place, never append a second for
 the same key. A re-run replaces only the span between the markers. Rows for
@@ -198,7 +216,9 @@ prose for a human. For each installed role, name:
   questions go to research, preferences go to the user or a stated default,
   and only judgment calls reach Advise.
 - **The exact action**: use the `eagd-binding` row for this role whose
-  `tool` you hold and whose `status=ok`, call that tool with that model, and
+  `tool` you hold and whose `status` is `ok` or `flagged`, call that tool
+  with that model (a `flagged` call is unverified: pass the explicit id and
+  still ask for the `model:` reply), and
   state what the prompt must and must not contain (Advise: the question,
   Execute's leaning with the case for and against, and the decisive
   artifacts verbatim — not a summary, not the transcript — plus a request to
@@ -206,8 +226,9 @@ prose for a human. For each installed role, name:
   `model: <its own id>`; Grade: only the rubric and finished output,
   withholding the reasoning behind it; Dream: the full run history plus the
   same `model:` instruction).
-- **What happens with no usable row** (none for the tool you hold, not
-  `status=ok`, or the spawn errors). The fallbacks differ on purpose.
+- **What happens with no usable row** (none for the tool you hold, a status
+  other than `ok` or `flagged`, the row's model is the session's own, or the
+  spawn errors). The fallbacks differ on purpose.
   **Advise and Dream skip**: never run them on the session's own model or an
   unknown one, because a same-model "consultation" looks like a second
   opinion and drags the decision-change rate toward zero for a reason
@@ -218,9 +239,17 @@ prose for a human. For each installed role, name:
   its main value; add a Grade-fallbacks row only when it does.
 - **What to do with the result**: Advise blocks and Execute waits, then adds
   one row to the Advise-calls table (date, branch, question, prior leaning,
-  answer, which was taken, tool, requested model, reported model, status).
-  If the reported model doesn't match the row, treat the binding as stale:
-  set `status=stale`, add a Binding-changes row, and skip Advise until fixed.
+  answer, which was taken, tool, requested model, reported model, status,
+  changed yes/no). If the reported model doesn't match the row, treat the
+  binding as stale: set `status=stale`, add a Binding-changes row, and skip
+  Advise until fixed. On a `flagged` row only a reply naming a *different
+  specific* model is a mismatch; an uninformative reply is not. Log a
+  `flagged` call with Status `answered flag=unverified`, and say in the PR
+  body or final report "Advise ran unverified on `<tool>`: the model override
+  could not be confirmed". Grade on a `flagged` row runs and adds a
+  Grade-fallbacks row with `reason=unverified-binding`; Dream follows
+  Advise's policy and marks its entry `(model unverified)`. When a `flagged`
+  call returns an informative `model:` reply, suggest a verify re-run.
   Grade's fail path names which of the reference doc's two fail modes is the
   default here (full rerun vs. targeted fix) and when the other is allowed.
   Dream writes to a named, real file path in this repo; state the path.
@@ -235,7 +264,8 @@ Example shape for one role, to calibrate how concrete this needs to be:
 > else plain text). Write your leaning and why in one or two lines. Then
 > find the `eagd-binding` row for `role=advise` whose `tool` is the
 > sub-agent tool you actually hold (check your tool list; do not guess your
-> vendor) and whose `status=ok`, and call that tool with that row's `model`,
+> vendor) and whose `status` is `ok` or `flagged`, and call that tool with
+> that row's `model`,
 > giving it the question, your leaning with the case for and against, and
 > the artifacts verbatim — not your summary. Ask it to name any context it
 > lacked, and to begin its reply with `model: <its id>`. Wait for the reply.
@@ -244,12 +274,20 @@ Example shape for one role, to calibrate how concrete this needs to be:
 > `SKIPPED reason=no-verified-model-binding`. Afterward add one row to the
 > "Advise calls" table in `docs/eagd-log.md`: date, branch, question, prior
 > leaning, answer, which was taken, tool, requested model, reported model,
-> status.
+> status, changed (yes/no). A `flagged` row runs but is logged
+> `answered flag=unverified` and named in your final report.
 
 That's the bar: an agent reading it mid-task should be able to act on it
 without consulting the reference doc first.
 
-## Step 5: Report what was installed
+## Step 5: Verify, then report what was installed
+
+**Verify first, by reading the files back, not from memory.** Check that the
+`eagd-bindings:start` and `:end` markers each appear once, that every
+installed role has exactly one `eagd-binding` row per tool you hold, that the
+rationale copy and log the directive names exist (the Dream file may wait
+for its first run), and that the log's three tables have header rows. Fix
+anything that fails before reporting; report it if you can't.
 
 State which roles got a live spawn mechanism, which were skipped and why,
 the model bound to each installed role for this session's tool, and the

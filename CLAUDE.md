@@ -29,6 +29,27 @@ asks you to wait. Files written outside the repo are listed by path.
 Sub-agents don't preview; their caller does. No files changed means no
 preview; say so in one line.
 
+## Skill authoring reference
+
+When drafting a new `SKILL.md` or substantially editing one or its
+`references/` (a new or changed `description`, a new or restructured section,
+content moved to or from `references/`; not typos, version bumps or log rows),
+read `docs/skill-authoring-best-practices.md`: a verbatim copy of Anthropic's
+skill authoring guide. Its source link and hash are in the comment at the
+bottom; refresh it only by the procedure there, never hand-edit it. Always read
+its "Checklist for effective Skills". Read "Writing effective descriptions"
+when touching a `description`, "Progressive disclosure patterns" when splitting
+into `references/`, and "Advanced: Skills with executable code" when a skill
+ships scripts.
+
+This repo wins where they conflict: folded `>` descriptions (see
+`update-toolkit-skill`); the 20000-byte CI cap over the guide's 500-line
+guideline; never rename an existing skill (gerund names are optional for new
+ones); third-person description voice only on descriptions you are already
+editing, no sweeps; the checklist's Testing items are advisory, not a PR gate;
+and Grade item 5 (portability) over Claude-specific advice such as MCP tool
+prefix formats and model aliases.
+
 ## Execute / Advise / Grade / Dream
 
 This repo's actual task is authoring and editing skills — a task that

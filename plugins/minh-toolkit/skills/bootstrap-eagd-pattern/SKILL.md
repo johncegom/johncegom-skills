@@ -82,9 +82,10 @@ the existing block was found.
   the Step 4 paths) and the loader is the anchor doc, which every session
   reads.
 - **Out-of-tree.** For repos that don't allow agent files in commits.
-  `<state-dir>` is `~/.claude/eagd/<repo-key>/` and nothing is written in
-  the repo; a conditional pointer in a user-level instruction file is the
-  loader. Read `references/storage-and-log.md` before writing anything in
+  `<state-dir>` is a stable per-user directory such as
+  `~/.claude/eagd/<repo-key>/` on Claude Code (any equivalent on another
+  harness) and nothing is written in the repo; a conditional pointer in a
+  user-level instruction file is the loader. Read `references/storage-and-log.md` before writing anything in
   this mode, and state its limits to the user.
 
 Later steps write to `<state-dir>` and don't branch on the mode.
@@ -169,10 +170,13 @@ re-run can update them in place:
 
 ```
 <!-- eagd-bindings:start -->
-eagd-binding: role=advise tool=Agent model=opus status=ok probed=2026-09-18 reported=claude-opus-5
-eagd-binding: role=grade tool=Agent model=haiku status=ok probed=2026-09-18 reported=claude-haiku-4-5-20251001
+eagd-binding: role=advise tool=<tool> model=<requested> status=ok probed=<date> reported=<id from probe>
+eagd-binding: role=grade tool=<tool> model=<requested> status=ok probed=<date> reported=<id from probe>
 <!-- eagd-bindings:end -->
 ```
+
+Fill every value from this session's own probe; never copy a model id or
+date from this example, since ids drift between model releases.
 
 The key is `(role, tool)`. Update a row in place, never append a second for
 the same key. A re-run replaces only the span between the markers. Rows for
@@ -249,7 +253,14 @@ Example shape for one role, to calibrate how concrete this needs to be:
 That's the bar: an agent reading it mid-task should be able to act on it
 without consulting the reference doc first.
 
-## Step 5: Report what was installed
+## Step 5: Verify, then report what was installed
+
+**Verify first, by reading the files back, not from memory.** Check that the
+`eagd-bindings:start` and `:end` markers each appear once, that every
+installed role has exactly one `eagd-binding` row per tool you hold, that the
+rationale copy and log the directive names exist (the Dream file may wait
+for its first run), and that the log's three tables have header rows. Fix
+anything that fails before reporting; report it if you can't.
 
 State which roles got a live spawn mechanism, which were skipped and why,
 the model bound to each installed role for this session's tool, and the

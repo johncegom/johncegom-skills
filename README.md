@@ -21,6 +21,7 @@ manually.
 |---|---|
 | [`minh-toolkit`](plugins/minh-toolkit/) | Minh's real, actively used skill collection — coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. |
 | [`template-plugin`](plugins/template-plugin/) | Not a real toolkit — a minimal working example showing the folder shape (`plugin.json` + `skills/`) a new plugin needs. Copy it to start a new plugin. |
+| [`usage-band`](plugins/usage-band/) | A Claude Code **mod**: a one-line band above the prompt showing context, 5-hour and weekly usage, plus session cost. Runs code inside Claude Code; needs 2.1.287 or later. |
 
 Each plugin has its own `README.md` and its own `.claude-plugin/plugin.json`
 under `plugins/<name>/`. The root `.claude-plugin/marketplace.json` lists

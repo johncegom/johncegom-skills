@@ -25,6 +25,16 @@
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"
       }
+    },
+    {
+      "name": "usage-band",
+      "source": "./plugins/usage-band",
+      "description": "A one-line band above the prompt showing context, 5-hour and weekly usage, plus session cost. A Claude Code mod: runs code inside Claude Code, Claude Code only, needs 2.1.287 or later. Read hooks/ before installing.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Minh Duong",
+        "email": "johncegom203@gmail.com"
+      }
     }
   ]
 }

@@ -12,17 +12,18 @@ description: >
   files, that lets a future agent session in this repo autonomously spawn
   an Advise/Grade/Dream role agent when it hits a matching trigger. Works
   on any harness with a sub-agent tool (optimised for Claude Code), with a
-  probe-verified model per tool. Also handles re-runs, keeping existing
-  model bindings. Runs once per setup or re-calibration.
+  probe-verified model per tool. Also re-runs to re-calibrate (keeping
+  bindings) or, on request ("upgrade EAGD here"), upgrades an installed
+  directive, diff-first.
 ---
 
 # Bootstrap Execute / Advise / Grade / Dream — repo-wide spawn mechanism
 
 ## What this installs, precisely
 
-A one-time setup skill, same shape as `bootstrap-way-of-working`: it runs,
-writes something durable, and doesn't run again until the user asks to set
-it up again or re-calibrate.
+A setup skill, same shape as `bootstrap-way-of-working`: it runs, writes
+something durable, and doesn't run again until the user asks to set it up
+again, re-calibrate, or upgrade an installed copy to this version.
 
 What it writes is not a description of the pattern for a human to read
 later. It is a **standing directive addressed to the agent itself**, added
@@ -45,8 +46,13 @@ This skill's job is narrower: turn that rationale into imperative
 instructions an agent will follow mid-task.
 
 `references/storage-and-log.md` holds the out-of-tree mode details, the log
-file format, how to judge the runtime `model:` reply, and extra
+file format, why the runtime `model:` rule is shaped as it is, and extra
 re-calibration checks. Read it when Steps 1b, 3, 4 or 6 point there.
+
+`references/directive-template.md` is the generic part of the directive, copied
+verbatim into each repo as one managed span (Step 4).
+`references/directive-changelog.md` versions it, and `references/upgrade.md` is
+how to bring an already-installed copy up to date.
 
 ## Step 1: Confirm scope, find the anchor doc, and check for an existing block
 
@@ -67,6 +73,10 @@ existing roles, spawn-vs-phase choice and binding rows *before asking
 anything*, show them, and carry them forward as defaults in Steps 2 and 3.
 Treat it as a fresh setup only if the user says so ("fresh", "start over");
 then replace the whole block and log the replacement.
+
+**If the user asked to update or upgrade the installed directive,** follow
+`references/upgrade.md` instead of Steps 2 and 3: it shows the diff and asks
+before writing, and changes only the managed span.
 
 ## Step 1b: Storage scope, committed or out-of-tree
 
@@ -118,7 +128,7 @@ State which were skipped and why.
 The binding is per **role and sub-agent tool**. Work out which sub-agent
 tool *this* session holds from its own tool list, not a guess about vendor.
 You can only write bindings for the tool you hold; a harness nobody has run
-this from gets no row, only the Step 4 fallback. Ask whether other
+this from gets no row, only the directive's no-usable-row fallback. Ask whether other
 harnesses are used, and if so tell the user to re-run this skill from each.
 
 For every installed role, ask the user which model it should spawn with. Do
@@ -153,9 +163,9 @@ exactly the model id you are running as, nothing else." Then:
 **On a re-run, probe only what was touched**: a changed model, a missing row
 for this tool, or a user request to "verify" (probe every row for tools this
 session holds; a mismatch other than an alias move sets `status=stale` and
-asks for a replacement, and an alias move asks the Step 4 drift question).
+asks for a replacement, and an alias move asks the owner, as the directive says).
 Don't re-probe unchanged rows; renames are caught at runtime by the
-`model:` reply check in Step 4. On a re-run, ask "keep `flagged`?" for
+directive's `model:` reply check. On a re-run, ask "keep `flagged`?" for
 unverified tools the way you ask "keep `<model>`?", and re-probe any `ok` row
 that `references/storage-and-log.md` lists as suspect.
 
@@ -206,8 +216,19 @@ changes" table.
 existing-file rules are in `references/storage-and-log.md`). Create it if
 missing, and append to it if it exists.
 
-Then write imperative instructions addressed to the agent, not descriptive
-prose for a human. For each installed role, name:
+**Write the generic mechanics by copying, not paraphrasing.** Copy
+`references/directive-template.md` verbatim into the anchor doc, immediately
+after the bindings end marker (out-of-tree mode: into `<state-dir>/directive.md`).
+Do not reflow, reword or fill in anything: every install's span must be
+byte-identical to the template, so a later upgrade can compare them. Put one
+local line just above it, `**EAGD log:** <path to the log file>`. The span
+carries the binding-row choice, the no-usable-row fallbacks, how to call each
+role, how to judge the `model:` reply and the log vocabulary, so don't restate
+them below; point at them as "EAGD binding mechanics".
+
+Then write the **local parts** outside the span, as imperative instructions
+addressed to the agent, not descriptive prose for a human. For each installed
+role name:
 
 - **The trigger condition**, something an outside reader could check, not a
   feeling (Advise: "before drafting any new module's public interface" or
@@ -216,82 +237,23 @@ prose for a human. For each installed role, name:
   is the wrong trigger. For Advise, also state the routing: verifiable
   questions go to research, preferences go to the user or a stated default,
   and only judgment calls reach Advise.
-- **The exact action**: use the `eagd-binding` row for this role whose
-  `tool` you hold and whose `status` is `ok` or `flagged`, call that tool
-  with that model (a `flagged` call is unverified: pass the explicit id and
-  still ask for the `model:` reply), and
-  state what the prompt must and must not contain (Advise: the question,
-  Execute's leaning with the case for and against, and the decisive
-  artifacts verbatim — not a summary, not the transcript — plus a request to
-  name any context it lacked and to begin its reply with
-  `model: <its own id>`; Grade: only the rubric and finished output,
-  withholding the reasoning behind it; Dream: the full run history plus the
-  same `model:` instruction).
-- **What happens with no usable row** (none for the tool you hold, a status
-  other than `ok` or `flagged`, the row's model is the session's own, or the
-  spawn errors). The fallbacks differ on purpose.
-  **Advise and Dream skip**: never run them on the session's own model or an
-  unknown one, because a same-model "consultation" looks like a second
-  opinion and drags the decision-change rate toward zero for a reason
-  re-calibration would misdiagnose. Proceed on the recorded leaning, add an
-  Advise-calls row with Status `SKIPPED reason=<code>`, and say in the PR
-  body or final report that Advise did not run. **Grade may fall back** to a
-  fresh, context-free call on the session's own model, since fresh eyes is
-  its main value; add a Grade-fallbacks row only when it does.
-- **What to do with the result**: Advise blocks and Execute waits, then adds
-  one row to the Advise-calls table (date, branch, question, prior leaning,
-  answer, which was taken, tool, requested model, reported model, status,
-  changed yes/no). Judge the id after `model:` on the reply's first line.
-  Normalize it and every id you compare it with, including the row's `model=`:
-  lowercase, trim surrounding whitespace, remove every quote and backtick
-  character, then drop one trailing period, then a trailing `-latest`. First
-  match wins: (1) your own id → set `status=stale`, add a Binding-changes row,
-  and skip Advise until fixed; (2) equal to `reported=` → proceed; (3)
-  uninformative (empty or missing, equal to `model=`, a bare family (an id
-  with no digit in it), or a display name, meaning spaces inside the
-  normalized id) → `stale` on an `ok` row, no change on a `flagged` one; (4)
-  neither contains nor is contained in the row's `model=` → `stale`, as in
-  (1); (5) otherwise the alias moved, so don't edit the row yourself. On a
-  `flagged` row (5) asks nothing: proceed. On an `ok` row, if you hold an
-  ask-the-user tool and aren't a sub-agent, ask once per id per conversation,
-  showing both ids. "Use `<new>`" sets `reported=<new>` (normalized) on every
-  `ok` row with this `tool` and `model=` and adds a Binding-changes row (log
-  the call as plain `answered`); "Keep the binding and use the answer" logs
-  `answered flag=drift-assumed` and names the id in the final report; any
-  other reply sets `status=stale` and logs `SKIPPED reason=drift-declined`. If
-  you can't ask, act as "Keep the binding" but log `flag=drift-unconfirmed`.
-  Log a `flagged` call with Status `answered flag=unverified`, and say in the
-  PR body or final report "Advise ran unverified on `<tool>`: the model
-  override could not be confirmed". Grade on a `flagged` row runs and adds a
-  Grade-fallbacks row with `reason=unverified-binding`; Dream follows Advise's
-  policy and marks its entry `(model unverified)`. When a `flagged` call
-  returns an informative `model:` reply, suggest a verify re-run.
-  Grade's fail path names which of the reference doc's two fail modes is the
-  default here (full rerun vs. targeted fix) and when the other is allowed.
-  Dream writes to a named, real file path in this repo; state the path.
+- **For Grade**, the rubric, and which of the reference doc's two fail modes is
+  the default here (full rerun vs. targeted fix) and when the other is allowed.
+- **For Dream**, the named, real file path in this repo that it writes to.
+- **Anything specific to this repo or harness** that differs from the span, in
+  a paragraph that begins `**Local override.**` and names the rows or roles it
+  overrides.
 
-Example shape for one role, to calibrate how concrete this needs to be:
+Example shape for one role, local part only:
 
 > **Advise.** Fires on observable conditions, never on felt doubt: before
 > drafting any new `SKILL.md` or changing an existing skill's `description`
 > line — one call on scope, always. Only judgment calls go here: anything
 > answerable by reading the repo, read; a preference only the user can
-> settle goes to `AskUserQuestion` (or your harness's ask-the-user tool,
-> else plain text). Write your leaning and why in one or two lines. Then
-> find the `eagd-binding` row for `role=advise` whose `tool` is the
-> sub-agent tool you actually hold (check your tool list; do not guess your
-> vendor) and whose `status` is `ok` or `flagged`, and call that tool with
-> that row's `model`,
-> giving it the question, your leaning with the case for and against, and
-> the artifacts verbatim — not your summary. Ask it to name any context it
-> lacked, and to begin its reply with `model: <its id>`. Wait for the reply.
-> No usable row, or the spawn errors: do not run Advise on your own model —
-> proceed on your leaning and log the call with Status
-> `SKIPPED reason=no-verified-model-binding`. Afterward add one row to the
-> "Advise calls" table in `docs/eagd-log.md`: date, branch, question, prior
-> leaning, answer, which was taken, tool, requested model, reported model,
-> status, changed (yes/no). A `flagged` row runs but is logged
-> `answered flag=unverified` and named in your final report.
+> settle goes to your harness's ask-the-user tool (`AskUserQuestion` on
+> Claude Code), else plain text. Write your leaning and why in one or two
+> lines, then call Advise as described under EAGD binding mechanics, and log
+> the call there.
 
 That's the bar: an agent reading it mid-task should be able to act on it
 without consulting the reference doc first.
@@ -303,7 +265,9 @@ without consulting the reference doc first.
 installed role has exactly one `eagd-binding` row per tool you hold, that the
 rationale copy and log the directive names exist (the Dream file may wait
 for its first run), and that the log's three tables have header rows. Fix
-anything that fails before reporting; report it if you can't.
+anything that fails before reporting; report it if you can't. Check the span
+against `references/directive-template.md` with a comparison command (see
+`references/upgrade.md`, section 5), never by eye.
 
 State which roles got a live spawn mechanism, which were skipped and why,
 the model bound to each installed role for this session's tool, and the

@@ -47,13 +47,10 @@ identical whatever the container is.
 
   Append each row at the end of its own table. One row per event, a single
   line, no line breaks inside a cell, a literal `|` written as `\|`, `—` for
-  a field that doesn't apply. Status is `answered`,
-  `answered flag=unverified` (the row was `status=flagged`),
-  `answered flag=drift-assumed` or `answered flag=drift-unconfirmed` (the
-  alias moved and the reply's new id sits in the Reported column), or
-  `SKIPPED reason=<code>` (including `drift-declined`), so skips and flagged
-  answers can be counted per Tool with a search. Older rows without a Changed cell read as `—`;
-  don't backfill them.
+  a field that doesn't apply. The Status values and what each means are
+  defined in the directive template (`directive-template.md`), so they are not
+  repeated here: search them per Tool to count skips and flagged answers.
+  Older rows without a Changed cell read as `—`; don't backfill them.
 - **An existing file the user points at instead** (a decision log, a
   `.jsonl` or `.csv` file). Read it first and follow its format: same file
   type conventions, same field set, new fields at the end. Never put
@@ -69,20 +66,13 @@ Aliases move: `model=opus` resolves to a newer version at each release, so an
 exact match against `reported=` stalls a working binding. A name can't say
 whether the new version is better or worse (`opus-4` vs `opus-5-5`, `mini`
 vs none), so the agent never decides that: it asks the human a plain
-two-choice question and records the answer. First match wins, after
-lowercasing, trimming surrounding whitespace, removing every quote and backtick character, then dropping one trailing period, then a trailing `-latest`, on both sides:
-
-| Reply id | Action |
-|---|---|
-| Your own id | `stale`, skip, Binding-changes row |
-| Equal to `reported=` | Proceed |
-| Uninformative: empty or missing, equal to `model=`, a bare family (an id with no digit in it), or a display name (spaces inside the normalized id) | `stale` on an `ok` row, no change on a `flagged` one |
-| Neither contains nor is contained in `model=` | `stale`, skip, Binding-changes row |
-| Anything else (alias moved) | `ok` row: ask "Use `<new>`" or "Keep the binding and use the answer"; `flagged` row: proceed |
+two-choice question and records the answer. The rule itself (the normalization
+and the five cases, first match wins) is in `directive-template.md`; this section
+is the reasoning behind it.
 
 Notes:
 - With a full-id `model=` (`claude-opus-5-5`) any other version is the fourth
-  row, not an alias move; an alias move needs a family-style `model=`.
+  case, not an alias move; an alias move needs a family-style `model=`.
 - "Use `<new>`" rewrites `reported=` on every `ok` row sharing the tool and
   `model=`, leaves `model=` and `probed=` alone, and adds one Binding-changes
   row per row (old id, new id, "version drift, owner chose the new id"). The
@@ -103,9 +93,9 @@ Notes:
   verify re-run.
 - Self-reports can flap (a model sometimes names an older sibling), so one
   id can reappear in `drift-*` rows; that is noise, not a failing binding.
-- A re-run replaces only the span between the binding markers, so it does not
-  update the directive's prose in an already-installed anchor doc. When this
-  rule changes, hand-patch the installed copy.
+- The rule lives in the managed span, so an installed copy is brought up to
+  date by the upgrade in `upgrade.md`, which shows the diff and asks first. A
+  re-run of setup still replaces only the binding rows.
 
 ## Suspect `ok` rows from an older probe
 

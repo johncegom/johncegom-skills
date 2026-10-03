@@ -32,3 +32,6 @@ plugins/template-plugin/
 
 See `.claude/skills/update-toolkit-skill/SKILL.md` in this repo for the
 full branch → validate → PR → merge workflow this repo expects.
+
+Building a Claude Code mod (a hooks module, not skills)? This template is the wrong
+starting point; follow "Adding a Claude Code mod" in that same file.

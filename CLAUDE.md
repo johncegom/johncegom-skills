@@ -46,6 +46,12 @@ no renaming existing skills (gerund names optional for new ones);
 third-person voice only on descriptions you're already editing; Testing items
 advisory; Grade item 5 portability over MCP prefix formats and model aliases.
 
+## Claude Code mods
+
+To build a Claude Code mod, load `plugin-authoring` for the API, then store and
+ship it per "Adding a Claude Code mod" in `.claude/skills/update-toolkit-skill/SKILL.md`.
+A mod is always its own plugin under `plugins/`, never part of `minh-toolkit`.
+
 ## Execute / Advise / Grade / Dream
 
 This repo's actual task is authoring and editing skills — a task that

@@ -50,6 +50,9 @@ for the copy-this-folder starting point, and
 for this repo's branch → validate → PR → merge workflow (branch protection,
 CI, versioning conventions).
 
+For a Claude Code mod (a hooks module, not skills), don't copy the template; follow
+"Adding a Claude Code mod" in that same file instead.
+
 ## Support
 
 If one of these saved you an afternoon of prompt-wrangling, consider buying

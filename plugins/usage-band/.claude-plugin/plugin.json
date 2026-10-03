@@ -1,0 +1,7 @@
+{
+  "name": "usage-band",
+  "version": "0.1.0",
+  "description": "Claude Code mod: a one-line band above the prompt showing context, 5-hour and 7-day usage, and session cost. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
+  "author": { "name": "Minh Duong" },
+  "types": "./types/index.d.ts"
+}

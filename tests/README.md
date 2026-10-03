@@ -19,6 +19,10 @@ Each skill gets its own directory, named to match its folder under `plugins/<plu
 `youtube-video-critic` and `bootstrap-eagd-pattern` have cases today; add a sibling directory (`tests/<skill-name>/`) the
 first time another skill gets this kind of scrutiny — don't pre-create empty ones.
 
+Mods are different: their executable `*.test.ts` tests live inside the mod's own plugin folder
+(`plugins/<mod-name>/tests/`), because `claude plugin test` loads the plugin from the folder it is
+given. This directory stays skill-only.
+
 ## Case file format
 
 Each fuzz case is a markdown file with YAML frontmatter:

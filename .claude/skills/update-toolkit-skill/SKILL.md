@@ -43,6 +43,15 @@ description: >
 ```
 Every skill in this repo already uses this style — match it.
 
+#### Adding a Claude Code mod
+A mod is a plugin whose behaviour is a hooks module (`hooks/hooks.json` plus `hooks/register.ts`) instead of skills. It runs code inside Claude Code with Claude Code's full access, so it is **always its own plugin at `plugins/<mod-name>/`, never inside `minh-toolkit`**: installing it must be a separate, deliberate choice.
+
+- Build it with the `plugin-authoring` skill (or your harness's equivalent). That writes into a temporary folder, so afterwards copy `.claude-plugin/plugin.json`, `hooks/`, `types/` (if it keeps `$.state`), `tests/` and a new `README.md` into `plugins/<mod-name>/`. Don't copy `.claude-plugin/types/` (the engine regenerates it, and `.gitignore` covers it), `node_modules/` or other dev state.
+- `plugin.json` `name` = the folder name = the `marketplace.json` entry name, and it must not start with `claude-`, `anthropic-` or `cc-plugin-` (`claude plugin validate` rejects those as reserved). No `skills` array unless the mod also ships skills; if it does, the SKILL.md checks and Grade item 5 apply to those.
+- Register it like any plugin (step 2 above), add a row to the root `README.md` plugin table, and keep the `0.1.0` in `plugin.json`, `marketplace.json` and the README badge identical (step 3).
+- The `marketplace.json` `description` (what `/plugin` listings show) must say it runs code inside Claude Code, is Claude Code only, and needs 2.1.287 or later, and fit CI's 500-character cap on manifest descriptions (this repo's check, not a documented platform limit).
+- The mod `README.md` carries: the version badge; one line saying what it does; `Needs Claude Code 2.1.287 or later` and where it runs (the Claude Code CLI and Desktop app, the surfaces the mods docs list); a trust note (it runs code inside Claude Code, read `hooks/` before installing, and again after each update, or turn off "Sync automatically" for it); **Install** (`claude plugin marketplace add https://github.com/johncegom/johncegom-skills` once, then `claude plugin install <mod-name>@minh-skills`, then `/reload-plugins`, or restart Claude Code if it doesn't appear); **Use** (what appears on screen, or which slash command to type); **Update / remove** (`claude plugin update <mod-name>`, `claude plugin uninstall <mod-name>`).
+
 ### 3. Bump the version once, on the first meaningful change in this PR
 If this is the first commit in the PR that changes anything beyond a typo, bump the changed plugin's own `plugins/<plugin-name>/.claude-plugin/plugin.json`'s `"version"` (semver) and keep the root `.claude-plugin/marketplace.json`'s matching `plugins[].version` entry for that same plugin **and that plugin's own `README.md` version badge** in sync with it — all three carry the same number. The badge is a plain shields.io URL (`.../version-X.Y.Z-blue`), not JSON, so it's easy to forget when scripting the other two; grep for it explicitly:
 ```
@@ -58,6 +67,8 @@ claude plugin validate plugins/<plugin-name>/.claude-plugin/plugin.json   # that
 claude plugin validate .                                                    # marketplace manifest (validates every plugin listed in it)
 ```
 Both must print `✔ Validation passed`. This is the exact check CI runs (looping `claude plugin validate` over every `plugins/*/.claude-plugin/plugin.json`) — catching a failure here saves a round trip.
+
+For a mod, also run `claude plugin test plugins/<mod-name>`. CI runs it too for any plugin that contains `*.test.ts` files, so run it here first to save a round trip. A mod's tests live inside its own plugin (`plugins/<mod-name>/tests/`) because `claude plugin test` loads the plugin from the folder you give it; the root `tests/` directory is for skill scenario cases only.
 
 Also check that the skill loads on other harnesses. The spec (agentskills.io) caps `description` at 1024 characters and requires `name` to equal the folder name; GitHub Copilot and VS Code silently skip a skill that breaks either, and a `description` edit is how this happens without anyone noticing. CI enforces both via `.github/scripts/check_skill_frontmatter.py`, so run it locally too. The same script fails any `plugins/*/skills/*/SKILL.md` whose body (the lines after the frontmatter) is 500 lines or more, which is the skill-authoring guide's "under 500 lines" rule; move cold-path detail into `references/`. It does not cover this repo's own `.claude/skills/`, and `references/` files have no limit.
 ```
@@ -91,7 +102,7 @@ As the sole CODEOWNER you cannot approve your own PR — GitHub disables that. M
 ### 8. Downstream pickup
 Anyone with the `minh-skills` marketplace added:
 - **"Sync automatically" enabled** (Desktop): picks up the change on next sync, no action needed.
-- **Manual**: `claude plugin update minh-toolkit` (or the equivalent marketplace sync action in Desktop).
+- **Manual**: `claude plugin update <plugin-name>` (e.g. `minh-toolkit` or a mod's name), or the equivalent marketplace sync action in Desktop.
 
 ## Quick sanity check after any merge to main
 ```

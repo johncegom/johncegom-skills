@@ -21,7 +21,7 @@ jobs:
           node-version: 20
 
       - name: Install Claude Code CLI
-        run: npm install -g @anthropic-ai/claude-code@2.1.286
+        run: npm install -g @anthropic-ai/claude-code@2.1.288
 
       - name: Validate marketplace manifest
         run: claude plugin validate .
@@ -32,6 +32,21 @@ jobs:
           for manifest in plugins/*/.claude-plugin/plugin.json; do
             echo "Validating $manifest"
             claude plugin validate "$manifest" || fail=1
+          done
+          exit $fail
+
+      # Mods only: `claude plugin test` runs a plugin's *.test.ts / *.test.tsx
+      # files, wherever they sit inside it. Skill tests are markdown cases under
+      # the root tests/ directory and never match, so skill-only plugins are skipped.
+      - name: Test every plugin that has test files
+        run: |
+          fail=0
+          plugins=$(find plugins -name node_modules -prune -o \
+            \( -name '*.test.ts' -o -name '*.test.tsx' \) -print \
+            | cut -d/ -f1-2 | sort -u)
+          for plugin in $plugins; do
+            echo "Testing $plugin"
+            claude plugin test "$plugin" || fail=1
           done
           exit $fail
 

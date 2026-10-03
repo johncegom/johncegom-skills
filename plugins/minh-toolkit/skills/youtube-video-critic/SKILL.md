@@ -121,6 +121,8 @@ After the verdict, always add two more sections — this is what turns an evalua
    - **State the mechanism, not just the conclusion.** Fold in the video's why or how if it gave one; if it asserted the claim without explaining, say "the video doesn't explain the mechanism" rather than inventing one. If every item lacks a mechanism, let that show in the Step 2/3 verdict.
 2. **Personal application.** For each takeaway with genuine context about the user's work, state concretely how it applies. Leave out takeaways with no real connection; if none qualifies, omit the heading entirely rather than print it empty.
 
+   Write each item as a suggestion, not a question: the specific change, test or check to make in the user's context, and why, in 1-2 sentences. A question here hands the work back to the user instead of applying the takeaway. If the fit rests on an assumption about their setup, put the assumption inside the suggestion ("if your review step runs on a stronger model, measure the whole task's cost, not the per-token price"). Only when a missing fact would change a suggestion, add one closing line after the suggestions asking for that fact.
+
 Always include these two sections in a full evaluation, not just on request. Skip them only for the claim-check/follow-up shape from Step 1.
 
 ## Step 4.5: Grade the draft before delivering
@@ -139,7 +141,7 @@ Check each item as pass/fail:
 6. Every core takeaway either states the video's own mechanism/reasoning, or explicitly says the video doesn't explain one — none just restate the bottom-line conclusion.
 7. No sentence in the TL;DR or verdict paragraph uses hype language (persuading rather than reasoning).
 8. The verdict would not flip if the user's evident attitude toward the video were reversed (excited ↔ skeptical).
-9. Personal application, if present, ties each item to something concrete about the user's actual context, never a forced or generic connection. If nothing qualified, confirm the section was correctly omitted rather than left empty.
+9. Personal application, if present, ties each item to something concrete about the user's actual context, never a forced or generic connection. Each item is a suggestion with no question aimed at the user (one closing line asking for a missing fact is the only exception). If nothing qualified, confirm the section was correctly omitted rather than left empty.
 
 This step uses a targeted-fix fail mode, not full-rerun: each rubric item maps to one line, so name the failed item, quote the offending line, fix only that line, and re-check only the failed items.
 

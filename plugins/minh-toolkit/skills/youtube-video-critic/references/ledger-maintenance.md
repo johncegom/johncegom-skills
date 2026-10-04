@@ -23,4 +23,6 @@ Only update the `Status` cell of an existing row when the user explicitly volunt
 3. If a row's `Status` already reflects one of these and the user then reports the other action for the same video, combine into `Watched (applied)` rather than inventing a new value.
 4. A video can legitimately have more than one row (Step 1 allows a fresh full re-evaluation of a video already in the ledger, which appends a new row rather than replacing the old one). If the link or title matches more than one row, update only the most recent (latest-dated) row by default — never all matching rows, and never guess which one the user means when it's genuinely ambiguous.
 
+With a local-file ledger, `python scripts/ledger.py status <url-or-id> watched|applied` does this edit (latest row only, combining into `Watched (applied)`); see `ledger-template.md`.
+
 Never proactively ask "did you watch this?" or similar after an evaluation — this stays purely reactive to what the user reports on their own.

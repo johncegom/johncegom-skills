@@ -9,6 +9,17 @@ Check whether `references/youtube-critic-ledger.md` already exists in this skill
 - **If it doesn't exist:** copy the header below, save it as `references/youtube-critic-ledger.md`, then append the first row for this evaluation. That file — not this template — is the running ledger.
 - **If it already exists:** read it, then append one row per evaluation instead of recreating it from scratch.
 
+**Use `scripts/ledger.py` (Python 3, standard library only) instead of reading or hand-editing the file.** Run it, don't read it; paths are relative to this skill's directory. It matches by video ID, so `youtu.be`, `watch?v=`, `shorts/` and bare-ID forms of one video are the same video.
+
+```
+python scripts/ledger.py check <url-or-id>      # prints NEW, or DUPLICATE plus the matching rows, latest first
+python scripts/ledger.py add --title T --link URL --channel C --length 47:12 \
+    --verdict "Skim it" --score 5/10 --reason "One short sentence."   # --date defaults to today
+python scripts/ledger.py status <url-or-id> watched|applied
+```
+
+`check` replaces reading the whole ledger to look for a repeat: a hit means this video is a follow-up or a deliberate re-evaluation, and the printed rows already give the earlier verdict, score and `Status`. `add` creates the file with the header if missing, escapes `|`, leaves `Status` blank, and rejects a malformed date, length, verdict, or a score outside the verdict's band (Worth watching in full 7-10, Skim it 4-6, Skip it 1-3). A repeat of a ledgered video is still appended, never replaced. `status` edits only the latest row and combines the two actions into `Watched (applied)`. `add` and `status` take a short-lived `.lock` file beside the ledger, so parallel runs don't overwrite each other; if a run reports a lock timeout and nothing else is running, delete that file. Exit code 2 means bad input; fix the argument and rerun. If Python isn't available, fall back to the manual steps above and the row format below.
+
 This file is git-ignored, so it won't be committed to the plugin's source repo by normal git operations (`git add -A`, etc.) — but that also means it isn't backed up anywhere. If this plugin is ever reinstalled from a fresh download rather than updated in place, the ledger may not survive. If the user wants to keep it across a fresh reinstall, tell them to back it up themselves.
 
 ## Case B — Claude Desktop/Projects, claude.ai chat, or anywhere a filesystem write can't be confirmed as visible to the human

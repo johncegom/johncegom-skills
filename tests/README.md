@@ -13,11 +13,24 @@ tests/
   <skill-name>/
     fuzz/
       NNN-short-slug.md   — one adversarial/edge-case scenario per file
+    test_*.py             — only when the skill ships a script: executable tests (see below)
 ```
 
 Each skill gets its own directory, named to match its folder under `plugins/<plugin-name>/skills/`. Only
 `youtube-video-critic` and `bootstrap-eagd-pattern` have cases today; add a sibling directory (`tests/<skill-name>/`) the
 first time another skill gets this kind of scrutiny — don't pre-create empty ones.
+
+A skill that ships a script under `scripts/` also gets executable tests here, since a script, unlike
+the prose, can be checked mechanically. They are standard-library `unittest` files named `test_*.py`
+beside the skill's `fuzz/` folder, with a markdown case in `fuzz/` recording what they cover (same
+format below, `target` naming the script). Run them from the repo root; CI runs the same command:
+
+```
+python -m unittest discover -s tests/youtube-video-critic -p "test_*.py" -v
+```
+
+Fuzz tests there are seeded (`LEDGER_FUZZ_SEED`, `LEDGER_FUZZ_ROUNDS` change the seed and length) so a
+failure reproduces.
 
 Mods are different: their executable `*.test.ts` tests live inside the mod's own plugin folder
 (`plugins/<mod-name>/tests/`), because `claude plugin test` loads the plugin from the folder it is

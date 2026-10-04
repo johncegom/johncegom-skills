@@ -152,7 +152,7 @@ This step is independent of Step 5: never skip 4.5 over ledger trouble, and neve
 Secondary to the evaluation: drop it under time or token pressure, never Steps 1-4.5.
 
 - **Opt-in, once per conversation.** Don't create or ask about a ledger unprompted. Act only if a ledger already exists, the user asked to track, list or rank videos across sessions, or this is a follow-up on an already-ledgered video; otherwise skip silently. Once a ledger exists, maintain it on every later evaluation.
-- **Mechanics.** Read [references/ledger-template.md](references/ledger-template.md) before touching it (where it lives, row format; never assume a file write is visible to the human), and [references/ledger-maintenance.md](references/ledger-maintenance.md) for `Status` updates, which are never made or prompted for during an evaluation.
+- **Mechanics.** Read [references/ledger-template.md](references/ledger-template.md) before touching it (where it lives, row format; never assume a file write is visible to the human), and [references/ledger-maintenance.md](references/ledger-maintenance.md) for `Status` updates, which are never made or prompted for during an evaluation. When the ledger is a local file (Case A) and Python 3 runs, use `scripts/ledger.py` for the duplicate check, the append and `Status` edits instead of reading or hand-editing the file; run it, don't read it.
 
 ## Language and tone
 

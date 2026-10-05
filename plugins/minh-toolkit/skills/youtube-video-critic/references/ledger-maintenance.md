@@ -19,7 +19,7 @@ The ledger has a `Status` column (between `Score` and `Reason`) tracking what th
 Only update the `Status` cell of an existing row when the user explicitly volunteers one of these, unprompted:
 
 1. They say they watched a specific video already in the ledger (e.g. they picked one from the queue to watch) → find that row (match by link or title) and set `Status` to `Watched`.
-2. They say they applied an insight from a specific video into SiteGuard or minh-toolkit without having watched it → find that row and set `Status` to `Applied (not watched)`.
+2. They say they applied an insight from a specific video into their own work without having watched it → find that row and set `Status` to `Applied (not watched)`.
 3. If a row's `Status` already reflects one of these and the user then reports the other action for the same video, combine into `Watched (applied)` rather than inventing a new value.
 4. A video can legitimately have more than one row (Step 1 allows a fresh full re-evaluation of a video already in the ledger, which appends a new row rather than replacing the old one). If the link or title matches more than one row, update only the most recent (latest-dated) row by default — never all matching rows, and never guess which one the user means when it's genuinely ambiguous.
 

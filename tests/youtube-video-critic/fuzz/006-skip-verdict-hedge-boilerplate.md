@@ -31,3 +31,10 @@ explicit note that "ordinary clean auto-captions on a talking-head video need no
 ## Regression check (2026-09-03)
 Narrowed trigger and explicit no-caveat note still present unchanged in current SKILL.md Step 3.
 No regression.
+
+## Regression check (2026-10-06)
+The caveat sentence was rewritten: the visual-content case moved into its own paragraph
+("Visual-heavy content: lower confidence, say so up front", see case 029) and no longer
+applies only to the "Skip it" verdict. The garbled/`[inaudible]` caveat is kept as a one-liner.
+The explicit "clean auto-captions on a talking-head video need no caveat" note is still
+present, so the original boilerplate failure is still guarded. No regression.

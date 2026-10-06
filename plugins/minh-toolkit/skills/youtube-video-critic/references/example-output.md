@@ -38,14 +38,16 @@ Title vs. content: the title promises a "full tutorial" that makes you "write pa
 
 **TL;DR: Skim it — Value score: 5/10**
 
-About 65% substance. Three habits are covered (notes that transform the text, spaced sessions, a lens chosen by genre) and each comes with a stated reason. The rest is framing plus the same book recommendation made twice, roughly 2 minutes in all. Biggest gap: the first habit is mostly "read this one book", so cut the repeated plug and add one worked example and it would be a 7/10.
+The video argues that reading better means understanding and remembering more across different kinds of text, and that you get there through focused practice, notes that transform the material, spaced sessions and a genre-matched approach, not through volume or harder books.
+
+About 65% substance. Each habit comes with a stated reason. The rest is framing plus the same book recommendation made twice, roughly 2 minutes in all. Biggest gap: the first habit is mostly "read this one book", so cut the repeated plug and add one worked example and it would be a 7/10.
 
 Skim 4:16-6:50 (notes, highlighting, spacing) and 6:57-7:51 (genre lens). Skip the rest.
 
 **Core takeaways**
-1. **[Actionable tip]** Notes help memory only when you transform the text: a one-page summary per chapter, an idea restated in your own words, a question or an inference. The video says copying sentences doesn't help because memory strengthens when you have to rebuild the story yourself. If you also highlight, add a margin note or a symbol you chose in advance, because it says highlighting alone has a small long-term effect and gives no data for that.
-2. **[Actionable tip]** Split reading across several sessions with short breaks. The video's reason is the spacing effect: a little forgetting forces your brain to rebuild the ideas on return, and the rebuilding is what makes them stick.
-3. **[Framework/mental model]** Name the kind of text first, then pick what to watch for. Plot-heavy fiction: events and motives. Literary fiction: language, theme, symbolism. Non-fiction: how the argument and evidence are built. The video doesn't explain why these lenses are the right ones.
+1. **[Actionable tip]** Notes help memory only when you transform the text. The video's examples: a one-page summary per chapter, an idea restated in your own words, a question or an inference. Copying sentences doesn't help because memory strengthens when you have to rebuild the story yourself. If you also highlight, add a margin note or a symbol you chose in advance, because it says highlighting alone has a small long-term effect and gives no data for that.
+2. **[Actionable tip]** Split reading across several sessions. The video's example: take a break for coffee or tea and reflect on what you read before going back. Its reason is the spacing effect: a little forgetting forces your brain to rebuild the ideas on return, and the rebuilding is what makes them stick.
+3. **[Framework/mental model]** Name the kind of text first, then pick what to watch for. The video's examples: in a plot-heavy novel, what each character wants, fears and chooses; in literary fiction, language, theme and symbolism; in non-fiction, how the argument and evidence are built. It doesn't explain why these lenses are the right ones.
 4. **[Contested claim]** Practicing specific skills (summarizing, spotting structure, inferring) improves comprehension faster than reading a lot. The video cites "decades of research" without naming any, so treat the size of the effect as unchecked.
 5. **[Contested claim]** Very hard books are usually the result of strong reading skills, not the way to build them; aim slightly above your level. No evidence is offered, only the argument that too much difficulty breaks comprehension.
 6. **[Framework/mental model]** A good reader understands more, remembers more, and does both across different kinds of text. This is a definition, so the video offers no mechanism.

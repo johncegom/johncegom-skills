@@ -14,6 +14,8 @@ async function mountBand($: any, on: any, columns: number, first = usage(undefin
   on("session.start", ($: any, e: any) => ({ cwd: e.cwd }));
   on("session.usage", () => ({ value: first }));
   on("session.measure", ($: any, e: any) => ({ changed: e.changed }));
+  // What another mod (fuse, skill-badge) drew in the same band; the band must keep it.
+  on("ui.render", () => ({ type: "Text", props: {}, children: ["BELOW-MOD"] }) as any);
   await $.session.start({ surface: "terminal", isInteractive, cwd: "/work" } as any);
   return $.ui.mount({
     plugin: "usage-band",
@@ -34,6 +36,13 @@ const measure = ($: any, u: ReturnType<typeof usage>) =>
 describe("usage-band", () => {
   test("waits for the first reply when nothing is measured yet", async ($, on) => {
     const ui = await mountBand($, on, 120);
+    expect(await ui.find({ type: "Text", text: /waiting for first reply/ })).toBeDefined();
+    await ui.unmount();
+  });
+
+  test("keeps what another mod drew in the band and adds its own line", async ($, on) => {
+    const ui = await mountBand($, on, 120);
+    expect(await ui.find({ type: "Text", text: /BELOW-MOD/ })).toBeDefined();
     expect(await ui.find({ type: "Text", text: /waiting for first reply/ })).toBeDefined();
     await ui.unmount();
   });

@@ -200,6 +200,9 @@ export const register: Register = (on, options) => {
     }
 
     const { Box, Text } = $.ui.resolve(e)
+    // Other mods share this band (fuse, skill-badge): keep what they drew and put this line above it (drawn last, it was lost while a turn ran).
+    const below = await next(e)
+    const stack = (own: any) => <Box flexDirection="column">{own}{below}</Box>
     const columns = e.props.bodyColumns
     const sep = <Text dimColor>{'  │  '}</Text>
 
@@ -225,7 +228,7 @@ export const register: Register = (on, options) => {
       const waiting = <Text dimColor>{`Context ${barFor(0)} —  waiting for first reply`}</Text>
       const figure = isMedium ? await dancerPart($, Text, 0, isAscii) : null
 
-      return <Box>{figure === null ? [waiting] : [waiting, sep, figure]}</Box>
+      return stack(<Box>{figure === null ? [waiting] : [waiting, sep, figure]}</Box>)
     }
 
     const five = current.limits.find(l => l.kind === 'five_hour')
@@ -234,10 +237,10 @@ export const register: Register = (on, options) => {
     if (!isMedium) {
       const worst = Math.max(percent, five?.percentUsed ?? 0)
       const text = `ctx ${Math.round(percent)}%` + (five ? ` · 5h ${Math.round(five.percentUsed)}%` : '')
-      return (
+      return stack(
         <Box>
           <Text color={colorFor(worst)}>{text}</Text>
-        </Box>
+        </Box>,
       )
     }
 
@@ -269,10 +272,10 @@ export const register: Register = (on, options) => {
       if (figure !== null) parts.push(figure)
     }
 
-    return (
+    return stack(
       <Box>
         {parts.flatMap((part, i) => (i === 0 ? [part] : [sep, part]))}
-      </Box>
+      </Box>,
     )
   })
 }

@@ -2,7 +2,7 @@
 
 A one-line band above the Claude Code prompt that shows how much context, 5-hour limit and weekly limit you have used, plus what the session has cost. A small dancer at the end of the band dances while Claude works, then hums, dozes and falls asleep.
 
-![version](https://img.shields.io/badge/version-0.2.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![version](https://img.shields.io/badge/version-0.2.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ```text
  Context ▰▰▰▰▰▰▱▱▱▱ 62%  124k/200k  │  5h ▰▰▱▱▱▱▱▱▱▱ 23%  resets 15:40  │  7d ▰▱▱▱▱▱▱▱▱▱ 9%  │  ฿1.42

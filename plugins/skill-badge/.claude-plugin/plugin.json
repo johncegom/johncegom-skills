@@ -1,6 +1,6 @@
 {
   "name": "skill-badge",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Claude Code mod: a band above the prompt listing the skills loaded in this session. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
   "author": { "name": "Minh Duong" },
   "types": "./types/index.d.ts"

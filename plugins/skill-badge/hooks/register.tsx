@@ -61,11 +61,14 @@ export const register: Register = on => {
 
     const newNow = await read($, fresh)
     const { Box, Text } = $.ui.resolve(e)
+    // Other mods share this band (fuse, usage-band): keep what they drew and add this line below it.
+    const below = await next(e)
     const names = list.map(s => `${s.name}${s.stale ? '?' : ''}`).join(', ')
     const hasStale = list.some(s => s.stale)
 
     return (
-      <Box>
+      <Box flexDirection="column">
+        {below}
         <Text dimColor>
           Skills loaded: {names}
           {newNow.length > 0 ? ` · new this turn: ${newNow.join(', ')}` : ''}

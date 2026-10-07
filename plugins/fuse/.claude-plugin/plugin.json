@@ -1,0 +1,74 @@
+{
+  "name": "fuse",
+  "version": "0.1.0",
+  "description": "Claude Code mod: a burning-fuse bar above the prompt that tracks how big a turn has grown (minutes, tool calls, context growth) and holds the next tool call to ask you when a limit is hit. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
+  "author": {
+    "name": "Minh Duong"
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "minutes": {
+      "type": "number",
+      "title": "Minutes limit (default 45)",
+      "description": "Clock minutes a turn may run before the next tool call is held (the clock pauses while the decision pane is open). Default and recommended: 45. Tune it from the stats file.",
+      "default": 45,
+      "min": 1
+    },
+    "toolCalls": {
+      "type": "number",
+      "title": "Tool-call limit (default 100)",
+      "description": "Tool calls a turn may make before the next one is held. Default and recommended: 100. Tune it from the stats file.",
+      "default": 100,
+      "min": 1
+    },
+    "contextGrowth": {
+      "type": "number",
+      "title": "Context growth limit % (default 40)",
+      "description": "How far the context may grow in one turn, as a percent of the context window, before the next tool call is held. Default and recommended: 40. Tune it from the stats file.",
+      "default": 40,
+      "min": 1,
+      "max": 100
+    },
+    "maxExtensions": {
+      "type": "number",
+      "title": "Max extensions per turn (default 2)",
+      "description": "How many times you may extend all limits by half in one turn; then only Stop is offered. Default and recommended: 2. Set 0 to turn Extend off.",
+      "default": 2,
+      "min": 0
+    },
+    "countSubagents": {
+      "type": "boolean",
+      "title": "Count subagent tool calls (default on)",
+      "description": "Count (and hold) tool calls made inside subagents. Default and recommended: on. Off ignores subagent calls.",
+      "default": true
+    },
+    "theme": {
+      "type": "string",
+      "title": "Palette (default dark)",
+      "description": "dark or light. Default: dark; pick light on a light terminal. The API cannot tell the terminal's background, so there is no auto.",
+      "default": "dark",
+      "options": [
+        "dark",
+        "light"
+      ]
+    },
+    "ascii": {
+      "type": "boolean",
+      "title": "ASCII symbols (default off)",
+      "description": "Draw the bar with . * ~ O instead of the symbols. Default: off; turn on if your font lacks them.",
+      "default": false
+    },
+    "emoji": {
+      "type": "boolean",
+      "title": "Emoji bomb (default off)",
+      "description": "Draw the bomb as 💣 and the held state as 💥. Default: off.",
+      "default": false
+    },
+    "statsPath": {
+      "type": "string",
+      "title": "Stats file (default .claude/fuse-stats.jsonl)",
+      "description": "One JSON line per finished turn is appended here, relative to the project. Default: .claude/fuse-stats.jsonl. Keep it out of git.",
+      "default": ".claude/fuse-stats.jsonl"
+    }
+  }
+}

@@ -53,7 +53,7 @@ function configOf(options: Record<string, unknown>): Cfg {
     },
     countSubagents: options.countSubagents !== false,
     palette: options.theme === 'light' ? LIGHT : DARK,
-    sym: symbolsFor({ ascii: options.ascii === true, emoji: options.emoji === true }),
+    sym: symbolsFor({ ascii: options.ascii === true }),
     statsPath: String(options.statsPath ?? '.claude/fuse-stats.jsonl'),
   }
 }

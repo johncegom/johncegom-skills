@@ -200,9 +200,9 @@ export const register: Register = (on, options) => {
     }
 
     const { Box, Text } = $.ui.resolve(e)
-    // Other mods share this band (fuse, skill-badge): keep what they drew and add this line below it.
+    // Other mods share this band (fuse, skill-badge): keep what they drew and put this line above it (drawn last, it was lost while a turn ran).
     const below = await next(e)
-    const stack = (own: any) => <Box flexDirection="column">{below}{own}</Box>
+    const stack = (own: any) => <Box flexDirection="column">{own}{below}</Box>
     const columns = e.props.bodyColumns
     const sep = <Text dimColor>{'  │  '}</Text>
 

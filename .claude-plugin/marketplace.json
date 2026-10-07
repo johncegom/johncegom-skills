@@ -30,7 +30,7 @@
       "name": "usage-band",
       "source": "./plugins/usage-band",
       "description": "A one-line band above the prompt showing context, 5-hour and weekly usage, plus session cost, with a small dancer that dances while Claude works, then dozes off. A Claude Code mod: runs code inside Claude Code, Claude Code only, needs 2.1.287 or later. Read hooks/ before installing.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"
@@ -40,7 +40,7 @@
       "name": "skill-badge",
       "source": "./plugins/skill-badge",
       "description": "A band above the prompt listing the skills loaded in this session. A Claude Code mod: runs code inside Claude Code, Claude Code only, needs 2.1.287 or later. Read hooks/ before installing.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"

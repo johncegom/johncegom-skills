@@ -2,7 +2,7 @@
 
 A band above the Claude Code prompt that lists the skills loaded in this session, so you can tell a skill that is in effect from an agent improvising without it.
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![version](https://img.shields.io/badge/version-0.1.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ```text
  Skills loaded: learn-technology-by-building, sound-human · new this turn: sound-human

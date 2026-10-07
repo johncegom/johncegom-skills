@@ -1,6 +1,6 @@
 {
   "name": "usage-band",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Claude Code mod: a one-line band above the prompt showing context, 5-hour and 7-day usage, and session cost, with a small dancer that dances while Claude works, then dozes off. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
   "author": { "name": "Minh Duong" },
   "types": "./types/index.d.ts",

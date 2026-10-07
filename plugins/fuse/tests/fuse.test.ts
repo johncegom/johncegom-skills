@@ -115,10 +115,8 @@ describe("fuse core", () => {
     expect(barParts(12, 16, sym).map(p => p.color)).toEqual(["ash", "spark", "ember", "rope", "bomb"]);
   });
 
-  test("ascii and emoji symbols", () => {
+  test("ascii symbols", () => {
     expect(barText(barParts(12, 16, symbolsFor({ ascii: true })))).toBe("..*~~~~~~~~~~~~O");
-    expect(barText(barParts(100, 16, symbolsFor({ emoji: true })))).toContain("💥");
-    expect(barText(barParts(12, 16, symbolsFor({ emoji: true })))).toContain("💣");
   });
 
   test("the nearest meter is the fullest one", () => {

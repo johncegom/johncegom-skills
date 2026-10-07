@@ -50,7 +50,7 @@
       "name": "fuse",
       "source": "./plugins/fuse",
       "description": "A burning-fuse bar above the prompt tracking how big a turn has grown (minutes, tool calls, context growth); at 100% it holds the next tool call and asks you to extend or stop. A Claude Code mod: runs code inside Claude Code, Claude Code only, needs 2.1.287 or later. Read hooks/ before installing.",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "Minh Duong",
         "email": "johncegom203@gmail.com"

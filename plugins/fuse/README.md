@@ -2,7 +2,7 @@
 
 A burning-fuse bar above the Claude Code prompt. It tracks how big the current turn has grown, and when a limit is hit it holds the next tool call and asks you whether to go on.
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
+![version](https://img.shields.io/badge/version-0.1.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
 ```text
 Lit      ··✦~~~~~~~~~~~~◉   12% · calls 12/100
@@ -76,7 +76,6 @@ Set in the install screen or `/config` (rows named `fuse.<name>`).
 | `countSubagents` | true | count (and hold) subagent tool calls; off ignores them |
 | `theme` | dark | `dark` or `light` palette. There is no `auto`: the mod API cannot tell the terminal's background |
 | `ascii` | false | draw `. * ~ O` instead of the symbols |
-| `emoji` | false | bomb `💣`, held `💥` |
 | `statsPath` | `.claude/fuse-stats.jsonl` | where each turn's numbers are appended |
 
 Colours are hex (the API accepts them), so there is no named-colour fallback.

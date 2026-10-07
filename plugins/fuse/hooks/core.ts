@@ -65,10 +65,8 @@ const ASCII: Symbols = {
   spark: { Lit: '*', Burning: '*', Short: '*', Hissing: '*', HELD: '*' },
 }
 
-export function symbolsFor(options: { ascii?: boolean; emoji?: boolean }): Symbols {
-  if (options.ascii) return ASCII
-  if (options.emoji) return { ...PLAIN, bomb: '💣', held: '💥', spark: { ...PLAIN.spark, HELD: '💥' } }
-  return PLAIN
+export function symbolsFor(options: { ascii?: boolean }): Symbols {
+  return options.ascii ? ASCII : PLAIN
 }
 
 /** Each limit grows by half of its base per extension: 45 → 67.5 → 90. */

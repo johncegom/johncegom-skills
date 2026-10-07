@@ -1,6 +1,6 @@
 {
   "name": "fuse",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Claude Code mod: a burning-fuse bar above the prompt that tracks how big a turn has grown (minutes, tool calls, context growth) and holds the next tool call to ask you when a limit is hit. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
   "author": {
     "name": "Minh Duong"
@@ -56,12 +56,6 @@
       "type": "boolean",
       "title": "ASCII symbols (default off)",
       "description": "Draw the bar with . * ~ O instead of the symbols. Default: off; turn on if your font lacks them.",
-      "default": false
-    },
-    "emoji": {
-      "type": "boolean",
-      "title": "Emoji bomb (default off)",
-      "description": "Draw the bomb as 💣 and the held state as 💥. Default: off.",
       "default": false
     },
     "statsPath": {

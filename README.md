@@ -21,7 +21,7 @@ manually.
 |---|---|
 | [`minh-toolkit`](plugins/minh-toolkit/) | Minh's real, actively used skill collection — coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. |
 | [`template-plugin`](plugins/template-plugin/) | Not a real toolkit — a minimal working example showing the folder shape (`plugin.json` + `skills/`) a new plugin needs. Copy it to start a new plugin. |
-| [`usage-band`](plugins/usage-band/) | A Claude Code **mod**: a one-line band above the prompt showing context, 5-hour and weekly usage, plus session cost. Runs code inside Claude Code; needs 2.1.287 or later. |
+| [`usage-band`](plugins/usage-band/) | A Claude Code **mod**: a one-line band above the prompt showing context, 5-hour and weekly usage, plus session cost, with a small dancer that dances while Claude works, then dozes off. Runs code inside Claude Code; needs 2.1.287 or later. |
 | [`skill-badge`](plugins/skill-badge/) | A Claude Code **mod**: a band above the prompt listing the skills loaded in this session. Runs code inside Claude Code; needs 2.1.287 or later. |
 | [`fuse`](plugins/fuse/) | A Claude Code **mod**: a burning-fuse bar above the prompt that tracks a turn's minutes, tool calls and context growth, and holds the next tool call to ask you when a limit is hit. Runs code inside Claude Code; needs 2.1.287 or later. |
 

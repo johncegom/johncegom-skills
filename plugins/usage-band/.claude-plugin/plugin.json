@@ -1,7 +1,22 @@
 {
   "name": "usage-band",
-  "version": "0.1.0",
-  "description": "Claude Code mod: a one-line band above the prompt showing context, 5-hour and 7-day usage, and session cost. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
+  "version": "0.2.0",
+  "description": "Claude Code mod: a one-line band above the prompt showing context, 5-hour and 7-day usage, and session cost, with a small dancer that dances while Claude works, then dozes off. Runs code inside Claude Code; Claude Code only; needs 2.1.287 or later.",
   "author": { "name": "Minh Duong" },
-  "types": "./types/index.d.ts"
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "dancer": {
+      "type": "string",
+      "title": "Dancer (default always)",
+      "description": "A small figure at the end of the band. always: dances while Claude works, hums for a minute after, dozes for four more, then sleeps and stops redrawing. working: only while Claude works. off: none. Default: always.",
+      "default": "always",
+      "options": ["always", "working", "off"]
+    },
+    "ascii": {
+      "type": "boolean",
+      "title": "ASCII dancer (default off)",
+      "description": "Draw the dancer with ~ * o > < instead of the symbols ♪ ♫ • °. Turn on if the band looks misaligned (some East Asian terminals draw those symbols double width). Default: off.",
+      "default": false
+    }
+  }
 }

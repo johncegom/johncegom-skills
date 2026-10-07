@@ -9,8 +9,15 @@ export type Reading = {
   costUsd?: number
 }
 
+/**
+ * What the dancer is doing, and its beat (timer ticks since the stage began).
+ * `work` runs while a turn does; after it `cheer` (1 min), `doze` (4 min), then
+ * `sleep`, which has no timer. `off` draws nothing.
+ */
+export type Dance = { stage: 'off' | 'work' | 'cheer' | 'doze' | 'sleep'; tick: number }
+
 declare module 'claude-code' {
   interface PluginState {
-    'usage-band': { reading: Reading | null }
+    'usage-band': { reading: Reading | null; dance: Dance }
   }
 }

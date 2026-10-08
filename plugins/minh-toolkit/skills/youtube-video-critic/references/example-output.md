@@ -4,7 +4,7 @@ Filled-in examples of the Step 3 and Step 4 format. Match the structure, not the
 
 ## Contents
 - Full evaluation (a ~54-minute screen-recorded tutorial, with the visual-heavy note)
-- Compact evaluation (a ~9-minute talking-head video, the default under about 15 minutes)
+- Compact evaluation (a ~9-minute talking-head video, the default under about 10 minutes)
 
 ## Full evaluation
 

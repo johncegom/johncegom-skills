@@ -20,7 +20,7 @@ Three synthetic cases, each given a plain "is this worth watching" request:
 - (c) 8-minute clip claiming a supplement cures a medical condition.
 
 ## Expected behavior
-- (a) TL;DR line, a one-sentence gist, 2-3 sentence justification, Core takeaways (each with the
+- (a) TL;DR line, a one-sentence `Gist:` line, 2-3 sentence justification, Core takeaways (each with the
   video's own example where it gave one, and none invented where it didn't), timestamp ranges,
   a closing line offering the full table. No table, no title-gap line, no session ranges. Step 4.5 checks run
   without the table and title-gap items.
@@ -43,3 +43,9 @@ the Step 4.5 "items 1, 4-9" wording changes.
 Gist line and per-takeaway examples added to the compact path after the owner reported the
 compact output felt incomplete (variant A of three tried). Re-check that an example is never
 invented for a takeaway the video gave no example for.
+
+## Regression check (2026-10-11)
+The owner found the gist more useful than the title-gap line, so the full Step 3 output now
+carries the same `Gist:` line directly under the TL;DR (under the lower-confidence note when
+there is one); the title-gap line stays. Re-check that a full output has exactly one gist, placed
+after the TL;DR and before the table, and that the compact output labels it the same way.

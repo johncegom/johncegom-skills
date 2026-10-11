@@ -12,6 +12,8 @@ Filled-in examples of the Step 3 and Step 4 format. Match the structure, not the
 
 *Lower confidence on the demo parts: about half the runtime is a screen-recorded Obsidian demo. The narration describes most steps, but the results on screen (the Bases tables at 19:00-20:30, the five-year vault and graph at 47:47-48:30) are only partly captured, so watch those yourself. Auto-captions also garble the author names in the demo, so ignore those.*
 
+**Gist:** The video argues that you write papers faster by taking notes on topics instead of on papers, keeping sources, topics and your own ideas apart, and shows the system in an Obsidian demo.
+
 | Criterion | Assessment |
 |---|---|
 | Substance vs. filler | About 75% substance. Filler is a motivational intro (about 2 min), a summary and metaphors at the end (about 3 min), scattered plugs for a course, newsletter and blog posts (about 2 min), and roughly 6 of the 11 minutes of the closing demo that re-walk the system already taught. |
@@ -38,7 +40,7 @@ Title vs. content: the title promises a "full tutorial" that makes you "write pa
 
 **TL;DR: Skim it — Value score: 5/10**
 
-The video argues that reading better means understanding and remembering more across different kinds of text, and that you get there through focused practice, notes that transform the material, spaced sessions and a genre-matched approach, not through volume or harder books.
+**Gist:** The video argues that reading better means understanding and remembering more across different kinds of text, and that you get there through focused practice, notes that transform the material, spaced sessions and a genre-matched approach, not through volume or harder books.
 
 About 65% substance. Each habit comes with a stated reason. The rest is framing plus the same book recommendation made twice, roughly 2 minutes in all. Biggest gap: the first habit is mostly "read this one book", so cut the repeated plug and add one worked example and it would be a 7/10.
 

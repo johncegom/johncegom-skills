@@ -87,7 +87,9 @@ jobs:
       # Executable tests for scripts a skill ships (stdlib only). Skill scenario cases
       # stay markdown and are not run here.
       - name: Test skill scripts
-        run: python3 -m unittest discover -s tests/youtube-video-critic -p "test_*.py"
+        run: |
+          python3 -m unittest discover -s tests/youtube-video-critic -p "test_*.py"
+          python3 -m unittest discover -s tests/lecture-to-concept-cards -p "test_*.py"
 
       - name: Check SKILL.md frontmatter (Agent Skills spec) and body length (under 500 lines)
         run: |

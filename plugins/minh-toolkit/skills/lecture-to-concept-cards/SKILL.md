@@ -62,7 +62,7 @@ Flag routes 2 and 3 when the course restricts sharing. Don't flag the model itse
 ## Step 2: Group by concept
 
 1. **Fix the terms first.** Auto-captions garble technical vocabulary, usually in the same few ways every time: a term heard as a similar-sounding word, or an English term written as a near miss. Read enough of the transcript to see the pattern, then normalise terms by context. Keep a two-column table, "caption says" and "read as", and put it at the top of the index. Some readings are guesses, and the user can correct them. Where you are unsure, say so there instead of silently replacing the word.
-2. Read the transcript through and list each concept the lecturer teaches, named in the lecturer's own term. Skip what teaches nothing: greetings, waiting, reading chat aloud, adverts. Keep answers to questions when they teach. Keep practical set-up (a tool to install, a setting to change) as a short practical-note card, because the user may need it later.
+2. Read the transcript through and list each concept the lecturer teaches, named in the lecturer's own term. Skip what teaches nothing: greetings, waiting, reading chat aloud, adverts. Keep answers to questions when they teach. Note any question or exercise the lecturer poses to the audience, with the timestamp where they answer it. Keep practical set-up (a tool to install, a setting to change) as a short practical-note card, because the user may need it later.
 3. For each concept, collect every time range where it is defined, shown, practised or revisited.
 4. Label cards with the lecturer's own terms and, if the course teaches a fixed sequence of steps, with the step each concept belongs to. Use a glossary or domain skill only if the user names one, and don't ask for one otherwise.
 5. When a concept reappears in a later lesson, write that lesson's card and add a "See also" line pointing to the earlier card. Don't rewrite an earlier lesson's card unless the user asks, because the lecturer may have changed the explanation, and that is worth keeping visible.
@@ -126,7 +126,7 @@ Write in the language the user asked in, including the section headings. The tem
 - Every image matches its moment, or is a placeholder.
 - Terms are the lecturer's. Anything from outside is labelled.
 - Figures and success rates sit in Reliability.
-- Self-test questions ask the reader to apply or spot an error, not to recall what the video said.
+- A Lecturer's exercise line quotes a question or task the lecturer actually posed, with the timestamp of the answer or "not answered in the lecture". No practice question was invented.
 - No quote runs over 15 words, and no path is absolute.
 - Every image file is used by a card, and every image a card names exists.
 - The index lists every card and has the term table at its top.
@@ -134,3 +134,5 @@ Write in the language the user asked in, including the section headings. The tem
 ## Related skills
 
 To judge whether a video is worth watching at all, use `youtube-video-critic`. If the user wants both, give the verdict first and then the cards; if that skill is not available, go straight to the cards. This skill does not judge the video's value.
+
+Cards carry no practice questions of their own. When handing the cards back, say once that a quiz is available, and write it only if the user asks: use `smart-quiz-maker` with the finished `cards/` files as its source, or, if that skill is not available, ask the same of the model directly (one best answer per question, answers shown after the reader tries). Such questions are not the lecturer's content, so label them "(not from the lecturer)".

@@ -21,8 +21,8 @@ Why it does NOT fit: <from the transcript>
 ## Pitfalls                        (Cạm bẫy)
 ## Reliability                     (Độ tin cậy)
 Which figures or claims are the lecturer's own, with no evidence shown?
-## Self-test                       (Tự thử)
-<A task on new material, answered in two sentences.>
+## Lecturer's exercise             (Bài tập của giảng viên)
+Lecturer's exercise (08:40): <the question or task they posed> → answer at 09:15
 ```
 
 ## How to fill it
@@ -32,9 +32,9 @@ Which figures or claims are the lecturer's own, with no evidence shown?
 - **Worked example and Counter-example.** The two sections that teach the boundary between right and wrong. If the lecturer showed no counter-example, write "Not shown in the lecture". Don't build one.
 - **Why it fits / does NOT fit.** Take the reasoning from what was said, not from reading the image.
 - **Reliability.** Name each figure or success rate and say it is the lecturer's claim and whether the lecture backed it up. This section keeps the reader sceptical, so keep it even when it is a single line.
-- **Self-test.** Ask the reader to apply the concept to something new, find a key point, spot a planted error, or put steps in order. "What did the video say?" teaches recall of the video, not the concept.
+- **Lecturer's exercise.** Only a question or task the lecturer posed themselves, with the timestamp of where they answer it, or "not answered in the lecture". Don't write a practice question of your own: a scenario you invent is not the lecturer's content, and it comes with no answer the reader can check. For practice questions, offer `smart-quiz-maker` over the finished cards (see SKILL.md, Related skills).
 
-Drop any section with nothing to say, except Counter-example and Reliability, where "Not shown" or "No evidence given" is itself the information.
+Drop any section with nothing to say, except Counter-example and Reliability, where "Not shown" or "No evidence given" is itself the information. Most cards will have no Lecturer's exercise, and that is the normal case.
 
 ## Missing image
 

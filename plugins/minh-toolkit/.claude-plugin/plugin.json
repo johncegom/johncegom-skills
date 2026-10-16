@@ -1,6 +1,6 @@
 {
   "name": "minh-toolkit",
-  "version": "0.19.1",
+  "version": "0.20.0",
   "description": "Minh's personal skill collection: coaching-style skills for learning, writing, branding, and code, plus a YouTube video critic. Each skill's own SKILL.md documents its purpose in detail.",
   "author": {
     "name": "Minh"
@@ -14,6 +14,7 @@
     "./skills/lecture-to-concept-cards",
     "./skills/low-power-learning",
     "./skills/personal-planner-engine",
+    "./skills/practice-ladder",
     "./skills/real-personal-branding",
     "./skills/smart-quiz-maker",
     "./skills/socratic-brainstorm",

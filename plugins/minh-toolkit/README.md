@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.19.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-14-informational)
+![version](https://img.shields.io/badge/version-0.20.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-15-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Two skills use separate local tools: `youtube-video-critic` needs one to work, and `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links. Everything else works the moment it's installed.
 
@@ -29,6 +29,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 **Learning to code**
 - *"I don't know where to start with this Django project"* → `goal-to-code-unblock` hands you the first step, not the finished code.
 - *"I want to learn Go, make me a plan"* → `learn-technology-by-building` gives you one cumulative project with weekly checkpoints. If you freeze on one line, it hands off to `goal-to-code-unblock`.
+- *"Drill me on Go maps, rung by rung"* → `practice-ladder` runs a short ladder of small exercises you answer before anything runs: predict, spot and fix the bug, then write a little. Every exercise is run and checked first, and it ends with a no-help check.
 - *"Test me on SQL joins"* or *"Quiz me for a backend interview"* → `smart-quiz-maker` builds a quiz calibrated to how well you actually know it and adjusts as you answer.
 - *"My brain is fried, but I don't want to break my streak"* → `low-power-learning` runs a short, near-passive session.
 
@@ -57,6 +58,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 | `goal-to-code-unblock` | Coaches you to write the code yourself from a vague goal — reviews, never authors. |
 | `learn-technology-by-building` | Multi-session mentor for learning a new technology through one cumulative project, with diagrams. |
 | `low-power-learning` | A short, near-passive session for a tired or burned-out brain, so the learning streak survives anyway. |
+| `practice-ladder` | A short ladder of small, runnable exercises for a language you half-know: you commit to an answer first (predict what code does, name and fix a bug in agent-style code, then write a small function). Every exercise is run and checked before you see it, and a session ends with a no-help check. Needs a way to run code in that language. |
 | `smart-quiz-maker` | Builds and runs a quiz on almost any subject, calibrated to test real understanding, not guessing. |
 | `writing-practice` | Coaches deliberate writing practice — never writes your actual piece for you. |
 | `lecture-to-concept-cards` | Turns a long lecture or course video into concept cards to revise from: grouped by concept with timestamps, screenshots at the moments that need a picture, a counter-example and a reliability note. Takes a local video plus transcript, or a public YouTube link. Optional: `ffmpeg` for automatic screenshots, `go-youtube-mcp-cli` for YouTube links. Without them you still get the cards and a timestamp list to capture yourself. |
@@ -75,7 +77,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 ## FAQ
 
-**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Eleven trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
+**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Twelve trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
 
 **Will this change how Claude normally behaves?** Only `sound-human` runs by default in the background, rewriting Claude's own prose before it reaches you — everything else only activates when it matches what you're asking for.
 

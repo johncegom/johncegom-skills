@@ -43,6 +43,7 @@ Append-only record of Execute / Advise / Grade / Dream activity. Add each row at
 | 2026-09-24 | dream | Agent | model=opus status=ok reported=claude-opus-5 | model=opus status=stale reported=claude-opus-5 | Dream call on feat/eagd-storage-scope replied `model: claude-opus-5-5`, which does not match the row's reported id; same mismatch as the advise row, so the stored `reported` value may simply be out of date, but only a re-probe settles that |
 | 2026-09-24 | advise | Agent | model=opus status=stale reported=claude-opus-5 | model=opus status=ok reported=claude-opus-5-5 | Re-probed from this harness (session model Sonnet 5, so the override is proven); the probe replied `claude-opus-5-5`, the same id both real calls reported, so the stored id was out of date, not the binding broken |
 | 2026-09-24 | dream | Agent | model=opus status=stale reported=claude-opus-5 | model=opus status=ok reported=claude-opus-5-5 | Same probe covers this row, since it requests the same model through the same tool; reply `claude-opus-5-5` |
+| 2026-10-12 | grade | Agent | model=haiku status=ok reported=claude-haiku-4-5-20251001 | model=haiku status=ok reported=claude-haiku-5-5 | Re-probed from this harness; the `haiku` alias now reports `claude-haiku-5-5` (alias moved to the Claude 5 family) |
 
 ## Grade fallbacks
 

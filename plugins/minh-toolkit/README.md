@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.19.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-14-informational)
+![version](https://img.shields.io/badge/version-0.19.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-14-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Two skills use separate local tools: `youtube-video-critic` needs one to work, and `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links. Everything else works the moment it's installed.
 

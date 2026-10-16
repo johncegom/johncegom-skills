@@ -1,29 +1,36 @@
 ---
-name: practice-ladder
+name: runnable-practice-ladder
 description: >
-  Runs a graded ladder of about five small, runnable code exercises for a
-  language or concept the user knows only the basics of. Every rung asks the
-  user to commit to an answer first, then checks it by running the code:
-  predict what a snippet does, find and minimally fix the bug in agent-style
-  code, or write a short function against tests. Difficulty adapts to hints
-  used, every exercise is verified before it is given, and the session ends
-  with an unaided check and a progress ledger. Use when the user asks for
-  drills, a practice ladder, a series of graded exercises, or practice
-  reading and reviewing code in a language they half-know, for example
-  "luyện Go theo từng nấc". Needs a way to run code in that language. Do NOT
-  use for one problem the learner is building toward their own goal
-  (goal-to-code-unblock), a multi-week roadmap (learn-technology-by-building),
-  a quiz (smart-quiz-maker), a tired or low-energy session
-  (low-power-learning), or when the user just wants the code written.
+  Runs a graded ladder of small exercises in something a local tool can run
+  or check, such as a programming language, SQL, shell, or a config format
+  with a parser or linter, at any level from first contact to subtle traps.
+  Each rung asks the user to commit to an answer first, then checks it by
+  running it: predict what a snippet does, find and minimally fix a bug in
+  agent-style code, or write a short piece against tests. Difficulty adapts
+  to hints used, every exercise is verified before it is given, and the
+  session ends with an unaided check and an optional progress ledger. Use when the
+  user asks for drills, a practice ladder, graded exercises, or practice
+  reading and reviewing code, queries or scripts, for example "luyện Go theo
+  từng nấc". Do NOT use for one problem the learner is building toward their
+  own goal (goal-to-code-unblock), a multi-week roadmap
+  (learn-technology-by-building), a quiz (smart-quiz-maker), a tired or
+  low-energy session (low-power-learning), or when the user just wants it
+  written.
 ---
 
-# Practice Ladder
+# Runnable Practice Ladder
 
-Run short sessions of graded, runnable exercises so a learner who knows only the basics of a language builds the judgment to read, check and fix code, and still writes small things unaided.
+Run short sessions of graded, runnable exercises so a learner builds the judgment to read, check and fix code, and still writes small things unaided. It works at any level: difficulty comes from subtler traps, not from more code.
 
 Much code is now written by an agent, so a learner often needs to judge code they did not write. The read and review rungs below train that. They count as active practice only because the learner **commits first**: a prediction, a line, a cause. Writing stays an equal mode, not a lesser one. Recipes, hint templates and worked examples are in [references/rung-recipes.md](references/rung-recipes.md).
 
 **Core rule: the agent never writes the learner's solution.** It sets the exercise, runs it, checks the answer and gives hints.
+
+## What fits
+
+Use this only where a local tool gives an objective result: an interpreter or compiler, a query engine on sample data, a shell in a scratch directory, a parser, a linter or a dry-run mode. That covers syntax, structure, lint results and behavior you can run locally, for example a schedule expression through a parser that prints the next run times in an explicit timezone, or a workflow file through a local linter. Behavior that depends on a hosted service, a scheduler's environment, secrets or triggers can only be verified there. Treat it as unverified under rule 7: have the learner run it, or drop the rung.
+
+One exercise fits on about one screen. Multi-file changes and design tradeoffs that cannot be run or sourced are outside this skill. Say so, and offer learn-technology-by-building if it is available.
 
 ## Verification rule (non-negotiable)
 
@@ -42,10 +49,10 @@ A learner who absorbs a false fact is worse off than one who learned nothing. No
 ## Session shape
 
 - **Open.** If a ledger exists, ask one cold-recall question about an earlier capability, no hints. On a first session, ask one level-probe question (topic and goal; infer the mode below) and treat that probe as rung 0, already done, so the progress map starts with a mark.
-- **Core.** Up to about three rungs, under about 20 minutes. After each rung offer two next rungs and "stop here". Ask before extending past the limit.
+- **Core.** Up to about three rungs, the last one being the unaided check, under about 20 minutes. After each rung offer two next rungs and "stop here". Ask before extending past the limit.
 - **Close.** One sentence naming a capability the learner now has, with its `verified by` tag. Prepare the next rung and write it to the ledger as the starting point for next time.
 
-**Mode.** Infer it from the request: read/review (mostly predict and review rungs) or write (mostly write-small rungs). Ask only when it is truly unclear.
+**Mode.** Infer it from the request: read/review (mostly predict and review rungs) or write (mostly write-small rungs). Ask about the mode only when it is truly unclear.
 
 ## Rung types
 
@@ -55,13 +62,13 @@ A learner who absorbs a false fact is worse off than one who learned nothing. No
 
 ## Difficulty and hints
 
-- Pass with no hint: go up one level.
+- Pass with no hint: go up one level. A level means a subtler trap, not more code.
 - Pass with a hint: stay, and set a new exercise of the same kind.
 - Fail twice: split the rung into two smaller ones.
 
-Hints come in three tiers: direction, then the tool or concept name, then a one-line sample on different data from the exercise, and only after the learner has tried and failed. Never give the full solution. Hints fall under the verification rule too.
+Hints come in three tiers: direction, then the tool or concept name, then a one-line sample on different data from the exercise, and only after the learner has failed twice. Never give the full solution. Hints fall under the verification rule too.
 
-**Unaided check.** Each session that reaches rung 3 or later ends with a new exercise: no hints, no lookup. This result, not the rung reached, is the measure of progress.
+**Unaided check.** Every session of two or more rungs ends with a new exercise as its last rung: no hints, no lookup. This result, not the rung reached, is the measure of progress.
 
 ## Progress ledger
 

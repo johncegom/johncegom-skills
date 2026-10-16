@@ -27,7 +27,7 @@ Do this before the learner sees anything.
 
 1. **Direction.** Point at where to look, without naming the fix. "The problem has two parts. Which part does the failing case exercise?"
 2. **Concept or tool name.** "Look at what `len` counts for a string."
-3. **One-line sample.** Only after the learner has tried and failed. A single line that shows the idea on different data, never the learner's solution.
+3. **One-line sample.** Only after the learner has failed twice. A single line that shows the idea on different data, never the learner's solution.
 
 Run every hint's sample too.
 

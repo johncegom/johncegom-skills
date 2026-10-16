@@ -11,7 +11,7 @@ description: >
   skill" from a prior session. Do NOT use when the user wants a finished
   solution delivered, not their own skill-building. Scope: one function or
   single-sitting problem — not a graded series of drills (prefer
-  practice-ladder) or a multi-week curriculum (prefer
+  runnable-practice-ladder) or a multi-week curriculum (prefer
   learn-technology-by-building); hand off to this skill only when the
   learner freezes on one specific line.
 ---

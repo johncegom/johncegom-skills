@@ -2,9 +2,9 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.20.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-15-informational)
+![version](https://img.shields.io/badge/version-0.21.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-16-informational)
 
-No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Two skills use separate local tools: `youtube-video-critic` needs one to work, and `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links. Everything else works the moment it's installed.
+No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Three skills use separate local tools: `youtube-video-critic` needs one to work, `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links, and `crypto-project-analysis` needs Node 18+ for on-chain checks and a way to write `.docx` files. Everything else works the moment it's installed.
 
 I built and use every one of these myself, daily — that's the only quality bar they have to pass. Where a skill judges something (a video, a piece of writing, a plan), it's built to call it as it is, not to flatter you. No vanity metrics, no grade inflation.
 
@@ -39,6 +39,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 - *"Plan LinkedIn content that brings me inbound job leads"* → `real-personal-branding` builds a plan around real outcomes, not likes.
 
 **Deciding what to watch or do**
+- *"Analyse the X project for me"* → `crypto-project-analysis` writes one neutral `.docx` (quick by default, full on request): how it earns, supply and unlocks, who controls the contract, delist risk, every number tagged Reported, Calculated or Unknown with its source. It describes; it never says buy or sell.
 - *"Is this video worth watching?"* plus a link → `youtube-video-critic` judges it from the real transcript (needs the extra install step below).
 - *"This lecture is too long to rewatch, make me concept cards"* → `lecture-to-concept-cards` groups the lesson by concept, suggests the moments that need a screenshot for you to approve, and writes short cards with a counter-example and a reliability note.
 - *"Turn this goal into a schedule I can keep"* → `personal-planner-engine` fits it to your real capacity and adds a bad-day fallback.
@@ -61,6 +62,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 | `runnable-practice-ladder` | A short ladder of small exercises for anything a local tool can run or check (a programming language, SQL, shell, a config with a linter), at any level: you commit to an answer first (predict what it does, name and fix a bug in agent-style code, then write a small piece). Every exercise is run and checked before you see it, and a session ends with a no-help check. One screen per exercise; multi-file changes are out of scope. |
 | `smart-quiz-maker` | Builds and runs a quiz on almost any subject, calibrated to test real understanding, not guessing. |
 | `writing-practice` | Coaches deliberate writing practice — never writes your actual piece for you. |
+| `crypto-project-analysis` | Analyses one crypto project or token into a single neutral `.docx` report: quick by default, full 11-section on request. Every number is tagged Reported, Calculated or Unknown with a source id, sponsored and self-declared sources are marked, and it never gives buy or sell advice. Read-only on-chain checks on Solana and EVM chains through a bundled Node script (Node 18+, no dependencies). Needs a way to write `.docx` files; a PDF check needs LibreOffice or similar. Other chains are marked Unknown. |
 | `lecture-to-concept-cards` | Turns a long lecture or course video into concept cards to revise from: grouped by concept with timestamps, screenshots at the moments that need a picture, a counter-example and a reliability note. Takes a local video plus transcript, or a public YouTube link. Optional: `ffmpeg` for automatic screenshots, `go-youtube-mcp-cli` for YouTube links. Without them you still get the cards and a timestamp list to capture yourself. |
 | `sound-human` | Runs automatically on Claude's own generated prose so it doesn't read like AI. Also works on your pasted drafts if you ask. |
 | `personal-planner-engine` | Turns a goal into a realistic, execution-ready schedule — capacity-fit, with a bad-day fallback. Also hardens a plan another skill already produced. |
@@ -77,7 +79,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 ## FAQ
 
-**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Twelve trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
+**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Thirteen trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
 
 **Will this change how Claude normally behaves?** Only `sound-human` runs by default in the background, rewriting Claude's own prose before it reaches you — everything else only activates when it matches what you're asking for.
 

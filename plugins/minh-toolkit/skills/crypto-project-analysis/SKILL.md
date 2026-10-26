@@ -53,7 +53,7 @@ The full number rules and the mistakes behind them are in [references/number-rul
 Ask only if the project or token is ambiguous. Tickers collide, so before any on-chain read confirm the chain and the contract or mint address from the project's own official page, not from a search result. State in one line: the project, the assumed reader (default: a retail holder worried about delisting), the tier, and the language. Then go.
 
 **Tier.** Default **Quick**. Use **Full** when the user says full report, due diligence, detailed or deep.
-- **Quick:** a short .docx with the title block (project, date read, scope line, disclaimer); the holder case (below); a summary paragraph per area; at most two diagrams; "three uncertain points"; a table of the key numbers, each tagged and sourced; what is unknown; limits; the source table. Rules 1 to 9 still apply in full.
+- **Quick:** a short .docx with the title block (project, date read, scope line, disclaimer); the holder case (below); a summary paragraph per area; up to three diagrams (holder-case strip, business-model map, cash-flow map); "three uncertain points"; a table of the key numbers, each tagged and sourced; what is unknown; limits; the source table. Rules 1 to 9 still apply in full.
 - **Full:** every section of [references/report-skeleton.md](references/report-skeleton.md), in that order and numbering. Read that file before drafting. If a section does not apply (no revenue on a chain or memecoin, no unlock schedule before a token exists), keep its number and write "Not applicable: <reason>". Do not pad it with Unknown rows.
 
 **Holder case (both tiers).** The reader may want to hold the token, so answer "is it good enough to hold?" with evidence, not a verdict word. It has five parts, in this order:

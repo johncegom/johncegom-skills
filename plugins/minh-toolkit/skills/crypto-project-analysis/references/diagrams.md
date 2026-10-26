@@ -17,13 +17,13 @@ Draw only if it shows a flow or a set of conditions that a table hides, and ever
 
 | Section | Diagram | Rule |
 |---|---|---|
-| 1 Summary | Holder-case strip: one cell per checklist condition, labelled Met / Partly / Unmet / Unknown / Not applicable | Always |
+| 1 Summary | Holder-case strip: one cell per checklist condition, labelled Met / Partly / Unmet / Unknown / Not applicable | When at least half the conditions are live (not "Not applicable"); otherwise skip the strip, keep the holder-case table, and say in one sentence why most rows do not apply (for example no token yet) |
 | 2 How it works | Business-model map: what the project sells, to whom, and what moves between the parties (goods, rights, tokens, not money: money is in the cash-flow map). Same format and rules as the cash-flow map; orange marks the assets (the item, the token, the vault) | Always |
 | 3 Cash flow | Cash-flow map (see below) | Always |
 | 4 Token | The holder leg of the cash-flow map, redrawn alone: which flows (dividend, buyback, burn, utility) end at token holders and which do not | When a token exists |
 | 6, 9, 10, 11 | None | A table or text is clearer. An org chart would imply structure the sources do not show |
 
-Quick tier: three diagrams at most, the holder-case strip, the business-model map and the cash-flow map. Full adds the data charts that apply.
+Quick tier: three diagrams at most (two when the strip is skipped), the holder-case strip, the business-model map and the cash-flow map. Full adds the data charts that apply.
 
 ## The cash-flow map
 It answers: where does money come in, where does it go, and does any of it end at a token holder? The nodes and arrows come from this project's real cash flow, so the shape differs for each project.

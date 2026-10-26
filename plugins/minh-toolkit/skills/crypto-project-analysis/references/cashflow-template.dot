@@ -1,0 +1,16 @@
+// STYLE EXAMPLE ONLY (Graphviz). It shows the syntax and look, not a structure to copy.
+// Draw the nodes and arrows from THIS project's sources: its real payers, its real uses of money, and a token side only if the project has a token.
+// Blue = parties and revenue. Orange = where money goes, and the token side. Dashed = indirect, unverified, unknown or none. No figures.
+digraph G {
+  rankdir=TB; nodesep=0.55; ranksep=0.75; bgcolor="white";
+  node [shape=box, style="filled,rounded", fontname="Arial", fontsize=13, margin="0.22,0.14", penwidth=1.2];
+  edge [fontname="Arial", fontsize=11, color="#444444", arrowsize=0.8];
+
+  A [label="Party (role)",             fillcolor="#E8EEF7", color="#3B5BA5"];
+  P [label="Project (name)",          fillcolor="#E8EEF7", color="#3B5BA5"];
+  B [label="Use of money\n(status)",   fillcolor="#FFFFFF", color="#C55A11", style="filled,rounded,dashed"];
+
+  // Edge label on a grey chip. Number the main steps. A flow that goes both ways is two arrows.
+  A -> P [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7E6E6"><TR><TD>1. What flows</TD></TR></TABLE>>];
+  P -> B [label=<<TABLE BORDER="0" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7E6E6"><TR><TD>2. What flows<BR/>(status)</TD></TR></TABLE>>, style=dashed];
+}

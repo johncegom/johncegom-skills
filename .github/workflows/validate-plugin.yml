@@ -50,6 +50,14 @@ jobs:
           done
           exit $fail
 
+      # Node scripts a skill ships: offline node:test files (no network, no install),
+      # run on the Node 20 set up above. Separate from the mod step, which only
+      # looks for *.test.ts.
+      - name: Test skill scripts (Node)
+        run: |
+          files=$(find plugins -name node_modules -prune -o -name '*.test.mjs' -print | sort)
+          if [ -n "$files" ]; then node --test $files; fi
+
   # Python and jq only (both preinstalled on the runner), so no Node or CLI
   # install. Runs in parallel with `validate`.
   content-checks:

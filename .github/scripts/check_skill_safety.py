@@ -65,7 +65,7 @@ RULES = [
      "link to a host that is not on the allowlist"),
 ]
 
-TEXT_EXT = {".md", ".json", ".yaml", ".yml", ".svg", ".txt", ".py", ".sh", ".js", ".ts", ".toml"}
+TEXT_EXT = {".md", ".json", ".yaml", ".yml", ".svg", ".txt", ".py", ".sh", ".js", ".mjs", ".cjs", ".ts", ".toml"}
 
 
 def emit(level, path, line, rule, why, snippet):

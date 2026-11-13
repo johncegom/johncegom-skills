@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.21.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-16-informational)
+![version](https://img.shields.io/badge/version-0.22.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-17-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Three skills use separate local tools: `youtube-video-critic` needs one to work, `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links, and `crypto-project-analysis` needs Node 18+ for on-chain checks and a way to write `.docx` files. Everything else works the moment it's installed.
 
@@ -21,7 +21,7 @@ To stay current: enable "Sync automatically" on the `minh-skills` marketplace in
 
 ## Example use cases
 
-Nothing to configure, no command to memorize — just talk to Claude normally and the right skill picks itself up. The three opt-in skills (last group) only run when you ask for them by name.
+Nothing to configure, no command to memorize — just talk to Claude normally and the right skill picks itself up. The four opt-in skills (last group) only run when you ask for them by name.
 
 **Starting on an unfamiliar codebase**
 - *"I just joined this team and need to understand the core fast."* → `codebase-onboarding` writes architecture and business-logic notes with `path:line` evidence, including a solution-architect view of what the design optimizes for and where it would break, has a separate pass check them against the source, and adds a first-PR checklist. Notes are saved outside the repo, in `~/onboarding-notes/<repo>/`. Ask for a diagram plus a repo-agnostic `general-concepts.md` — design ideas worth carrying to your next codebase — and it'll build those too.
@@ -47,6 +47,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 **Opt-in, ask by name**
 - *"Use socratic-brainstorm on my idea"* → `socratic-brainstorm` questions you before it gives feedback.
 - `/bootstrap-way-of-working` → sets up a `CLAUDE.md` or `AGENTS.md` with bug, decision and retro logs.
+- *"Set up my agent baseline"* → `bootstrap-agent-baseline` writes your own cross-project rules into the user-level instruction file of each agent you name.
 - *"Set up EAGD for this repo"* → `bootstrap-eagd-pattern` installs the Advise/Grade/Dream sub-agent mechanism.
 
 ## What's inside
@@ -68,6 +69,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 | `personal-planner-engine` | Turns a goal into a realistic, execution-ready schedule — capacity-fit, with a bad-day fallback. Also hardens a plan another skill already produced. |
 | `real-personal-branding` | Personal branding help focused on real outcomes (opportunities, inbound), not vanity metrics. |
 | `socratic-brainstorm` | **Opt-in only** — say "socratic brainstorm this" and it'll stress-test your idea with questions before giving direct feedback. Won't trigger on its own. |
+| `bootstrap-agent-baseline` | **Opt-in only** — ask by name to write one managed block of your own cross-project rules (plain writing, verify with real output, project rules win, plus a few you pick) into the user-level instruction file of each agent harness you name, so all your machines behave the same. A re-run updates the block in place and shows a diff first. Won't trigger on its own. |
 | `bootstrap-way-of-working` | **Opt-in only** — run `/bootstrap-way-of-working` to set up a CLAUDE.md/AGENTS.md plus calibrated bug/decision/retro logs and a task-approval gate, sized to the project's actual risk and team size. Won't trigger on its own. |
 | `bootstrap-eagd-pattern` | **Opt-in only** — run `/bootstrap-eagd-pattern` to install a live, repo-wide mechanism (in your CLAUDE.md/AGENTS.md, or kept outside the repo if it can't hold agent files) letting a future agent session spawn an Advise/Grade/Dream sub-agent with a model you name and a probe verifies for each harness, when it hits a matching trigger. Re-runs keep existing bindings, and "upgrade EAGD here" brings an installed directive up to this version (diff first, never auto-applied). Won't trigger on its own. |
 
@@ -79,7 +81,7 @@ Nothing to configure, no command to memorize — just talk to Claude normally an
 
 ## FAQ
 
-**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Thirteen trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, and `bootstrap-eagd-pattern` are the exceptions and only run when you explicitly ask for them.
+**Do I need to enable each skill individually?** No — installing the plugin enables all of them. Thirteen trigger automatically from what you say; `socratic-brainstorm`, `bootstrap-way-of-working`, `bootstrap-eagd-pattern`, and `bootstrap-agent-baseline` are the exceptions and only run when you explicitly ask for them.
 
 **Will this change how Claude normally behaves?** Only `sound-human` runs by default in the background, rewriting Claude's own prose before it reaches you — everything else only activates when it matches what you're asking for.
 

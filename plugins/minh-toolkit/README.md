@@ -2,7 +2,7 @@
 
 Skills that coach you instead of doing the work for you — so the skill you're learning, the piece you're writing, or the plan you're building is actually yours when you're done.
 
-![version](https://img.shields.io/badge/version-0.22.0-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-17-informational)
+![version](https://img.shields.io/badge/version-0.22.1-blue) ![license](https://img.shields.io/badge/license-MIT-lightgrey) ![skills](https://img.shields.io/badge/skills-17-informational)
 
 No API keys, no signup, no extra cost beyond your existing Claude plan — these are prompt-level skills, not external services. Three skills use separate local tools: `youtube-video-critic` needs one to work, `lecture-to-concept-cards` can use two optional ones, for screenshots and YouTube links, and `crypto-project-analysis` needs Node 18+ for on-chain checks and a way to write `.docx` files. Everything else works the moment it's installed.
 

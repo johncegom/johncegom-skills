@@ -22,7 +22,9 @@ Filled-in examples of the Step 3 and Step 4 format. Match the structure, not the
 | Actionability | High. The folder layout, note properties, claim format and link conventions can be copied the same day. Setup of the key plugins is deferred to blog posts and the paid course. |
 | Personal relevance | No note-taking goals or projects stated in the conversation, so there is nothing real to anchor to. |
 
-Title vs. content: the title promises a "full tutorial" that makes you "write papers faster". It delivers a note system plus a demo, the plugin setup is deferred elsewhere, and the speed-up rests on the author's own PhD.
+- **Stated title:** "The Full Obsidian Tutorial to Write Papers Faster" (placeholder; the real video's title is withheld, so quote the real one word for word)
+- **Actual content:** A note-taking system for academic writing, shown in an Obsidian demo.
+- **Gap:** The title promises a "full tutorial" that makes you write faster. The video delivers a note system plus a demo, the plugin setup is deferred elsewhere, and the speed-up rests on the author's own PhD.
 
 **Skim it.** The core system is well explained and usable, but only about 17 of the 54 minutes carry it. Watch 21:05-30:25 (claims instead of summaries, the three note types, double links), 33:03-36:45 (short claim notes and your own-ideas notes), 41:50-44:15 (linking to a single block of a web article) and 50:13-51:40 (finding ideas by following links). If you are new to Obsidian, add 5:23-21:01 and watch Bases at 16:22-20:35 closely. Skip 0:00-2:14, the plug at 37:20-37:51, and everything from 51:40.
 

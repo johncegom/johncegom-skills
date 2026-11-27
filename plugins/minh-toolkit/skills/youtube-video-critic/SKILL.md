@@ -76,7 +76,7 @@ Work through all six angles, even when the answer seems obvious, so the reasonin
 3. **Novelty.** Is the core information genuinely new, or a repackaging of concepts that are common knowledge or easily found elsewhere? Be specific about what, if anything, is novel, and name the dimension: a new idea or finding, a new way of presenting an existing idea, a new application or angle on something established, new evidence for a known claim, or a novel combination of existing ideas. Don't collapse these into one verdict: a video can be low-novelty on the core idea but novel in framing or application, and that is worth stating plainly rather than averaging away.
 4. **Actionability.** Can the viewer do something concrete with this after watching — a step, a tool, a decision — or is it purely inspirational/entertainment with no follow-up action?
 5. **Personal relevance.** If you have context about the user (projects, tools, interests, from this conversation or memory), check whether the video connects to something they are actually doing. Stated goals and aspirations count as much as active projects (a "side interest I want to develop" is a valid anchor). A goal stated later in the conversation re-shapes this row even for videos evaluated before it was mentioned, so re-check against the fullest context available. Use only genuinely relevant context; with none, skip this row rather than inventing relevance.
-6. **True title vs. stated title.** After the analysis, write a short title-length sentence for what the content actually delivers, grounded in the transcript, not guessed intent, and set it next to the real title. This is a minor secondary note: if they match, say so in one line; otherwise name the specific kind of gap (e.g. singular framing for plural content, universal scope for a narrow context, certainty for a disputed claim), not a vague "clickbait-y."
+6. **True title vs. stated title.** After the analysis, write a short title-length sentence for what the content actually delivers, grounded in the transcript, not guessed intent. Copy the real title word for word from the metadata (keep its language, casing and punctuation) so the reader can compare the two directly; never paraphrase it. This is a minor secondary note: if they match, say so in one line; otherwise name the specific kind of gap (e.g. singular framing for plural content, universal scope for a narrow context, certainty for a disputed claim), not a vague "clickbait-y."
 
 ## Step 3: Deliver the verdict
 
@@ -96,7 +96,11 @@ Output a table with one row per angle from Step 2.1-2.5 (angle 6 is the separate
 | Actionability | ... |
 | Personal relevance | ... |
 
-After the table, add one standalone line comparing the stated title with the true-title sentence from Step 2.6.
+After the table, add the title comparison as three short lines, separate from the table:
+
+- **Stated title:** "<the exact title, copied word for word>"
+- **Actual content:** "<the true-title sentence from Step 2.6>"
+- **Gap:** the specific kind of gap in one line, or "They match."
 
 Then close with one of three verdicts, stated plainly and justified in 2-4 sentences:
 
@@ -141,7 +145,7 @@ Check each item as pass/fail:
 
 1. The TL;DR is the first line and matches `TL;DR: <verdict> — Value score: X/10` exactly.
 2. The table has exactly five rows, in order: Substance vs. filler, Source & incentive, Novelty, Actionability, Personal relevance.
-3. The title-gap line appears after the table, separate from it, and states either a real, specific gap or plainly says the title matches — never a vague or invented gap.
+3. The title block appears after the table, separate from it. Its **Stated title** line is the exact title from the metadata, word for word, not a paraphrase. Its **Gap** line states either a real, specific gap or plainly says they match — never a vague or invented gap.
 4. The verdict uses one of the three exact verdict names from Step 3, not a paraphrase.
 5. The value-score gap sentence names a specific, concrete thing keeping the video from a 10 — not vague praise, not a generic catch-all.
 6. Every core takeaway either states the video's own mechanism/reasoning, or explicitly says the video doesn't explain one — none just restate the bottom-line conclusion.
@@ -162,9 +166,9 @@ Secondary to the evaluation: drop it under time or token pressure, never Steps 1
 
 ## Language and tone
 
-- Respond in the language the user asked in, including the structural labels in Steps 3 and 4 (table headers, row labels, the three verdict names, "Gist", "Value score", "Core takeaways", "Personal application"). In Vietnamese the gist label is "Ý chính".
+- Respond in the language the user asked in, including the structural labels in Steps 3 and 4 (table headers, row labels, the three verdict names, "Gist", "Value score", "Core takeaways", "Personal application", and the title labels "Stated title", "Actual content", "Gap"). In Vietnamese the gist label is "Ý chính". Keep the stated title itself in its original language; never translate it.
 - Plain, direct wording and short sentences. No hype language or unexplained jargon.
 
 ## Copyright constraint
 
-Do not quote the transcript verbatim beyond a short phrase (under 15 words), and never reproduce lyrics or long passages. Describe claims and content in your own words. This applies even when summarizing "what the video says."
+Do not quote the transcript verbatim beyond a short phrase (under 15 words), and never reproduce lyrics or long passages. Describe claims and content in your own words. This applies even when summarizing "what the video says." The limit covers transcript text only. The video's title is metadata, so quote it in full in the **Stated title** line, even when it runs past 15 words.
